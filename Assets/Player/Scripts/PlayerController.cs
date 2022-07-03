@@ -7,13 +7,15 @@ public class PlayerController : MonoBehaviour
     // Player Movement
     [SerializeField] private Rigidbody2D playerRB;
     [SerializeField] private Collider2D playerBoundaryCollider;
-    [SerializeField] private float acceleration = 300;
     [SerializeField] private Vector2 velocity = new Vector2(0, 0);
+    [SerializeField] private Vector3 rollingAngluarVelocity = new Vector3(0, 0, 1000f);
+    [SerializeField] private float acceleration = 300;
     [SerializeField] private float veloictyCap = 10;
     [SerializeField] private float rollTime = 0.25f;
     [SerializeField] private float rollingVelocity = 15;
     [SerializeField] private float runningSpeed;
     public bool rolling = false;
+    public bool canMove = true;
 
     // Player Animation
     [SerializeField] private Animator playerAnime;
@@ -70,151 +72,148 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        reticlePos.position = getMouseWorldPosition();
-
-        avgBetweenPlyAndReticle.localPosition = Vector3.ClampMagnitude((reticlePos.localPosition), avgDiffMax);
-
-        reticlePosRelativeToHilt = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - weaponHilt.transform.position;
-        weaponHilt.localRotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x));
-
-        if(Mathf.Sign(Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x)) > 0)
+        if (canMove == true)
         {
-            weaponSprite.sortingOrder = -1;
-        }
-        else
-        {
-            weaponSprite.sortingOrder = 1;
-        }
-
-        if(Mathf.Abs(Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x)) < 90f)
-        {
-            playerSprite.flipX = false;
-            weaponHilt.localPosition = new Vector2(-0.19f, weaponHilt.localPosition.y);
-            weaponSprite.flipX = false;
-        }
-        else
-        {
-            playerSprite.flipX = true;
-            weaponHilt.localPosition = new Vector2(0.19f, weaponHilt.localPosition.y);
-            weaponSprite.flipX = true;
-        }
 
 
-        //////////////////////////////////////////////////////
-        // Charecter Movement
-        if (rolling == false)
-        {
-            if (Input.GetKey("d"))
+            reticlePos.position = getMouseWorldPosition();
+
+            avgBetweenPlyAndReticle.localPosition = Vector3.ClampMagnitude((reticlePos.localPosition), avgDiffMax);
+
+            reticlePosRelativeToHilt = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - weaponHilt.transform.position;
+            weaponHilt.localRotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x));
+
+            if (Mathf.Sign(Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x)) > 0)
             {
-                velocity.x += Time.deltaTime * acceleration;
+                weaponSprite.sortingOrder = -1;
             }
-            if (Input.GetKey("a"))
+            else
             {
-                velocity.x += Time.deltaTime * -acceleration;
-            }
-            if (Input.GetKey("w"))
-            {
-                velocity.y += Time.deltaTime * acceleration;
-            }
-            if (Input.GetKey("s"))
-            {
-                velocity.y += Time.deltaTime * -acceleration;
+                weaponSprite.sortingOrder = 1;
             }
 
-            if (!Input.GetKey("d") && velocity.x > 0f)
+            if (Mathf.Abs(Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x)) < 90f)
             {
-                velocity.x -= Time.deltaTime * acceleration;
-                velocity.x = Mathf.Clamp(velocity.x, 0f, veloictyCap);
+                playerSprite.flipX = false;
+                weaponHilt.localPosition = new Vector2(-0.19f, weaponHilt.localPosition.y);
+                weaponSprite.flipX = false;
             }
-            if (!Input.GetKey("a") && velocity.x < 0f)
+            else
             {
-                velocity.x += Time.deltaTime * acceleration;
-                velocity.x = Mathf.Clamp(velocity.x, -veloictyCap, 0f);
-            }
-            if (!Input.GetKey("w") && velocity.y > 0f)
-            {
-                velocity.y -= Time.deltaTime * acceleration;
-                velocity.y = Mathf.Clamp(velocity.y, 0f, veloictyCap);
-            }
-            if (!Input.GetKey("s") && velocity.y < 0f)
-            {
-                velocity.y += Time.deltaTime * acceleration;
-                velocity.y = Mathf.Clamp(velocity.y, -veloictyCap, 0f);
+                playerSprite.flipX = true;
+                weaponHilt.localPosition = new Vector2(0.19f, weaponHilt.localPosition.y);
+                weaponSprite.flipX = true;
             }
 
-            velocity.x = Mathf.Clamp(velocity.x, -veloictyCap, veloictyCap);
-            velocity.y = Mathf.Clamp(velocity.y, -veloictyCap, veloictyCap);
 
-            playerRB.velocity = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.y), veloictyCap);
-        }
-
-
-        //////////////////////////////////////////////////////
-        // Recharging Mana
-        if ((manaCurrent < manaMax) && !(Input.GetMouseButton(0)))
-        {
-            timeSinceLastManaUpdate += Time.deltaTime;
-
-            if (timeSinceLastManaUpdate >= manaTimeDelta)
+            //////////////////////////////////////////////////////
+            // Charecter Movement
+            if (rolling == false)
             {
-                //Debug.Log("Recharging");
-                manaCurrent += 1;
+                if (Input.GetKey("d"))
+                {
+                    velocity.x += Time.deltaTime * acceleration;
+                }
+                if (Input.GetKey("a"))
+                {
+                    velocity.x += Time.deltaTime * -acceleration;
+                }
+                if (Input.GetKey("w"))
+                {
+                    velocity.y += Time.deltaTime * acceleration;
+                }
+                if (Input.GetKey("s"))
+                {
+                    velocity.y += Time.deltaTime * -acceleration;
+                }
+
+                if (!Input.GetKey("d") && velocity.x > 0f)
+                {
+                    velocity.x -= Time.deltaTime * acceleration;
+                    velocity.x = Mathf.Clamp(velocity.x, 0f, veloictyCap);
+                }
+                if (!Input.GetKey("a") && velocity.x < 0f)
+                {
+                    velocity.x += Time.deltaTime * acceleration;
+                    velocity.x = Mathf.Clamp(velocity.x, -veloictyCap, 0f);
+                }
+                if (!Input.GetKey("w") && velocity.y > 0f)
+                {
+                    velocity.y -= Time.deltaTime * acceleration;
+                    velocity.y = Mathf.Clamp(velocity.y, 0f, veloictyCap);
+                }
+                if (!Input.GetKey("s") && velocity.y < 0f)
+                {
+                    velocity.y += Time.deltaTime * acceleration;
+                    velocity.y = Mathf.Clamp(velocity.y, -veloictyCap, 0f);
+                }
+
+                velocity.x = Mathf.Clamp(velocity.x, -veloictyCap, veloictyCap);
+                velocity.y = Mathf.Clamp(velocity.y, -veloictyCap, veloictyCap);
+
+                playerRB.velocity = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.y), veloictyCap);
+            }
+
+
+            //////////////////////////////////////////////////////
+            // Recharging Mana
+            if ((manaCurrent < manaMax) && !(Input.GetMouseButton(0)))
+            {
+                timeSinceLastManaUpdate += Time.deltaTime;
+
+                if (timeSinceLastManaUpdate >= manaTimeDelta)
+                {
+                    //Debug.Log("Recharging");
+                    manaCurrent += 1;
+                    manaBar.SetMana(manaCurrent);
+                    timeSinceLastManaUpdate = 0f;
+
+                }
+            }
+
+
+            //////////////////////////////////////////////////////
+            // Shooting Logic
+            if ((Input.GetMouseButton(0)) && (rolling == false) && (canShoot == true) && (manaCurrent > 0))
+            {
+                GameObject bullet = (GameObject)Instantiate(shotPrefab);
+                Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), playerBoundaryCollider);
+
+                manaCurrent -= 1;
                 manaBar.SetMana(manaCurrent);
-                timeSinceLastManaUpdate = 0f;
 
+                canShoot = false;
+                StartCoroutine(shootingTimer(shotTimeDelta));
             }
-        }
 
-
-        //////////////////////////////////////////////////////
-        // Shooting Logic
-        if ((Input.GetMouseButton(0)) && (rolling == false) && (canShoot == true) && (manaCurrent > 0))
-        {
-            GameObject bullet = (GameObject)Instantiate(shotPrefab);
-            Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), playerBoundaryCollider);
-
-            manaCurrent -= 1;
-            manaBar.SetMana(manaCurrent);
-
-            canShoot = false;
-            StartCoroutine(shootingTimer(shotTimeDelta));
-        }
-
-        //////////////////////////////////////////////////////
-        // Player Rolling
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerAnime.ResetTrigger("Idle");
-            playerAnime.ResetTrigger("Running");
-
-            rolling = true; 
-            playerAnime.SetTrigger("Roll");
-            StartCoroutine(rollingTimer(rollTime));
-
-            if (!(playerRB.velocity.magnitude > runningSpeed))
+            //////////////////////////////////////////////////////
+            // Player Rolling
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                playerRB.velocity = (rollingVelocity * reticlePosRelativeToHilt.normalized);
-            }
-            else
-            {
-                playerRB.velocity = (rollingVelocity * new Vector2(playerRB.velocity.x, playerRB.velocity.y).normalized);
-            }
-        }
+                //playerAnime.ResetTrigger("Idle");
+                //playerAnime.ResetTrigger("Running");
 
-        //////////////////////////////////////////////////////
-        // Player Running Animation
-        if (rolling == false)
-        {
-            if (playerRB.velocity.magnitude > runningSpeed)
-            {
-                playerAnime.ResetTrigger("Idle");
-                playerAnime.SetTrigger("Running");
+                rolling = true;
+                //playerAnime.SetBool("Roll", true);
+                StartCoroutine(rollingTimer(rollTime));
+
+                if (!(playerRB.velocity.magnitude > runningSpeed))
+                {
+                    playerRB.velocity = (rollingVelocity * reticlePosRelativeToHilt.normalized);
+                }
+                else
+                {
+                    playerRB.velocity = (rollingVelocity * new Vector2(playerRB.velocity.x, playerRB.velocity.y).normalized);
+                }
             }
-            else
+            if (rolling == true)
             {
-                playerAnime.ResetTrigger("Running");
-                playerAnime.SetTrigger("Idle");
+                playerAnime.gameObject.transform.rotation = Quaternion.Euler(rollingAngluarVelocity * Time.deltaTime + playerAnime.gameObject.transform.rotation.eulerAngles);
             }
+
+            //////////////////////////////////////////////////////
+            // Player Running Animation
+            playerAnime.SetFloat("Movement Magnitude", playerRB.velocity.magnitude);
         }
     }
 
@@ -235,6 +234,8 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         rolling = false;
+        playerAnime.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        //playerAnime.SetBool("Roll", false);
     }
 
     IEnumerator shootingTimer(float waitTime)
