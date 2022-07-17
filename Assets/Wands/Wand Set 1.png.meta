@@ -1,31 +1,25 @@
 fileFormatVersion: 2
-guid: 2f50dc51893d75841896837e7954e074
+guid: 3fa009500008a4646bfe4143c288f4ee
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6628498196216578731
-    second: Hurt Sprites_0
+      213: 371734867567421773
+    second: Wand Set 1_0
   - first:
-      213: 4224200918627024862
-    second: Hurt Sprites_1
+      213: -2145701470261681926
+    second: Wand Set 1_1
   - first:
-      213: -2357813820657542108
-    second: Hurt Sprites_2
+      213: 2727341253948387676
+    second: Wand Set 1_2
   - first:
-      213: 6327572827794340522
-    second: Hurt Sprites_3
+      213: 1674956012212383505
+    second: Wand Set 1_3
   - first:
-      213: 2125197204514794357
-    second: Hurt Sprites_4
+      213: -275813343953364525
+    second: Wand Set 1_4
   - first:
-      213: 7730852023165881147
-    second: Hurt Sprites_5
-  - first:
-      213: 2981905184965349182
-    second: Hurt Sprites_6
-  - first:
-      213: 5339799889871952346
-    second: Hurt Sprites_7
+      213: 6159129509143387596
+    second: Wand Set 1_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -127,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hurt Sprites_0
+      name: Wand Set 1_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 5
-        width: 11
-        height: 18
+        x: 3
+        y: 1
+        width: 8
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,20 +135,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55d71348208d204a0800000000000000
-      internalID: -6628498196216578731
+      spriteID: d49abfb74eaa82500800000000000000
+      internalID: 371734867567421773
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hurt Sprites_1
+      name: Wand Set 1_1
       rect:
         serializedVersion: 2
-        x: 23
-        y: 5
-        width: 11
-        height: 14
+        x: 12
+        y: 1
+        width: 7
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,19 +156,40 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: edf74aeca506f9a30800000000000000
-      internalID: 4224200918627024862
+      spriteID: af0e40791efe832e0800000000000000
+      internalID: -2145701470261681926
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hurt Sprites_2
+      name: Wand Set 1_2
       rect:
         serializedVersion: 2
-        x: 39
-        y: 5
-        width: 11
+        x: 22
+        y: 1
+        width: 5
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c51bcde9b6679d520800000000000000
+      internalID: 2727341253948387676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wand Set 1_3
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 1
+        width: 7
         height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -183,39 +198,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42c533582dc574fd0800000000000000
-      internalID: -2357813820657542108
+      spriteID: 11fe25a6e93ae3710800000000000000
+      internalID: 1674956012212383505
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hurt Sprites_3
+      name: Wand Set 1_4
       rect:
         serializedVersion: 2
-        x: 55
-        y: 5
-        width: 11
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: aaa781346fd00d750800000000000000
-      internalID: 6327572827794340522
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hurt Sprites_4
-      rect:
-        serializedVersion: 2
-        x: 71
-        y: 6
+        x: 40
+        y: 1
         width: 11
         height: 20
       alignment: 0
@@ -225,20 +219,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57be1c409973e7d10800000000000000
-      internalID: 2125197204514794357
+      spriteID: 3d9d859993d1c2cf0800000000000000
+      internalID: -275813343953364525
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hurt Sprites_5
+      name: Wand Set 1_5
       rect:
         serializedVersion: 2
-        x: 85
-        y: 7
-        width: 14
-        height: 21
+        x: 53
+        y: 1
+        width: 5
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,50 +240,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b3b89eb84f0894b60800000000000000
-      internalID: 7730852023165881147
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hurt Sprites_6
-      rect:
-        serializedVersion: 2
-        x: 102
-        y: 5
-        width: 12
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e3f41c787fad16920800000000000000
-      internalID: 2981905184965349182
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hurt Sprites_7
-      rect:
-        serializedVersion: 2
-        x: 119
-        y: 5
-        width: 11
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ad9dc7755b7ca1a40800000000000000
-      internalID: 5339799889871952346
+      spriteID: ccd1e16f7af997550800000000000000
+      internalID: 6159129509143387596
       vertices: []
       indices: 
       edges: []

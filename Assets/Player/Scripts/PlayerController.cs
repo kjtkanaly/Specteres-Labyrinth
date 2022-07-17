@@ -194,7 +194,8 @@ public class PlayerController : MonoBehaviour
                 //playerAnime.ResetTrigger("Running");
 
                 rolling = true;
-                //playerAnime.SetBool("Roll", true);
+                playerAnime.SetBool("Roll", true);
+                weaponSprite.color = new Color(weaponSprite.color.r, weaponSprite.color.g, weaponSprite.color.b, 0);
                 StartCoroutine(rollingTimer(rollTime));
 
                 if (!(playerRB.velocity.magnitude > runningSpeed))
@@ -206,10 +207,20 @@ public class PlayerController : MonoBehaviour
                     playerRB.velocity = (rollingVelocity * new Vector2(playerRB.velocity.x, playerRB.velocity.y).normalized);
                 }
             }
+            /*
             if (rolling == true)
             {
-                playerAnime.gameObject.transform.rotation = Quaternion.Euler(rollingAngluarVelocity * Time.deltaTime + playerAnime.gameObject.transform.rotation.eulerAngles);
+                if (Mathf.Sign(playerRB.velocity.x) == -1)
+                {
+                    playerAnime.gameObject.transform.rotation = Quaternion.Euler(rollingAngluarVelocity * Time.deltaTime + playerAnime.gameObject.transform.rotation.eulerAngles);
+                }
+                else
+                {
+                    playerAnime.gameObject.transform.rotation = Quaternion.Euler(-rollingAngluarVelocity * Time.deltaTime + playerAnime.gameObject.transform.rotation.eulerAngles);
+                }
+                
             }
+            */
 
             //////////////////////////////////////////////////////
             // Player Running Animation
@@ -234,7 +245,9 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         rolling = false;
-        playerAnime.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        playerAnime.SetBool("Roll", false);
+        weaponSprite.color = new Color(weaponSprite.color.r, weaponSprite.color.g, weaponSprite.color.b, 1);
+        //playerAnime.gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         //playerAnime.SetBool("Roll", false);
     }
 

@@ -137,7 +137,6 @@ public class EnemyOneController : MonoBehaviour
 
             if (directionToPlayer.magnitude <= lungeRadius)
             {
-                Debug.Log(directionToPlayer.magnitude);
                 status = AIMode.attacking;
 
                 EnemyRB.velocity = EnemyRB.velocity.normalized * lungeSpeed;
@@ -175,7 +174,7 @@ public class EnemyOneController : MonoBehaviour
 
             if ((playerIsWithinRange) != null && (status != AIMode.attacking))
             {
-                lineOfSightWithPlayer = Physics2D.Linecast((Vector2)(this.transform.position), (Vector2)(playerIsWithinRange.transform.position), ~enemyLayerMask);
+                lineOfSightWithPlayer = Physics2D.Linecast((Vector2)(this.transform.position), (Vector2)(playerIsWithinRange.transform.position), enemyLayerMask);
 
                 if (lineOfSightWithPlayer.transform.gameObject == Player)
                 {

@@ -196,7 +196,7 @@ MonoBehaviour:
     m_Bits: 64
   enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
   lungeDamage: 1
   lungeSpeed: 10
   lungeRadius: 6

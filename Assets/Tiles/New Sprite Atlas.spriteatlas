@@ -44,12 +44,20 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 21d7fdbbae412134392517e6df6756b2, type: 3}
-    totalSpriteSurfaceArea: 26112
+    totalSpriteSurfaceArea: 32256
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: e975bf90dfa5ec84580b20f6db75651b, type: 3}
+  - {fileID: 21300000, guid: e2885cf51dd63e34d91730e5d58eff43, type: 3}
+  - {fileID: 7270303750508923730, guid: 31aaf908ad25f664bad2e9ce83d5e4cc, type: 3}
+  - {fileID: -5416187343913231278, guid: 31aaf908ad25f664bad2e9ce83d5e4cc, type: 3}
+  - {fileID: -3593990056531506454, guid: 31aaf908ad25f664bad2e9ce83d5e4cc, type: 3}
+  - {fileID: 21300000, guid: 3e5f96889b7fbf8429ed765141cdb8d2, type: 3}
+  - {fileID: 6901609106819151672, guid: d46eb7190082f22409e7f185428e024b, type: 3}
+  - {fileID: -6535264680138029521, guid: d46eb7190082f22409e7f185428e024b, type: 3}
   - {fileID: -5908182510162382659, guid: 7fe4e85a3276fe3479fc23350355fb61, type: 3}
   - {fileID: 2140842894146505812, guid: 7fe4e85a3276fe3479fc23350355fb61, type: 3}
   - {fileID: 713163285030852893, guid: 7fe4e85a3276fe3479fc23350355fb61, type: 3}
@@ -60,6 +68,14 @@ SpriteAtlas:
   - {fileID: -5321348085281630725, guid: 7fe4e85a3276fe3479fc23350355fb61, type: 3}
   - {fileID: -1747295740152761478, guid: 7fe4e85a3276fe3479fc23350355fb61, type: 3}
   - {fileID: -5856639455263703340, guid: 7fe4e85a3276fe3479fc23350355fb61, type: 3}
+  - {fileID: 8813388069999582564, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: -2299854438439939197, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: 6719169754601135636, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: -5643105228771564274, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: 2747245577423805547, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: -3425236469726524370, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: 1714696809508670639, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
+  - {fileID: -2793295684867730318, guid: 102f4a6ccdff1d848a3ba495a083bbbd, type: 3}
   - {fileID: -1365570959514419066, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
   - {fileID: -1578639742908642110, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
   - {fileID: 879817972331563681, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
@@ -152,7 +168,23 @@ SpriteAtlas:
   - {fileID: -4792148961389258768, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
   - {fileID: -7140895418734123555, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
   - {fileID: -1534428748399128642, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
+  - {fileID: 340238264954527428, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 8410932953592496199, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -878492405450880504, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 2847873161173907951, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 4192726914088386272, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -9145712971646019251, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 3790471376924324723, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -3392365132414931624, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Blue Floor 2
+  - Floor Tiles 2
+  - Floor TIles_1
+  - Floor TIles_0
+  - Floor TIles_2
+  - Blue Floor
+  - Brown Floor_0
+  - Brown Floor_1
   - 0x72_DungeonTilesetII_v1.4_2
   - 0x72_DungeonTilesetII_v1.4_3
   - 0x72_DungeonTilesetII_v1.4_0
@@ -163,6 +195,14 @@ SpriteAtlas:
   - 0x72_DungeonTilesetII_v1.4_5
   - 0x72_DungeonTilesetII_v1.4_8
   - 0x72_DungeonTilesetII_v1.4_9
+  - Sprite-0003_3
+  - Sprite-0003_2
+  - Sprite-0003_1
+  - Sprite-0003_0
+  - Sprite-0003_7
+  - Sprite-0003_6
+  - Sprite-0003_5
+  - Sprite-0003_4
   - 0x72_DungeonTilesetII_v1.4_20
   - 0x72_DungeonTilesetII_v1.4_21
   - 0x72_DungeonTilesetII_v1.4_91
@@ -255,6 +295,14 @@ SpriteAtlas:
   - 0x72_DungeonTilesetII_v1.4_83
   - 0x72_DungeonTilesetII_v1.4_80
   - 0x72_DungeonTilesetII_v1.4_81
+  - Brown Walls_8
+  - Brown Walls_6
+  - Brown Walls_5
+  - Brown Walls_4
+  - Brown Walls_3
+  - Brown Walls_2
+  - Brown Walls_1
+  - Brown Walls_0
   m_RenderDataMap: {}
   m_Tag: New Sprite Atlas
   m_IsVariant: 0
