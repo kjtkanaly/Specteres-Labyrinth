@@ -66,13 +66,15 @@ public class LevelGeneration : MonoBehaviour
 
     public Tilemap FloorMap, WallMap, TopLayerWallMap;
     public RuleTile wallTile;
-    public Tile markerTile, floorTile, ladderTile;
+    public Tile markerTile, floorTile, ladderTile, emptySpaceTile;
     public LevelTile wallBtmMidleTile, wallBtmLeftTile, wallBtmRightTile, wallBtmLeftCornner, wallBtmRightCornner;
 
     // A* Parameters
 
     public void Start()
     {
+        FillInEmptySpaceTiles(WallMap, emptySpaceTile, DungeonDim + new Vector2Int(20, 20));
+
         var Root = new List<Room>();
         Root.Add(new Room(-DungeonDim / 2, DungeonDim / 2, RoomType.Generic, null, 0, -1, false, false));
         Tree.Add(Root);
@@ -130,6 +132,17 @@ public class LevelGeneration : MonoBehaviour
             if (Tree[Tree.Count - 1][i] != startingRoom)
             {
                 SpawnEnemies(Tree[Tree.Count - 1][i].btmLeftTile, Tree[Tree.Count - 1][i].topRightTile, Enemy);
+            }
+        }
+    }
+
+    public void FillInEmptySpaceTiles(Tilemap Map, Tile EmptySpaceTile, Vector2Int DungeonDim)
+    {
+        for (int row = -DungeonDim.x/2; row < DungeonDim.x/2; row++)
+        {
+            for (int col = -DungeonDim.y/2; col < DungeonDim.y/2; col++)
+            {
+                Map.SetTile(new Vector3Int(row, col, 0), EmptySpaceTile);
             }
         }
     }

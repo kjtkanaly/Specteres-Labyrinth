@@ -1929,8 +1929,9 @@ MonoBehaviour:
   TopLayerWallMap: {fileID: 971405792}
   wallTile: {fileID: 11400000, guid: cf5e10f968162d94bac55c3f52121e1e, type: 2}
   markerTile: {fileID: 0}
-  floorTile: {fileID: 11400000, guid: d04ab589834bd06458c094ab769c0380, type: 2}
+  floorTile: {fileID: 11400000, guid: 3029b4da690ce7148a18a55c0d8d0299, type: 2}
   ladderTile: {fileID: 11400000, guid: f307db6bac0295a44ba19883691afe20, type: 2}
+  emptySpaceTile: {fileID: 11400000, guid: 7fb5a4bcbae50de4abc1598c3854770e, type: 2}
   wallBtmMidleTile: {fileID: 0}
   wallBtmLeftTile: {fileID: 0}
   wallBtmRightTile: {fileID: 0}
