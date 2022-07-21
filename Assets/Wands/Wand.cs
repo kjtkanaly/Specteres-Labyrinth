@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wand : MonoBehaviour
 {
-	
+
 	public float castDelay;   	// Seconds between spell casts
 	public float rechargeTime;	// Seconds between restarting spell chain
 	public float castSpread;		// Limit on projectile spread, degrees
