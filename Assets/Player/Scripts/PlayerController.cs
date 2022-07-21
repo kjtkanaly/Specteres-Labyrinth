@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform reticlePos;
 
     // Weapon Parameters
+	public WandLogic wandController;
     [SerializeField] private Transform weaponHilt;
     [SerializeField] private SpriteRenderer weaponSprite;
     [SerializeField] private GameObject shotPrefab;
@@ -37,10 +38,10 @@ public class PlayerController : MonoBehaviour
     // UI Parameters
     public ManaBarScript manaBar;
     public HealthBarScript healthBar;
-    [SerializeField] private int manaMax = 100;
-    [SerializeField] private int manaCurrent = 100;
-    [SerializeField] private int healthMax = 10;
-    [SerializeField] public int healthCurrent = 10;
+    public int manaMax = 100;
+    public int manaCurrent = 100;
+    public int healthMax = 10;
+    public int healthCurrent = 10;
 
     // Player Defence/I Frame Parameters
     public bool canTakeDamage = true;
@@ -176,6 +177,9 @@ public class PlayerController : MonoBehaviour
             // Shooting Logic
             if ((Input.GetMouseButton(0)) && (rolling == false) && (canShoot == true) && (manaCurrent > 0))
             {
+				WandController.playerIsCasting = true;
+				
+				/*
                 GameObject bullet = (GameObject)Instantiate(shotPrefab);
                 Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), playerBoundaryCollider);
 
@@ -184,7 +188,13 @@ public class PlayerController : MonoBehaviour
 
                 canShoot = false;
                 StartCoroutine(shootingTimer(shotTimeDelta));
+				*/
             }
+			if ((WandController.playerIsCasting == true) && (!Input.GetMouseButton(0)))
+			{
+				wandController.playerIsCasting = false;
+			}
+			
 
             //////////////////////////////////////////////////////
             // Player Rolling
@@ -207,20 +217,6 @@ public class PlayerController : MonoBehaviour
                     playerRB.velocity = (rollingVelocity * new Vector2(playerRB.velocity.x, playerRB.velocity.y).normalized);
                 }
             }
-            /*
-            if (rolling == true)
-            {
-                if (Mathf.Sign(playerRB.velocity.x) == -1)
-                {
-                    playerAnime.gameObject.transform.rotation = Quaternion.Euler(rollingAngluarVelocity * Time.deltaTime + playerAnime.gameObject.transform.rotation.eulerAngles);
-                }
-                else
-                {
-                    playerAnime.gameObject.transform.rotation = Quaternion.Euler(-rollingAngluarVelocity * Time.deltaTime + playerAnime.gameObject.transform.rotation.eulerAngles);
-                }
-                
-            }
-            */
 
             //////////////////////////////////////////////////////
             // Player Running Animation
