@@ -2,29 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileSpellMovementScript : MonoBehaviour
+public class ProjectileSpell : MonoBehaviour
 {
     public Rigidbody2D RB;
-    public GameObject MC, Reticle, Weapon;
-    private Animator Anime;
+    public GameObject Weapon;
 
-    private Vector2 reticlePosRelativeToHilt;
-    public float projectileSpeed;
+    public Vector2 reticlePosRelativeToHilt;
+    public Vector2 projectileVelocity;
 
+    private void FixedUpdate()
+    {
+        RB.velocity = projectileVelocity;
+        this.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x));
+    }
 
     private void Awake()
     {
-		// Grabbing 
-        MC = GameObject.FindGameObjectWithTag("Player");
+        // Grabbing 
         Weapon = GameObject.FindGameObjectWithTag("Weapon");
-
-        reticlePosRelativeToHilt = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Weapon.transform.position;
 
         this.transform.SetParent(Weapon.transform);
         this.transform.localPosition = new Vector2(0f, 0f);
 
-        RB.velocity = projectileSpeed * (reticlePosRelativeToHilt).normalized;
-        this.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x));
+        Debug.Log(projectileVelocity);
 
         this.transform.SetParent(null);
     }
@@ -34,6 +34,7 @@ public class ProjectileSpellMovementScript : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    /*
     public static Vector3 getMouseWorldPosition()
     {
         Camera worldCamera = Camera.main;
@@ -42,5 +43,5 @@ public class ProjectileSpellMovementScript : MonoBehaviour
         vec.z = 0f;
         return vec;
     }
-
+    */
 }

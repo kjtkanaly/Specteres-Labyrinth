@@ -15,7 +15,6 @@ public class LadderController : MonoBehaviour
     [SerializeField] private float frameTime = 1 / 30f;
     [SerializeField] private float faddingRate = 0.05f;
     private float rateTowardsHoleCenter = 0.1f;
-    private bool leaveCurrentRoom = false;
     private bool fallingAnimation = false;
     private bool loadingIntoNewRoom = false;
 

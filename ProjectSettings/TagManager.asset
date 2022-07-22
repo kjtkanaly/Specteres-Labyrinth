@@ -16,6 +16,7 @@ TagManager:
   - Player Projectile
   - Game Object
   - Enemy
+  - Mana Bar
   layers:
   - Default
   - TransparentFX

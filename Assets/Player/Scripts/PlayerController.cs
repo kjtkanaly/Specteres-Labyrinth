@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
             // Shooting Logic
             if ((Input.GetMouseButton(0)) && (rolling == false) && (canShoot == true) && (manaCurrent > 0))
             {
-				WandController.playerIsCasting = true;
+                wandController.playerIsCasting = true;
 				
 				/*
                 GameObject bullet = (GameObject)Instantiate(shotPrefab);
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(shootingTimer(shotTimeDelta));
 				*/
             }
-			if ((WandController.playerIsCasting == true) && (!Input.GetMouseButton(0)))
+			if ((wandController.playerIsCasting == true) && (!Input.GetMouseButton(0)))
 			{
 				wandController.playerIsCasting = false;
 			}

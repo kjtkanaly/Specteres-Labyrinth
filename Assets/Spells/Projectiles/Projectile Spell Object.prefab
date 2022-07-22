@@ -9,8 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5086304569935282563}
-  - component: {fileID: 799887723716611729}
   - component: {fileID: 6183517043700332889}
+  - component: {fileID: 3986888491212573824}
+  - component: {fileID: 84127118646417205}
+  - component: {fileID: 5148121657655002708}
   m_Layer: 0
   m_Name: Projectile Spell Object
   m_TagString: Player Projectile
@@ -33,24 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &799887723716611729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6461749141419550961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66de9430d7dc8844fb6c92f0156f184c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RB: {fileID: 6183517043700332889}
-  MC: {fileID: 0}
-  Reticle: {fileID: 0}
-  Weapon: {fileID: 0}
-  bulletSpeed: 40
-  bulletHitForce: 20
 --- !u!50 &6183517043700332889
 Rigidbody2D:
   serializedVersion: 4
@@ -72,6 +56,56 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!70 &3986888491212573824
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6461749141419550961}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.25, y: 0}
+  m_Size: {x: 0.5, y: 0.2}
+  m_Direction: 1
+--- !u!114 &84127118646417205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6461749141419550961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4cf3611b79ac243a5a17d19bf3159a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellPreFab: {fileID: 6461749141419550961}
+  manaCost: 1
+  damage: 1
+  castDelay: -0.4
+  speed: 40
+  velocity: {x: 0, y: 0}
+--- !u!114 &5148121657655002708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6461749141419550961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdb2c23d55c456544bcdc30dbe76468f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RB: {fileID: 6183517043700332889}
+  Weapon: {fileID: 0}
+  reticlePosRelativeToHilt: {x: 0, y: 0}
+  projectileVelocity: {x: 0, y: 0}
 --- !u!1 &7679875071840497907
 GameObject:
   m_ObjectHideFlags: 0
