@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(shootingTimer(shotTimeDelta));
 				*/
             }
-			if ((wandController.playerIsCasting == true) && (!Input.GetMouseButton(0)))
+			if ((Input.GetMouseButtonUp(0)) || (manaCurrent <= 0))
 			{
 				wandController.playerIsCasting = false;
 			}
