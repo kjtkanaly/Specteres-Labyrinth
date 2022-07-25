@@ -1,2 +1,2 @@
 # Specteres-Labyrinth
-### A rogue-lite game built in unity.
+### A rogue-like game built in unity.
