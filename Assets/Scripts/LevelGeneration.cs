@@ -68,6 +68,7 @@ public class LevelGeneration : MonoBehaviour
     public RuleTile wallTile;
     public Tile markerTile, floorTile, ladderTile, emptySpaceTile;
     public LevelTile wallBtmMidleTile, wallBtmLeftTile, wallBtmRightTile, wallBtmLeftCornner, wallBtmRightCornner;
+    public AStar.Node[,] nodeMap;
 
     // A* Parameters
 
@@ -135,7 +136,7 @@ public class LevelGeneration : MonoBehaviour
             }
         }
 
-        this.GetComponent<AStar>().SetupAStarNodes(FloorMap, WallMap);
+        nodeMap = this.GetComponent<AStar>().SetupAStarNodes(FloorMap, WallMap);
     }
 
     public void FillInEmptySpaceTiles(Tilemap Map, Tile EmptySpaceTile, Vector2Int DungeonDim)

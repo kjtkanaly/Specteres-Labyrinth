@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public LevelGeneration levelGen;
+    public Transform PlayerTrans;
     public AStar AstarController;
-    
+    public List<AStar.Node> PathToPlayer;
+    public Vector2Int thisPos;
+    public Vector2Int playerPos;
+
     [SerializeField] private float updatePathTimeDelay = 2f;
-    private Vector2Int currentNode;
 
     void Start()
     {
@@ -18,8 +22,9 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(updatePathTimeDelay);
 
-        currentNode = new Vector2Int(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y));
+        thisPos = new Vector2Int(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y));
+        playerPos = new Vector2Int(Mathf.RoundToInt(PlayerTrans.transform.position.x), Mathf.RoundToInt(PlayerTrans.transform.position.y));
 
-        AstarController.UpdatePath(currentNode, currentNode + new Vector2Int(5,5));
+        PathToPlayer = AstarController.FindPath(thisPos, thisPos + new Vector2Int(5,5), levelGen.nodeMap);
     }
 }
