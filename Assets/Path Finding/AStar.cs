@@ -25,7 +25,7 @@ public class AStar : MonoBehaviour
     public Vector2Int mapSize;
     public bool debugMode = false;
 
-    public Node[,] SetupAStarNodes(Tilemap FloorMap, Tilemap WallMap)
+    public void SetupAStarNodeMap(Tilemap FloorMap, Tilemap WallMap)
     {
         mapSize = ((Vector2Int)WallMap.size);
         nodeMap = initNodeMap(mapSize);
@@ -71,12 +71,10 @@ public class AStar : MonoBehaviour
                 }
             }
         }
-
-        return nodeMap;
     }
 
 
-    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos, Node[,] nodeMap)
+    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos)
     {
         List<Node> nodePath = new List<Node>();
         Node A = new Node(APos, true);
@@ -86,14 +84,15 @@ public class AStar : MonoBehaviour
 
         while(nodePath[nodePath.Count - 1] != B)
         {
-            Node nextNode = FindTheNextNode(nodePath[nodePath.Count - 1], B, nodeMap);
-            nodePath.Add(nextNode);
+            //Node nextNode = FindTheNextNode(nodePath[nodePath.Count - 1], B, nodeMap);
+            //nodePath.Add(nextNode);
+			nodePath.Add(FindTheNextNode(nodePath[nodePath.Count - 1], B));
         }
 
         return nodePath;
     }
 
-    public Node FindTheNextNode(Node A, Node B, Node[,] nodeMap)
+    public Node FindTheNextNode(Node A, Node B)
     {
         float currentMinF = Mathf.Infinity;
         Node nextNode = A;
@@ -102,16 +101,16 @@ public class AStar : MonoBehaviour
         {
             for (int col = A.Pos.x - 1; col <= A.Pos.x + 1; col++)
             {
-                if (((row != A.Pos.y) && (col != A.Pos.x)) || (nodeMap[row,col].walkable == true))
+                if (((row != A.Pos.y) && (col != A.Pos.x)) && (nodeMap[row,col].walkable == true))
                 {
                     float G = Mathf.Sqrt((A.Pos.y - row)^2 + (A.Pos.x - col)^2);
                     float H = Mathf.Sqrt((B.Pos.y - row)^2 + (B.Pos.x - col)^2);
                     float F = G + H;
 
-                    if (F < currentMinF)
+                    if ((F < currentMinF) && (nodeMap[row + A.Pos.y,col + A.Pos.x] != null))
                     {
                         currentMinF = F;
-                        nextNode = nodeMap[row,col];
+                        nextNode = nodeMap[row + A.Pos.y,col + A.Pos.x];
                     }
                 }
             }

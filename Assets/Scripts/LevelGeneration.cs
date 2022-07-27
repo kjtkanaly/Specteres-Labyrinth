@@ -136,7 +136,7 @@ public class LevelGeneration : MonoBehaviour
             }
         }
 
-        nodeMap = this.GetComponent<AStar>().SetupAStarNodes(FloorMap, WallMap);
+        this.GetComponent<AStar>().SetupAStarNodeMap(FloorMap, WallMap);
     }
 
     public void FillInEmptySpaceTiles(Tilemap Map, Tile EmptySpaceTile, Vector2Int DungeonDim)
