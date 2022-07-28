@@ -7,8 +7,13 @@ public class AStar : MonoBehaviour
 {
     public class Node
     {
-        public Vector2Int Pos;
-        public bool walkable;
+		public Vector2Int Pos;
+        public bool  walkable;
+		
+		public Node  previousNode;
+		public float gValue;
+		public float hValue;
+		public float fValue;
 
         // Create a class constructor for the Pathmap class
         public Node(Vector2Int PosValue, bool walkableTableValue)
@@ -19,10 +24,11 @@ public class AStar : MonoBehaviour
     }
 
     public Node[,] nodeMap;
-    //public List<Node> nodePath;
     public Tilemap FloorMap, WallMap, DebugMap;
-    public Tile notWalkableMarker, walkableMarker;
+    public Tile    notWalkableMarker, walkableMarker;
+	
     public Vector2Int mapSize;
+	
     public bool debugMode = false;
 
     public void SetupAStarNodeMap(Tilemap FloorMap, Tilemap WallMap)
@@ -76,21 +82,83 @@ public class AStar : MonoBehaviour
 
     public List<Node> FindPath(Vector2Int APos, Vector2Int BPos)
     {
-        List<Node> nodePath = new List<Node>();
-        Node A = new Node(APos, true);
-        Node B = new Node(BPos, true);
+        Node A = nodeMap[APos.y + mapSize.y/2, APos.x + mapSize.x/2];
+        Node B = nodeMap[APos.y + mapSize.y/2, APos.x + mapSize.x/2];
+		
+		List<Node> openNodes   = new List<Node>();
+		List<Node> closedNodes = new List<Node>();
+		List<Node> nodePath    = new List<Node>();
+		
+		float minFValue    = Mathf.Infinity;
+		bool  pathComplete = false;
 
-        nodePath.Add(A);
+        openNodes.Add(calcNodeValue(A, B));
+		
+		// Keep iterating through the Open Nodes till we find the path
+		while(pathComplete == false)
+		{
+			minFValue = findMinFvalue(openNodes);   // Finds the lowest value currently in the Open Node lists
+			
+			int numbOfOpenNodes = openNodes.count
+			// Iterate through the Open Node list
+			for (int openNodeCount = 0; openNodeCount < numbOfOpenNodes; openNodeCount++)
+			{
+				// Check if the current Open Node has the current lowest F value
+				if (openNodes[openNodeCount].Fvalue == minFValue)
+				{
+					// Iterate through the Open Node's neighbors
+					for (int row = openNodes[openNodeCount].Pos.y - 1; row <= openNodes[openNodeCount].Pos.y + 1; row++)
+					{
+						for (int col = openNodes[openNodeCount].Pos.x - 1; col <= openNodes[openNodeCount].Pos.x + 1; col++)
+						{
+							Node newNode = calcNodeValue(nodeMap[row + mapSize.y/2,col + mapSize.x/2], B);
+							openNodes.add(newNode);
+							
+							// Checking if the new open node is the goal node
+							if (newNode == B)
+							{
+								pathComplete = true;
+								nodePath.Add(newNode);
+							}
+						}
+					}	
 
-        while(nodePath[nodePath.Count - 1] != B)
-        {
-            //Node nextNode = FindTheNextNode(nodePath[nodePath.Count - 1], B, nodeMap);
-            //nodePath.Add(nextNode);
-			nodePath.Add(FindTheNextNode(nodePath[nodePath.Count - 1], B));
-        }
+				closedNodes.Add(openNodes[openNodeCount]);
+				openNodes.RemoveAt(openNodeCount);
+				
+				}
+			}
+		}		
+		
+		// Tracing back through the most effcient path
+		while (nodePath[count - 1] != A)
+		{
+			nodePath.add(nodePath[count - 1].previousNode);
+		}
+		nodePath.Reverse();
 
         return nodePath;
     }
+	
+	public Node calcNodeValue(A, B);
+	{
+		G = A.previousNode.Gvalue + Mathf.sqrt((A.Pos.x + A.previousNode.Pos.x)^2 + (A.Pos.y + A.previousNode.Pos.y)^2);
+		H = Mathf.sqrt((A.Pos.x + B.Pos.x)^2 + (A.Pos.y + B.Pos.y)^2);
+		F = G + H;
+	}
+	
+	public float findMinFvalue(List<Node> openNodes)
+	{
+		float minFValue = Mathf.Infinity;
+		
+		for (int openNodeCount = 0; openNodeCount < openNodes.count; openNodeCount++)
+		{
+			if (openNodes[openNodeCount].Fvalue < minFValue)
+			{
+				minFValue = openNodes[openNodeCount].Fvalue;
+			}
+		}
+	}
 
     public Node FindTheNextNode(Node A, Node B)
     {

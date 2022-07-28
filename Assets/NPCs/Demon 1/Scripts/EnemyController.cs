@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public LevelGeneration levelGen;
-    public Transform PlayerTrans;
-    public AStar AstarController;
+    public LevelGeneration LevelGen;
+    public Transform       PlayerTrans;
+    public AStar           AstarController;
+	
     public List<AStar.Node> PathToPlayer;
+	
     public Vector2Int thisPos;
     public Vector2Int playerPos;
 
