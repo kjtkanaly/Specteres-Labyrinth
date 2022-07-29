@@ -17,6 +17,9 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        PlayerTrans = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        AstarController = GameObject.FindGameObjectWithTag("Main Game").GetComponent<AStar>();
+
         StartCoroutine(callAstarPathUpdate(updatePathTimeDelay));
     }
 
@@ -31,9 +34,9 @@ public class EnemyController : MonoBehaviour
 		{
 			PathToPlayer = AstarController.FindPath(thisPos, thisPos + new Vector2Int(5,5));
 			
-			for (int listIndex = 0; listIndex < PathToPlayer.count - 1; listIndex++)
+			for (int listIndex = 0; listIndex < PathToPlayer.Count - 1; listIndex++)
 			{
-				Debug.DrawLine(new Vector3(PathToPlayer[listIndex].Pos.x, PathToPlayer[listIndex].Pos.y, 0), new Vector3(PathToPlayer[listIndex + 1].Pos.x, PathToPlayer[listIndex + 1].Pos.y, 0), Color.Red,
+				Debug.DrawLine(new Vector3(PathToPlayer[listIndex].Pos.x, PathToPlayer[listIndex].Pos.y, 0), new Vector3(PathToPlayer[listIndex + 1].Pos.x, PathToPlayer[listIndex + 1].Pos.y, 0), Color.red,
 											Mathf.Infinity, false);
 			}
 		}

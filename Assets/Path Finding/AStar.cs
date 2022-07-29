@@ -93,18 +93,29 @@ public class AStar : MonoBehaviour
 		bool  pathComplete = false;
 
         openNodes.Add(calcNodeValue(A, B));
-		
+
+        int debugCount = 0;
+
+        
 		// Keep iterating through the Open Nodes till we find the path
 		while(pathComplete == false)
 		{
+            debugCount += 1;
+
+            if (debugCount > 100)
+            {
+                return null;
+            }
+
 			minFValue = findMinFvalue(openNodes);   // Finds the lowest value currently in the Open Node lists
-			
-			int numbOfOpenNodes = openNodes.count
+            Debug.Log(minFValue);
+            /*
+            int numbOfOpenNodes = openNodes.Count;
 			// Iterate through the Open Node list
 			for (int openNodeCount = 0; openNodeCount < numbOfOpenNodes; openNodeCount++)
 			{
 				// Check if the current Open Node has the current lowest F value
-				if (openNodes[openNodeCount].Fvalue == minFValue)
+				if (openNodes[openNodeCount].fValue == minFValue)
 				{
 					// Iterate through the Open Node's neighbors
 					for (int row = openNodes[openNodeCount].Pos.y - 1; row <= openNodes[openNodeCount].Pos.y + 1; row++)
@@ -112,13 +123,16 @@ public class AStar : MonoBehaviour
 						for (int col = openNodes[openNodeCount].Pos.x - 1; col <= openNodes[openNodeCount].Pos.x + 1; col++)
 						{
 							Node newNode = calcNodeValue(nodeMap[row + mapSize.y/2,col + mapSize.x/2], B);
-							openNodes.add(newNode);
+                            newNode.previousNode = openNodes[openNodeCount];
+							openNodes.Add(newNode);
 							
 							// Checking if the new open node is the goal node
 							if (newNode == B)
 							{
 								pathComplete = true;
 								nodePath.Add(newNode);
+
+                                Debug.Log("Path Complete");
 							}
 						}
 					}	
@@ -128,36 +142,60 @@ public class AStar : MonoBehaviour
 				
 				}
 			}
-		}		
-		
-		// Tracing back through the most effcient path
-		while (nodePath[count - 1] != A)
+            */
+		}
+        /*
+        debugCount = 0;
+
+        if (debugCount > 100)
+        {
+            return null;
+        }
+
+        // Tracing back through the most effcient path
+        while (nodePath[nodePath.Count - 1] != A)
 		{
-			nodePath.add(nodePath[count - 1].previousNode);
+			nodePath.Add(nodePath[nodePath.Count - 1].previousNode);
 		}
 		nodePath.Reverse();
 
         return nodePath;
+        */
+
+        return null;
     }
 	
-	public Node calcNodeValue(A, B);
+	public Node calcNodeValue(Node A, Node B)
 	{
-		G = A.previousNode.Gvalue + Mathf.sqrt((A.Pos.x + A.previousNode.Pos.x)^2 + (A.Pos.y + A.previousNode.Pos.y)^2);
-		H = Mathf.sqrt((A.Pos.x + B.Pos.x)^2 + (A.Pos.y + B.Pos.y)^2);
-		F = G + H;
+        Node newNode = new Node(new Vector2Int(A.Pos.x, A.Pos.y), true);
+        if (A.previousNode != null)
+        {
+            newNode.gValue = A.previousNode.gValue + Mathf.Sqrt((A.Pos.x + A.previousNode.Pos.x) ^ 2 + (A.Pos.y + A.previousNode.Pos.y) ^ 2);
+        }
+        else
+        {
+            newNode.gValue = 0;
+        }
+
+		newNode.hValue = Mathf.Sqrt((A.Pos.x + B.Pos.x)^2 + (A.Pos.y + B.Pos.y)^2);
+		newNode.fValue = newNode.gValue + newNode.hValue;
+
+        return newNode;
 	}
 	
 	public float findMinFvalue(List<Node> openNodes)
 	{
 		float minFValue = Mathf.Infinity;
 		
-		for (int openNodeCount = 0; openNodeCount < openNodes.count; openNodeCount++)
+		for (int openNodeCount = 0; openNodeCount < openNodes.Count; openNodeCount++)
 		{
-			if (openNodes[openNodeCount].Fvalue < minFValue)
+			if (openNodes[openNodeCount].fValue < minFValue)
 			{
-				minFValue = openNodes[openNodeCount].Fvalue;
+				minFValue = openNodes[openNodeCount].fValue;
 			}
 		}
+
+        return minFValue;
 	}
 
     public Node FindTheNextNode(Node A, Node B)

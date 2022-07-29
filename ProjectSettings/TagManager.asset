@@ -17,6 +17,7 @@ TagManager:
   - Game Object
   - Enemy
   - Mana Bar
+  - Main Game
   layers:
   - Default
   - TransparentFX

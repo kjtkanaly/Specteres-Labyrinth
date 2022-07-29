@@ -2015,7 +2015,7 @@ GameObject:
   - component: {fileID: 981506590}
   m_Layer: 0
   m_Name: Main Game Object
-  m_TagString: Game Object
+  m_TagString: Main Game
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
