@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
     public LevelGeneration LevelGen;
     public Transform       PlayerTrans;
     public AStar           AstarController;
+	public Tilemap 		
 	
     public List<AStar.Node> PathToPlayer;
 	
@@ -17,8 +18,10 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
-        PlayerTrans = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        AstarController = GameObject.FindGameObjectWithTag("Main Game").GetComponent<AStar>();
+        PlayerTrans     = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        AstarController = this.GetComponent<AStar>();
+		
+		AstarController.FloorMap = 1;
 
         StartCoroutine(callAstarPathUpdate(updatePathTimeDelay));
     }
@@ -30,7 +33,7 @@ public class EnemyController : MonoBehaviour
         thisPos = new Vector2Int(Mathf.RoundToInt(this.transform.position.x), Mathf.RoundToInt(this.transform.position.y));
         playerPos = new Vector2Int(Mathf.RoundToInt(PlayerTrans.transform.position.x), Mathf.RoundToInt(PlayerTrans.transform.position.y));
 		
-		if (AstarController.nodeMap != null)
+		if (AstarController.FloorMap != null)
 		{
 			PathToPlayer = AstarController.FindPath(thisPos, thisPos + new Vector2Int(5,5));
 			

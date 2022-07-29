@@ -7,70 +7,181 @@ public class AStar : MonoBehaviour
 {
     public class Node
     {
-		public Vector2Int Pos;
+		// row:      Node row index
+		// col: 	 Node col index
+		// worldX:   Node X position
+		// worldY:   Node Y position
+		// walkable: Can an NPC walk on this node 
+		public int   row;
+		public int   col;
+		public int   worldX;
+		public int 	 worldY;
         public bool  walkable;
 		
+		/////////////////////////////////////
+		// Path Finding Parameters
+		// previousNode: The node back one in the path
+		// gValue: 		 The cost to get to the node
+		// hValue:  	 The cost to get to the target
+		// fValue: 		 The Node's wholistic cost
 		public Node  previousNode;
 		public float gValue;
 		public float hValue;
 		public float fValue;
 
         // Create a class constructor for the Pathmap class
-        public Node(Vector2Int PosValue, bool walkableTableValue)
+        public Node(int rowValue, int colValue, bool walkableTableValue)
         {
-            Pos = PosValue;
-            walkable = walkableTableValue;
+            row          = rowValue;
+			col 	     = colValue;
+            walkable     = walkableTableValue;
+			previousNode = null
+			gValue       = Mathf.Infinity;
+			hValue       = 0;
+			fValue       = 0;
         }
     }
-
+	
+	/////////////////////////////////////////////////////////////////////////
+	// Parameters
+	// nodeMap:           Node map that is the size of the loaded map
+	// 					  [row, col], nodeMap[1,2] = node in row 1 & col 2
+	// FloorMap:          Tile map that holds floor tiles
+	// WallMap:           Tile map that holds wall tiles
+	// DebugMap:          Tile map that is used for debugging
+	// notWalkableMarker: Debug Tile that indicates a node as "Unwalkable"
+	// walkableMarker: 	  Debug Tile that indicates a node as "Walkable"
     public Node[,] nodeMap;
     public Tilemap FloorMap, WallMap, DebugMap;
     public Tile    notWalkableMarker, walkableMarker;
 	
     public Vector2Int mapSize;
+    public bool       debugInitMode = false;
+	public bool       debugPathMode = false;
 	
-    public bool debugMode = false;
 
-    public void SetupAStarNodeMap(Tilemap FloorMap, Tilemap WallMap)
+    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos)
     {
-        mapSize = ((Vector2Int)WallMap.size);
-        nodeMap = initNodeMap(mapSize);
+		SetupAStarNodeMap(FloorMap);
+		
+        Node startingNode = nodeMap[APos.y + (mapSize.y/2), APos.x + (mapSize.x/2)];
+        Node endNode = nodeMap[APos.y + (mapSize.y/2), APos.x + (mapSize.x/2)];
+		
+		if (debugPathMode == true)
+		{
+			DrawBox(new Vector2(startingNode.pos.x - 0.5f, startingNode.pos.y - 0.5f), new Vector2(1f, 1f)): 
+			// ^--- This will prob be int plus float error
+		}
+		
+		List<Node> openNodes   = new List<Node>();
+		List<Node> closedNodes = new List<Node>();
+		List<Node> nodePath    = new List<Node>();
+		
+		// Initializing the starting node
+		startingNode.previousNode = null;
+		startingNode.gValue       = 0;
+		startingNode.hValue       = calcHValue(startingNode, endNode);
+		startingNode.fValue       = calcFValue(startingNode);
+        openNodes.Add(startingNode);
+		
+		// currentNode: The node currently being considered from the open list
+		Node currentNode;
+		Node neighborNode;
 
-        for (int row = -mapSize.y/2; row < mapSize.y/2; row++)
-        {
-            for(int col = -mapSize.x/2; col < mapSize.x/2; col++)
+		// Debug Value used to try and avoid infinte loops
+        int loopCount = 0;
+        
+		// Keep iterating through the Open Nodes till we find the path
+		while(openNodes.Count > 0)
+		{
+            loopCount += 1;
+
+            if (loopCount > 100)
             {
-                nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].Pos = new Vector2Int(row, col);
+				Debug.Log("Path could not be completed: Loop too Big, Ouchie");
+                return null;
+            }
+			
+			// Log the lowest F value from the current Open list
+			currentNode = getNodeWithLowestFValue(openNodes);   
+            Debug.Log(currentNode.fValue);
+			
+			if (currentNode == endNode)
+			{
+				return calculateFinalPath(currentNode);
+			}
+			
+			openNodes.Remove(currentNode);			
+			closedNodes.Add(currentNode);
+            
 
-                // Marking the non-Floor tiles as "not walkable"
+			// Iterate through the Node's touching neighbors, Pos.x = row value
+			for (int row = currentNode.Pos.x - 1; row <= currentNode.Pos.x + 1; row++)
+			{
+				// Iterate through the Node's touching neighbors, Pos.y = col value
+				for (int col = currentNode.Pos.y - 1; col <= currentNode.Pos.y + 1; col++)
+				{
+					neighborNode = nodeMap[row, col];
+					
+					if ((neighborNode.walkable == true) && !(closedNodes.Contains(neighborNode)))
+					{						
+						float tentativeGValue = calcGValue(neighborNode);
+						
+						if (tentativeGValue < neighborNode.gValue)
+						{	
+							nodeMap[row, col].gValue = tentativeGValue;
+					
+							neighborNode.previousNode = currentNode;
+							neighborNode.gValue 	  = tentativeGValue;
+							neighborNode.hValue       = calcHValue(neighborNode, endNode);
+							neighborNode.fValue       = calcFValue(neighborNode);
+							
+							openNodes.Add(neighborNode);
+
+						}
+					}
+				}
+			}	
+		}
+		
+		// If we ran out open nodes and no complete path
+        return null;
+    }
+	
+	
+	public void SetupAStarNodeMap(Tilemap FloorMap)
+    {
+        mapSize = ((Vector2Int)FloorMap.size);
+		
+        NodeMap = new Node[mapSize.y,mapSize.x];
+
+        for (int row = 0; row < mapSize.y; row++)
+        {
+            for (int col = 0; col < mapSize.x; col++)
+            {
+                NodeMap[row, col] = new Node(row, col, false);
+				nodeMap[row, col].row = row; // nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].Pos = new Vector2Int(row, col);
+				nodeMap[row, col].col = col;
+				nodeMap[row, col].worldY = row - (mapSize.y / 2);
+				nodeMap[row, col].worldX = col - (mapSize.x / 2);
+				
+				// Marking the non-Floor tiles as "not walkable"
                 if (FloorMap.GetTile(new Vector3Int(col, row, 0)) == null)
                 {
                     nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].walkable = false;
 
-                    if (debugMode == true)
+                    if (debugInitMode == true)
                     {
                         DebugMap.SetTile(new Vector3Int(col, row, 0), notWalkableMarker);
                     }
                     
                 }
-
-                // Marking the outer most floor tiles as "not walkable"
-                else if((FloorMap.GetTile(new Vector3Int(col - 1, row, 0)) == null) || (FloorMap.GetTile(new Vector3Int(col + 1, row, 0)) == null) ||
-                    (FloorMap.GetTile(new Vector3Int(col, row - 1, 0)) == null) || (FloorMap.GetTile(new Vector3Int(col, row + 1, 0)) == null))
-                {
-                    nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].walkable = false;
-
-                    if (debugMode == true)
-                    {
-                        DebugMap.SetTile(new Vector3Int(col, row, 0), notWalkableMarker);    
-                    }
-                }
-
+				
                 else
                 {
                     nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].walkable = true;
 
-                    if (debugMode == true)
+                    if (debugInitMode == true)
                     {
                         DebugMap.SetTile(new Vector3Int(col, row, 0), walkableMarker);
                     }
@@ -78,175 +189,100 @@ public class AStar : MonoBehaviour
             }
         }
     }
-
-
-    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos)
-    {
-        Node A = nodeMap[APos.y + mapSize.y/2, APos.x + mapSize.x/2];
-        Node B = nodeMap[APos.y + mapSize.y/2, APos.x + mapSize.x/2];
-		
-		List<Node> openNodes   = new List<Node>();
-		List<Node> closedNodes = new List<Node>();
-		List<Node> nodePath    = new List<Node>();
-		
-		float minFValue    = Mathf.Infinity;
-		bool  pathComplete = false;
-
-        openNodes.Add(calcNodeValue(A, B));
-
-        int debugCount = 0;
-
-        
-		// Keep iterating through the Open Nodes till we find the path
-		while(pathComplete == false)
+	
+	
+	public List<Node> calculateFinalPath(Node node)
+	{
+		List<Node> nodePath = new List<Node>();
+		// Tracing back through the most effcient path
+        while (node.previousNode != null)
 		{
-            debugCount += 1;
-
-            if (debugCount > 100)
-            {
-                return null;
-            }
-
-			minFValue = findMinFvalue(openNodes);   // Finds the lowest value currently in the Open Node lists
-            Debug.Log(minFValue);
-            /*
-            int numbOfOpenNodes = openNodes.Count;
-			// Iterate through the Open Node list
-			for (int openNodeCount = 0; openNodeCount < numbOfOpenNodes; openNodeCount++)
-			{
-				// Check if the current Open Node has the current lowest F value
-				if (openNodes[openNodeCount].fValue == minFValue)
-				{
-					// Iterate through the Open Node's neighbors
-					for (int row = openNodes[openNodeCount].Pos.y - 1; row <= openNodes[openNodeCount].Pos.y + 1; row++)
-					{
-						for (int col = openNodes[openNodeCount].Pos.x - 1; col <= openNodes[openNodeCount].Pos.x + 1; col++)
-						{
-							Node newNode = calcNodeValue(nodeMap[row + mapSize.y/2,col + mapSize.x/2], B);
-                            newNode.previousNode = openNodes[openNodeCount];
-							openNodes.Add(newNode);
-							
-							// Checking if the new open node is the goal node
-							if (newNode == B)
-							{
-								pathComplete = true;
-								nodePath.Add(newNode);
-
-                                Debug.Log("Path Complete");
-							}
-						}
-					}	
-
-				closedNodes.Add(openNodes[openNodeCount]);
-				openNodes.RemoveAt(openNodeCount);
-				
-				}
-			}
-            */
-		}
-        /*
-        debugCount = 0;
-
-        if (debugCount > 100)
-        {
-            return null;
-        }
-
-        // Tracing back through the most effcient path
-        while (nodePath[nodePath.Count - 1] != A)
-		{
-			nodePath.Add(nodePath[nodePath.Count - 1].previousNode);
+			nodePath.Add(node);
+			node = node.previousNode;
 		}
 		nodePath.Reverse();
 
         return nodePath;
-        */
-
-        return null;
-    }
+	}
 	
-	public Node calcNodeValue(Node A, Node B)
+	
+	public float calcGValue(Node A)
 	{
-        Node newNode = new Node(new Vector2Int(A.Pos.x, A.Pos.y), true);
+		float gValue;
         if (A.previousNode != null)
         {
-            newNode.gValue = A.previousNode.gValue + Mathf.Sqrt((A.Pos.x + A.previousNode.Pos.x) ^ 2 + (A.Pos.y + A.previousNode.Pos.y) ^ 2);
+            gValue = A.previousNode.gValue + Mathf.Sqrt((A.col + A.previousNode.col) ^ 2 + (A.row + A.previousNode.row) ^ 2);
         }
         else
         {
-            newNode.gValue = 0;
+            gValue = 0;
         }
-
-		newNode.hValue = Mathf.Sqrt((A.Pos.x + B.Pos.x)^2 + (A.Pos.y + B.Pos.y)^2);
-		newNode.fValue = newNode.gValue + newNode.hValue;
-
-        return newNode;
+		return gValue;
 	}
 	
-	public float findMinFvalue(List<Node> openNodes)
+	
+	public float calcHValue(Node A, Node B)
 	{
-		float minFValue = Mathf.Infinity;
+		float hValue = Mathf.Sqrt((A.col + B.col)^2 + (A.row + B.row)^2);
+		return hValue;
+	}
+	
+	
+	public float calcFValue(Node A)
+	{
+		float fValue = A.gValue + A.hValue;
+		return fValue;
+	}
+	
+	
+	public Node getNodeWithLowestFValue(List<Node> nodeList)
+	{
+		// Desired Node
+		Node desNode = nodeList[nodeList.Count - 1];
 		
-		for (int openNodeCount = 0; openNodeCount < openNodes.Count; openNodeCount++)
+		for (int listIndex = 0; listIndex < nodeList.Count; listIndex++)
 		{
-			if (openNodes[openNodeCount].fValue < minFValue)
+			if (nodeList[listIndex].fValue < desNode.fValue)
 			{
-				minFValue = openNodes[openNodeCount].fValue;
+				desNode = nodeList[listIndex];
 			}
 		}
 
-        return minFValue;
+        return desNode;
+	}
+	
+	
+	public void DrawBox(Vector2 origin, Vector2 size, Color color = Color.white, float duration = Mathf.Infinity, bool depthTest = true;)
+	{		
+		// Draw the left side
+		// Draw the top side
+		// Draw the right side
+		// Draw the bottom side
+		Debug.DrawLine(new Vector3(origin.x         , origin.y         , 0), Vector3(origin.x         , origin.y + size.y, 0), color, duration, depthTest):
+		Debug.DrawLine(new Vector3(origin.x         , origin.y + size.y, 0), Vector3(origin.x + size.x, origin.y + size.y, 0), color, duration, depthTest):
+		Debug.DrawLine(new Vector3(origin.x + size.x, origin.y + size.y, 0), Vector3(origin.x + size.x, origin.y         , 0), color, duration, depthTest):
+		Debug.DrawLine(new Vector3(origin.x + size.x, origin.y         , 0), Vector3(origin.x         , origin.y         , 0), color, duration, depthTest):
 	}
 
-    public Node FindTheNextNode(Node A, Node B)
-    {
-        float currentMinF = Mathf.Infinity;
-        Node nextNode = A;
-
-        for (int row = A.Pos.y - 1; row <= A.Pos.y + 1; row++)
-        {
-            for (int col = A.Pos.x - 1; col <= A.Pos.x + 1; col++)
-            {
-                if (((row != A.Pos.y) && (col != A.Pos.x)) && (nodeMap[row,col].walkable == true))
-                {
-                    float G = Mathf.Sqrt((A.Pos.y - row)^2 + (A.Pos.x - col)^2);
-                    float H = Mathf.Sqrt((B.Pos.y - row)^2 + (B.Pos.x - col)^2);
-                    float F = G + H;
-
-                    if ((F < currentMinF) && (nodeMap[row + A.Pos.y,col + A.Pos.x] != null))
-                    {
-                        currentMinF = F;
-                        nextNode = nodeMap[row + A.Pos.y,col + A.Pos.x];
-                    }
-                }
-            }
-        }
-
-        return nextNode;
-    }
-
-
-    public void findObjsNode(Vector2Int pos)
-    {
-
-    }
-
-
-    public Node[,] initNodeMap(Vector2Int mapSize)
-    {
-        Node[,] NodeMap = new Node[mapSize.y,mapSize.x];
-
-        for (int row = 0; row < mapSize.y; row++)
-        {
-            for (int col = 0; col < mapSize.x; col++)
-            {
-                NodeMap[row, col] = new Node(new Vector2Int(row,col), false);
-            }
-        }
-
-        return NodeMap;
-    }
-
-    
-
 }
+
+
+/*
+for (int row = -mapSize.y/2; row < mapSize.y/2; row++)
+        {
+            for(int col = -mapSize.x/2; col < mapSize.x/2; col++)
+            {
+				
+				
+                // Marking the outer most floor tiles as "not walkable"
+                else if((FloorMap.GetTile(new Vector3Int(col - 1, row, 0)) == null) || (FloorMap.GetTile(new Vector3Int(col + 1, row, 0)) == null) ||
+                    (FloorMap.GetTile(new Vector3Int(col, row - 1, 0)) == null) || (FloorMap.GetTile(new Vector3Int(col, row + 1, 0)) == null))
+                {
+                    nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].walkable = false;
+
+                    if (debugInitMode == true)
+                    {
+                        DebugMap.SetTile(new Vector3Int(col, row, 0), notWalkableMarker);    
+                    }
+                }				
+*/
