@@ -35,7 +35,7 @@ public class AStar : MonoBehaviour
             row          = rowValue;
 			col 	     = colValue;
             walkable     = walkableTableValue;
-			previousNode = null
+			previousNode = null;
 			gValue       = Mathf.Infinity;
 			hValue       = 0;
 			fValue       = 0;
@@ -51,25 +51,24 @@ public class AStar : MonoBehaviour
 	// DebugMap:          Tile map that is used for debugging
 	// notWalkableMarker: Debug Tile that indicates a node as "Unwalkable"
 	// walkableMarker: 	  Debug Tile that indicates a node as "Walkable"
-    public Node[,] nodeMap;
-    public Tilemap FloorMap, WallMap, DebugMap;
-    public Tile    notWalkableMarker, walkableMarker;
+    //public Node[,] nodeMap;
+    public Tilemap FloorMap;
 	
     public Vector2Int mapSize;
-    public bool       debugInitMode = false;
-	public bool       debugPathMode = false;
 	
 
-    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos)
+    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos, Node[,] nodeMapMain, bool debugMode = false)
     {
-		SetupAStarNodeMap(FloorMap);
-		
-        Node startingNode = nodeMap[APos.y + (mapSize.y/2), APos.x + (mapSize.x/2)];
-        Node endNode = nodeMap[APos.y + (mapSize.y/2), APos.x + (mapSize.x/2)];
-		
-		if (debugPathMode == true)
+		Node[,] nodeMap = nodeMapMain;
+
+		Debug.Log(nodeMap[APos.y, APos.x].fValue);
+
+		Node startingNode = nodeMap[APos.y, APos.x];
+		Node endNode = nodeMap[BPos.y, BPos.x];
+
+		if (debugMode == true)
 		{
-			DrawBox(new Vector2(startingNode.pos.x - 0.5f, startingNode.pos.y - 0.5f), new Vector2(1f, 1f)): 
+			DrawBox(new Vector2(startingNode.worldX, startingNode.worldY), new Vector2(1f, 1f),Color.green);
 			// ^--- This will prob be int plus float error
 		}
 		
@@ -96,7 +95,7 @@ public class AStar : MonoBehaviour
 		{
             loopCount += 1;
 
-            if (loopCount > 100)
+            if (loopCount > 100000)
             {
 				Debug.Log("Path could not be completed: Loop too Big, Ouchie");
                 return null;
@@ -104,11 +103,12 @@ public class AStar : MonoBehaviour
 			
 			// Log the lowest F value from the current Open list
 			currentNode = getNodeWithLowestFValue(openNodes);   
-            Debug.Log(currentNode.fValue);
+            //Debug.Log(currentNode.fValue);
 			
 			if (currentNode == endNode)
 			{
-				return calculateFinalPath(currentNode);
+				nodePath = calculateFinalPath(currentNode);
+				return nodePath;
 			}
 			
 			openNodes.Remove(currentNode);			
@@ -116,20 +116,20 @@ public class AStar : MonoBehaviour
             
 
 			// Iterate through the Node's touching neighbors, Pos.x = row value
-			for (int row = currentNode.Pos.x - 1; row <= currentNode.Pos.x + 1; row++)
+			for (int row = currentNode.row - 1; row <= currentNode.row + 1; row++)
 			{
 				// Iterate through the Node's touching neighbors, Pos.y = col value
-				for (int col = currentNode.Pos.y - 1; col <= currentNode.Pos.y + 1; col++)
+				for (int col = currentNode.col - 1; col <= currentNode.col + 1; col++)
 				{
 					neighborNode = nodeMap[row, col];
 					
 					if ((neighborNode.walkable == true) && !(closedNodes.Contains(neighborNode)))
-					{						
-						float tentativeGValue = calcGValue(neighborNode);
+					{
+						float tentativeGValue = calcGValue(neighborNode, currentNode);
 						
 						if (tentativeGValue < neighborNode.gValue)
-						{	
-							nodeMap[row, col].gValue = tentativeGValue;
+						{
+							//nodeMap[row, col].gValue = tentativeGValue;
 					
 							neighborNode.previousNode = currentNode;
 							neighborNode.gValue 	  = tentativeGValue;
@@ -143,87 +143,98 @@ public class AStar : MonoBehaviour
 				}
 			}	
 		}
-		
+
+		Debug.Log("No Path Found");
 		// If we ran out open nodes and no complete path
         return null;
     }
 	
 	
-	public void SetupAStarNodeMap(Tilemap FloorMap)
+	public Node[,] SetupAStarNodeMap(Tilemap FloorMap, Vector2Int mapSize, bool debugMode = false)
     {
-        mapSize = ((Vector2Int)FloorMap.size);
-		
-        NodeMap = new Node[mapSize.y,mapSize.x];
+        //mapSize = ((Vector2Int)FloorMap.size) + new Vector2Int(4,4);
+
+		Node[,] nodeMap = new Node[mapSize.y,mapSize.x];
 
         for (int row = 0; row < mapSize.y; row++)
         {
             for (int col = 0; col < mapSize.x; col++)
             {
-                NodeMap[row, col] = new Node(row, col, false);
+				nodeMap[row, col] = new Node(row, col, false);
 				nodeMap[row, col].row = row; // nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].Pos = new Vector2Int(row, col);
 				nodeMap[row, col].col = col;
 				nodeMap[row, col].worldY = row - (mapSize.y / 2);
 				nodeMap[row, col].worldX = col - (mapSize.x / 2);
-				
-				// Marking the non-Floor tiles as "not walkable"
-                if (FloorMap.GetTile(new Vector3Int(col, row, 0)) == null)
-                {
-                    nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].walkable = false;
 
-                    if (debugInitMode == true)
+				// Marking the non-Floor tiles as "not walkable"
+				if (FloorMap.GetTile(new Vector3Int(nodeMap[row, col].worldX, nodeMap[row, col].worldY, 0)) == null)
+                {
+                    nodeMap[row, col].walkable = false;
+
+					if (debugMode == true)
                     {
-                        DebugMap.SetTile(new Vector3Int(col, row, 0), notWalkableMarker);
+						DrawBox(new Vector2(nodeMap[row, col].worldX, nodeMap[row, col].worldY), new Vector2(1f, 1f), new Color(0, 0, 0, 0.5f) + Color.red);
                     }
                     
                 }
 				
                 else
                 {
-                    nodeMap[row + mapSize.y / 2, col + mapSize.x / 2].walkable = true;
+                    nodeMap[row, col].walkable = true;
 
-                    if (debugInitMode == true)
+					if (debugMode == true)
                     {
-                        DebugMap.SetTile(new Vector3Int(col, row, 0), walkableMarker);
-                    }
+						DrawBox(new Vector2(nodeMap[row, col].worldX, nodeMap[row, col].worldY), new Vector2(1f, 1f), new Color(1f, 1f, 1f, 0.5f));
+					}
                 }
             }
         }
+
+		return nodeMap;
     }
 	
 	
-	public List<Node> calculateFinalPath(Node node)
+	public List<Node> calculateFinalPath(Node node, bool debugMode = false)
 	{
 		List<Node> nodePath = new List<Node>();
 		// Tracing back through the most effcient path
         while (node.previousNode != null)
 		{
+			
+			if (debugMode == true)
+			{
+				//DrawBox(new Vector2(node.worldX, node.worldY), new Vector2(1f, 1f), Color.white);
+				//Debug.Log("World Pos: " + node.worldX + "x" + node.worldY);
+				//Debug.Log("G Value: " + node.gValue);
+				//Debug.Log("H Value: " + node.hValue);
+				//Debug.Log("F Value: " + node.fValue);
+				//Debug.Log("------------------------");
+			}
+
 			nodePath.Add(node);
 			node = node.previousNode;
 		}
+		nodePath.Add(node);
+
 		nodePath.Reverse();
 
         return nodePath;
 	}
 	
 	
-	public float calcGValue(Node A)
+	public float calcGValue(Node neighborNode, Node currentNode)
 	{
 		float gValue;
-        if (A.previousNode != null)
-        {
-            gValue = A.previousNode.gValue + Mathf.Sqrt((A.col + A.previousNode.col) ^ 2 + (A.row + A.previousNode.row) ^ 2);
-        }
-        else
-        {
-            gValue = 0;
-        }
+
+		gValue = currentNode.gValue + Mathf.Sqrt(Mathf.Pow(neighborNode.col - currentNode.col, 2f) + Mathf.Pow(neighborNode.row - currentNode.row, 2f));
+
 		return gValue;
 	}
 	
 	
 	public float calcHValue(Node A, Node B)
 	{
-		float hValue = Mathf.Sqrt((A.col + B.col)^2 + (A.row + B.row)^2);
+		float hValue = Mathf.Sqrt(Mathf.Pow(A.col - B.col,2f) + Mathf.Pow(A.row - B.row,2f));
 		return hValue;
 	}
 	
@@ -252,16 +263,21 @@ public class AStar : MonoBehaviour
 	}
 	
 	
-	public void DrawBox(Vector2 origin, Vector2 size, Color color = Color.white, float duration = Mathf.Infinity, bool depthTest = true;)
-	{		
+	public void DrawBox(Vector2 origin, Vector2 size, Color color, float duration = Mathf.Infinity, bool depthTest = true)
+	{
 		// Draw the left side
 		// Draw the top side
 		// Draw the right side
 		// Draw the bottom side
-		Debug.DrawLine(new Vector3(origin.x         , origin.y         , 0), Vector3(origin.x         , origin.y + size.y, 0), color, duration, depthTest):
-		Debug.DrawLine(new Vector3(origin.x         , origin.y + size.y, 0), Vector3(origin.x + size.x, origin.y + size.y, 0), color, duration, depthTest):
-		Debug.DrawLine(new Vector3(origin.x + size.x, origin.y + size.y, 0), Vector3(origin.x + size.x, origin.y         , 0), color, duration, depthTest):
-		Debug.DrawLine(new Vector3(origin.x + size.x, origin.y         , 0), Vector3(origin.x         , origin.y         , 0), color, duration, depthTest):
+		Debug.DrawLine(new Vector3(origin.x, origin.y, 0), new Vector3(origin.x, origin.y + size.y, 0), color, duration, depthTest);
+		Debug.DrawLine(new Vector3(origin.x, origin.y + size.y, 0), new Vector3(origin.x + size.x, origin.y + size.y, 0), color, duration, depthTest);
+		Debug.DrawLine(new Vector3(origin.x + size.x, origin.y + size.y, 0), new Vector3(origin.x + size.x, origin.y, 0), color, duration, depthTest);
+		Debug.DrawLine(new Vector3(origin.x + size.x, origin.y, 0), new Vector3(origin.x, origin.y, 0), color, duration, depthTest);
+	}
+
+	public void showNodeGrid()
+	{
+		// Make the debug map
 	}
 
 }

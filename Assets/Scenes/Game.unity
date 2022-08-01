@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 149269441}
   m_Layer: 0
   m_Name: Debug Map
-  m_TagString: Untagged
+  m_TagString: Debug Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1624,7 +1624,7 @@ GameObject:
   - component: {fileID: 947345951}
   m_Layer: 8
   m_Name: Floor Map
-  m_TagString: Untagged
+  m_TagString: Floor Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2032,13 +2032,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3becaf9f3232a9747b05a1ae6c561679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FloorMap: {fileID: 0}
-  WallMap: {fileID: 0}
-  DebugMap: {fileID: 149269442}
-  notWalkableMarker: {fileID: 11400000, guid: 3de09fadf331ada4dad89d0d1bc5481f, type: 2}
-  walkableMarker: {fileID: 11400000, guid: 7c320092d6c0f4b47aff8d8eeb6edfa6, type: 2}
+  FloorMap: {fileID: 947345950}
   mapSize: {x: 0, y: 0}
-  debugMode: 1
 --- !u!4 &981506591
 Transform:
   m_ObjectHideFlags: 0
@@ -2088,6 +2083,8 @@ MonoBehaviour:
   wallBtmRightTile: {fileID: 0}
   wallBtmLeftCornner: {fileID: 0}
   wallBtmRightCornner: {fileID: 0}
+  nodeMapSize: {x: 140, y: 100}
+  nodeMapDebug: 0
 --- !u!114 &981506593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2794,24 +2791,9 @@ CompositeCollider2D:
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 947345951}
-    m_ColliderPaths:
-    - - X: -20000062
-        Y: 39375085
-      - X: -18125024
-        Y: 40000097
-      - X: -18125008
-        Y: 40000100
-      - X: -20000041
-        Y: 40000100
-      - X: -20000100
-        Y: 40000041
-      - X: -20000100
-        Y: 39375032
+    m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: -2.00001, y: 3.9375472}
-      - {x: -1.8127664, y: 4.00001}
-      - {x: -2.00001, y: 3.9999747}
+    m_Paths: []
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!50 &1969570542

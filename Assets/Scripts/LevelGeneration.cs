@@ -68,7 +68,10 @@ public class LevelGeneration : MonoBehaviour
     public RuleTile wallTile;
     public Tile markerTile, floorTile, ladderTile, emptySpaceTile;
     public LevelTile wallBtmMidleTile, wallBtmLeftTile, wallBtmRightTile, wallBtmLeftCornner, wallBtmRightCornner;
+
     public AStar.Node[,] nodeMap;
+    public Vector2Int nodeMapSize  = new Vector2Int(140, 100);
+    public bool       nodeMapDebug = false;
 
     // A* Parameters
 
@@ -127,14 +130,19 @@ public class LevelGeneration : MonoBehaviour
         FloorMap.SetTile((Vector3Int)ladderPosition, ladderTile);
         Ladder.transform.position = (Vector3Int)(ladderPosition);
 
+        nodeMap = this.GetComponent<AStar>().SetupAStarNodeMap(FloorMap, nodeMapSize, nodeMapDebug);
+
+        /*
         /////////////////////////////////////////////
-        for (int i = 0; i < Tree[Tree.Count - 1].Count; i++)
+        //for (int i = 0; i < Tree[Tree.Count - 1].Count; i++)
+        for (int i = 0; i < 1; i++)
         {
             if (Tree[Tree.Count - 1][i] != startingRoom)
             {
                 SpawnEnemies(Tree[Tree.Count - 1][i].btmLeftTile, Tree[Tree.Count - 1][i].topRightTile, Enemy);
             }
         }
+        */
     }
 
     public void FillInEmptySpaceTiles(Tilemap Map, Tile EmptySpaceTile, Vector2Int DungeonDim)

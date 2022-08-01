@@ -18,6 +18,8 @@ TagManager:
   - Enemy
   - Mana Bar
   - Main Game
+  - Floor Map
+  - Debug Map
   layers:
   - Default
   - TransparentFX
