@@ -36,7 +36,7 @@ public class EnemyController : MonoBehaviour
         {
             yield return new WaitForSeconds(updatePathTimeDelay);
 
-            nodeMap = LevelGen.nodeMap;
+            AStar.Node[,] nodeMap = LevelGen.nodeMap;
 
             if (nodeMap != null)
             {
