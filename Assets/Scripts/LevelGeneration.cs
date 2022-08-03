@@ -130,7 +130,7 @@ public class LevelGeneration : MonoBehaviour
         FloorMap.SetTile((Vector3Int)ladderPosition, ladderTile);
         Ladder.transform.position = (Vector3Int)(ladderPosition);
 
-        nodeMap = this.GetComponent<AStar>().SetupAStarNodeMap(FloorMap, nodeMapSize, nodeMapDebug);
+        //nodeMap = this.GetComponent<AStar>().SetupAStarNodeMap(FloorMap, nodeMapSize, nodeMapDebug);
 
         /*
         /////////////////////////////////////////////

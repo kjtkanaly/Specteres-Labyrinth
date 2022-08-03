@@ -41,7 +41,7 @@ public class AStar : MonoBehaviour
 			fValue       = 0;
         }
     }
-	
+
 	/////////////////////////////////////////////////////////////////////////
 	// Parameters
 	// nodeMap:           Node map that is the size of the loaded map
@@ -51,18 +51,14 @@ public class AStar : MonoBehaviour
 	// DebugMap:          Tile map that is used for debugging
 	// notWalkableMarker: Debug Tile that indicates a node as "Unwalkable"
 	// walkableMarker: 	  Debug Tile that indicates a node as "Walkable"
-    //public Node[,] nodeMap;
-    public Tilemap FloorMap;
-	
-    public Vector2Int mapSize;
-	
+	public Node[,] nodeMap;
 
-    public List<Node> FindPath(Vector2Int APos, Vector2Int BPos, Node[,] nodeMapMain, bool debugMode = false)
-    {
-		Node[,] nodeMap = nodeMapMain;
 
-		Debug.Log(nodeMap[APos.y, APos.x].fValue);
-
+	//public List<Node> FindPath(Vector2Int APos, Vector2Int BPos, Node[,] nodeMap, bool debugMode = false)
+	public IEnumerator FindPath(Vector2Int APos, Vector2Int BPos, bool debugMode = false)
+	{		
+		yield return StartCoroutine(SetupAStarNodeMap(this.GetComponent<EnemyController>().LevelGen.FloorMap, this.GetComponent<EnemyController>().LevelGen.nodeMapSize, this.GetComponent<EnemyController>().LevelGen.nodeMapDebug));
+		
 		Node startingNode = nodeMap[APos.y, APos.x];
 		Node endNode = nodeMap[BPos.y, BPos.x];
 
@@ -72,9 +68,9 @@ public class AStar : MonoBehaviour
 			// ^--- This will prob be int plus float error
 		}
 		
-		List<Node> openNodes   = new List<Node>();
-		List<Node> closedNodes = new List<Node>();
-		List<Node> nodePath    = new List<Node>();
+		List<Node> openNodes    = new List<Node>();
+		List<Node> closedNodes  = new List<Node>();
+		List<Node> PathToPlayer = this.GetComponent<EnemyController>().PathToPlayer;
 		
 		// Initializing the starting node
 		startingNode.previousNode = null;
@@ -98,8 +94,8 @@ public class AStar : MonoBehaviour
             if (loopCount > 100000)
             {
 				Debug.Log("Path could not be completed: Loop too Big, Ouchie");
-                return null;
-            }
+				yield break;
+			}
 			
 			// Log the lowest F value from the current Open list
 			currentNode = getNodeWithLowestFValue(openNodes);   
@@ -107,8 +103,8 @@ public class AStar : MonoBehaviour
 			
 			if (currentNode == endNode)
 			{
-				nodePath = calculateFinalPath(currentNode);
-				return nodePath;
+				this.GetComponent<EnemyController>().PathToPlayer = calculateFinalPath(currentNode);
+				yield break;
 			}
 			
 			openNodes.Remove(currentNode);			
@@ -145,16 +141,13 @@ public class AStar : MonoBehaviour
 		}
 
 		Debug.Log("No Path Found");
-		// If we ran out open nodes and no complete path
-        return null;
-    }
+		yield break;
+	}
 	
 	
-	public Node[,] SetupAStarNodeMap(Tilemap FloorMap, Vector2Int mapSize, bool debugMode = false)
+	public IEnumerator SetupAStarNodeMap(Tilemap FloorMap, Vector2Int mapSize, bool debugMode = false)
     {
-        //mapSize = ((Vector2Int)FloorMap.size) + new Vector2Int(4,4);
-
-		Node[,] nodeMap = new Node[mapSize.y,mapSize.x];
+		nodeMap = new Node[mapSize.y,mapSize.x];
 
         for (int row = 0; row < mapSize.y; row++)
         {
@@ -190,7 +183,7 @@ public class AStar : MonoBehaviour
             }
         }
 
-		return nodeMap;
+		yield break;
     }
 	
 	
