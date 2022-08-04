@@ -6,61 +6,57 @@ using UnityEngine.Tilemaps;
 public class EnemyController : MonoBehaviour
 {
     public LevelGeneration LevelGen;
-    public Transform       PlayerTrans;
     public AStar           AstarController;
 
     public AStar.Node[,]    nodeMap;
     public List<AStar.Node> PathToPlayer;
-	
-    public Vector2Int thisPos;
-    public Vector2Int playerPos;
+
+    public Transform  npcTruePos;
+    public Vector2Int npcNodePos;
+    public Transform  playerTruePos;
+    public Vector2Int playerNodePos;
     public bool debugPath = true;
 
     public float updatePathTimeDelay = 2f;
 
-    void Start()
+    void Awake()
     {
-        PlayerTrans     = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        LevelGen        = GameObject.FindGameObjectWithTag("Main Game").GetComponent<LevelGeneration>();
+        // Initializing General Enemy Controller Parameters
         AstarController = this.GetComponent<AStar>();
+        LevelGen        = GameObject.FindGameObjectWithTag("Main Game").GetComponent<LevelGeneration>();
+        npcTruePos      = this.transform;
+        playerTruePos   = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        PathToPlayer    = new List<AStar.Node>();
 
-        StartCoroutine(callAstarPathUpdate(updatePathTimeDelay));
+        // Initializing A Star Components Parameters
+        this.GetComponent<AStar>().LevelGen = GameObject.FindGameObjectWithTag("Main Game").GetComponent<LevelGeneration>();
+        this.GetComponent<AStar>().NPCController = this;
+        this.GetComponent<AStar>().PathToPlayer = new List<AStar.Node>();
+        this.GetComponent<AStar>().openNodes = new List<AStar.Node>();
+        this.GetComponent<AStar>().closedNodes = new List<AStar.Node>();
+
+        StartCoroutine(callAstarPathUpdate());
     }
 
-    IEnumerator callAstarPathUpdate(float updatePathTimeDelay)
+    IEnumerator callAstarPathUpdate()
     {
         while (true)
         {
             yield return new WaitForSeconds(updatePathTimeDelay);
 
-            //nodeMap = AstarController.SetupAStarNodeMap(LevelGen.FloorMap, LevelGen.nodeMapSize, LevelGen.nodeMapDebug);
+            npcNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
+            playerNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
 
-            // Debug
-            /*
-            for (int col = 0; col < LevelGen.nodeMapSize.x; col++)
-            {
-                for (int row = 0; row < LevelGen.nodeMapSize.y; row++)
-                {
-                    if (nodeMap[row, col].fValue != 0)
-                    {
-                        Debug.Log(LevelGen.nodeMap[row, col].fValue);
-                    }
-                }
-            }*/
+            yield return StartCoroutine(AstarController.FindPath(npcNodePos, playerNodePos, true));
 
-            thisPos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(this.transform.position.x)), Mathf.RoundToInt(Mathf.Floor(this.transform.position.y))) + (LevelGen.nodeMapSize / 2);
-            playerPos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(PlayerTrans.transform.position.x)), Mathf.RoundToInt(Mathf.Floor(PlayerTrans.transform.position.y))) + (LevelGen.nodeMapSize / 2);
-
-            yield return StartCoroutine(AstarController.FindPath(thisPos, playerPos, true));
+            Debug.Log(PathToPlayer.Count);
 
             if (PathToPlayer != null)
             {
                 if (debugPath == true)
                 {
-                    Debug.Log("Number of Nodes: " + PathToPlayer.Count);
                     for (int listIndex = 0; listIndex < PathToPlayer.Count - 1; listIndex++)
                     {
-                        //AStar.DrawBox(new Vector2(PathToPlayer[listIndex].worldX + 0.5f, PathToPlayer[listIndex].worldY + 0.5f), new Vector2(PathToPlayer[listIndex + 1].worldX + 0.5f, PathToPlayer[listIndex + 1].worldY + 0.5f),);
                         Debug.DrawLine(new Vector3(PathToPlayer[listIndex].worldX + 0.5f, PathToPlayer[listIndex].worldY + 0.5f, 0), new Vector3(PathToPlayer[listIndex + 1].worldX + 0.5f, PathToPlayer[listIndex + 1].worldY + 0.5f, 0), Color.green,
                                                     updatePathTimeDelay, true);
                     }

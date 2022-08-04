@@ -132,17 +132,14 @@ public class LevelGeneration : MonoBehaviour
 
         //nodeMap = this.GetComponent<AStar>().SetupAStarNodeMap(FloorMap, nodeMapSize, nodeMapDebug);
 
-        /*
         /////////////////////////////////////////////
-        //for (int i = 0; i < Tree[Tree.Count - 1].Count; i++)
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < Tree[Tree.Count - 1].Count; i++)
         {
             if (Tree[Tree.Count - 1][i] != startingRoom)
             {
                 SpawnEnemies(Tree[Tree.Count - 1][i].btmLeftTile, Tree[Tree.Count - 1][i].topRightTile, Enemy);
             }
         }
-        */
     }
 
     public void FillInEmptySpaceTiles(Tilemap Map, Tile EmptySpaceTile, Vector2Int DungeonDim)

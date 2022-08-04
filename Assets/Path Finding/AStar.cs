@@ -46,18 +46,20 @@ public class AStar : MonoBehaviour
 	// Parameters
 	// nodeMap:           Node map that is the size of the loaded map
 	// 					  [row, col], nodeMap[1,2] = node in row 1 & col 2
-	// FloorMap:          Tile map that holds floor tiles
-	// WallMap:           Tile map that holds wall tiles
-	// DebugMap:          Tile map that is used for debugging
-	// notWalkableMarker: Debug Tile that indicates a node as "Unwalkable"
-	// walkableMarker: 	  Debug Tile that indicates a node as "Walkable"
-	public Node[,] nodeMap;
-
+	// LevelGen:		  Reference to the level Gen Component of the main game object
+	public Node[,]         nodeMap;
+	public LevelGeneration LevelGen;
+	public EnemyController NPCController;
+	public List<Node> openNodes;
+	public List<Node> closedNodes;
+	public List<Node> PathToPlayer;
+	public Node currentNode;
+	public Node neighborNode;
 
 	//public List<Node> FindPath(Vector2Int APos, Vector2Int BPos, Node[,] nodeMap, bool debugMode = false)
 	public IEnumerator FindPath(Vector2Int APos, Vector2Int BPos, bool debugMode = false)
 	{		
-		yield return StartCoroutine(SetupAStarNodeMap(this.GetComponent<EnemyController>().LevelGen.FloorMap, this.GetComponent<EnemyController>().LevelGen.nodeMapSize, this.GetComponent<EnemyController>().LevelGen.nodeMapDebug));
+		yield return StartCoroutine(SetupAStarNodeMap(LevelGen.FloorMap, LevelGen.nodeMapSize, LevelGen.nodeMapDebug));
 		
 		Node startingNode = nodeMap[APos.y, APos.x];
 		Node endNode = nodeMap[BPos.y, BPos.x];
@@ -67,10 +69,10 @@ public class AStar : MonoBehaviour
 			DrawBox(new Vector2(startingNode.worldX, startingNode.worldY), new Vector2(1f, 1f),Color.green);
 			// ^--- This will prob be int plus float error
 		}
-		
-		List<Node> openNodes    = new List<Node>();
-		List<Node> closedNodes  = new List<Node>();
-		List<Node> PathToPlayer = this.GetComponent<EnemyController>().PathToPlayer;
+
+		PathToPlayer.Clear();
+		openNodes.Clear();
+		closedNodes.Clear();
 		
 		// Initializing the starting node
 		startingNode.previousNode = null;
@@ -78,10 +80,6 @@ public class AStar : MonoBehaviour
 		startingNode.hValue       = calcHValue(startingNode, endNode);
 		startingNode.fValue       = calcFValue(startingNode);
         openNodes.Add(startingNode);
-		
-		// currentNode: The node currently being considered from the open list
-		Node currentNode;
-		Node neighborNode;
 
 		// Debug Value used to try and avoid infinte loops
         int loopCount = 0;
@@ -103,7 +101,7 @@ public class AStar : MonoBehaviour
 			
 			if (currentNode == endNode)
 			{
-				this.GetComponent<EnemyController>().PathToPlayer = calculateFinalPath(currentNode);
+				NPCController.PathToPlayer = calculateFinalPath(currentNode);
 				yield break;
 			}
 			
