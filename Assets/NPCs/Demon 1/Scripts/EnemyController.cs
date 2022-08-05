@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     public Vector2Int playerNodePos;
     public bool debugPath = true;
 
-    public float updatePathTimeDelay = 2f;
+    public float updatePathTimeDelay = 2f; 
 
     void Awake()
     {
