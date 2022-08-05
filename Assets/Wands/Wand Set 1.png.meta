@@ -42,6 +42,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -256,6 +257,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Wand Set 1_4: -275813343953364525
+      Wand Set 1_5: 6159129509143387596
+      Wand Set 1_2: 2727341253948387676
+      Wand Set 1_0: 371734867567421773
+      Wand Set 1_3: 1674956012212383505
+      Wand Set 1_1: -2145701470261681926
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

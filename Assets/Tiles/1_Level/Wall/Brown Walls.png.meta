@@ -72,6 +72,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -496,6 +497,23 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Brown Walls_0: -3392365132414931624
+      Brown Walls_11: 6907327320701417569
+      Brown Walls_6: 8410932953592496199
+      Brown Walls_5: -878492405450880504
+      Brown Walls_7: 6758854246481658246
+      Brown Walls_15: 6551761282970094555
+      Brown Walls_14: -6848361396491633648
+      Brown Walls_4: 2847873161173907951
+      Brown Walls_3: 4192726914088386272
+      Brown Walls_8: 340238264954527428
+      Brown Walls_13: 6591520194161231140
+      Brown Walls_1: 3790471376924324723
+      Brown Walls_2: -9145712971646019251
+      Brown Walls_10: 1718299518337864005
+      Brown Walls_12: -170868747023359722
+      Brown Walls_9: -6312712329330129904
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

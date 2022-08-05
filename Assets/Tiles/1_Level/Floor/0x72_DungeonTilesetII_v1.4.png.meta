@@ -39,6 +39,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -337,6 +338,17 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      0x72_DungeonTilesetII_v1.4_1: 8178937437051159178
+      0x72_DungeonTilesetII_v1.4_3: 2140842894146505812
+      0x72_DungeonTilesetII_v1.4_5: -5321348085281630725
+      0x72_DungeonTilesetII_v1.4_8: -1747295740152761478
+      0x72_DungeonTilesetII_v1.4_0: 713163285030852893
+      0x72_DungeonTilesetII_v1.4_7: -4254748507566664220
+      0x72_DungeonTilesetII_v1.4_4: -1395916485779578574
+      0x72_DungeonTilesetII_v1.4_9: -5856639455263703340
+      0x72_DungeonTilesetII_v1.4_6: -7148777005419144832
+      0x72_DungeonTilesetII_v1.4_2: -5908182510162382659
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

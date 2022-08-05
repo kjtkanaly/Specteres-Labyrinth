@@ -69,6 +69,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -472,6 +473,22 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      All_Fire_Bullet_Pixel_16x16 - Copy_6: -3786187663303538594
+      All_Fire_Bullet_Pixel_16x16 - Copy_2: -8612861757608122169
+      All_Fire_Bullet_Pixel_16x16 - Copy_10: 8394270671902294722
+      All_Fire_Bullet_Pixel_16x16 - Copy_14: 5528247703755153920
+      All_Fire_Bullet_Pixel_16x16 - Copy_0: -2415224347235515270
+      All_Fire_Bullet_Pixel_16x16 - Copy_12: 6647670796567863531
+      All_Fire_Bullet_Pixel_16x16 - Copy_5: -3576246116199695601
+      All_Fire_Bullet_Pixel_16x16 - Copy_3: 3525988522855535784
+      All_Fire_Bullet_Pixel_16x16 - Copy_8: -7068216864075701466
+      All_Fire_Bullet_Pixel_16x16 - Copy_13: -7291797724293836769
+      All_Fire_Bullet_Pixel_16x16 - Copy_11: -5398329126750212529
+      All_Fire_Bullet_Pixel_16x16 - Copy_4: 4080939100401861274
+      All_Fire_Bullet_Pixel_16x16 - Copy_7: -9201151966657803895
+      All_Fire_Bullet_Pixel_16x16 - Copy_9: -1317136548315525455
+      All_Fire_Bullet_Pixel_16x16 - Copy_1: -2948368159479904082
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
