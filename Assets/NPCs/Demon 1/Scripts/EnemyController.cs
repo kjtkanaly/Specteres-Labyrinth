@@ -5,23 +5,40 @@ using UnityEngine.Tilemaps;
 
 public class EnemyController : MonoBehaviour
 {
+    ///////////////////////////////////////
+    // Generic Methods
     public LevelGeneration LevelGen;
     public AStar           AstarController;
+    public Transform       PlayerPos;
+    public GameObject      PlayerObject;
+    public RaycastHit2D    rayCastHit;
+    public LayerMask       playerLayer;
 
+    //////////////////////////////
+    // Path Finding Parameters
     public AStar.Node[,]    nodeMap;
     public List<AStar.Node> PathToPlayer;
-
     public Transform  npcTruePos;
     public Vector2Int npcNodePos;
     public Transform  playerTruePos;
     public Vector2Int playerNodePos;
-    public bool debugPath = true;
 
-    public float updatePathTimeDelay = 2f; 
+    //////////////////////////////
+    // Generic Variables
+    // distanceToPlayer:    The radial distance to the player
+    // updatePathTimeDelay: Delta time between updating A* path
+    // debugPath:           Flag used to display NPC's path
+    public float distanceToPlayer    = float.MaxValue;
+    public float updatePathTimeDelay = 2f;
+    public float checkRadius         = 10f;
+    public bool  debugPath           = true;
+    public bool  pathFindingRN       = false;
 
     void Awake()
     {
         // Initializing General Enemy Controller Parameters
+        PlayerObject    = GameObject.FindGameObjectWithTag("Player");
+        playerLayer     = LayerMask.GetMask("Player");
         AstarController = this.GetComponent<AStar>();
         LevelGen        = GameObject.FindGameObjectWithTag("Main Game").GetComponent<LevelGeneration>();
         npcTruePos      = this.transform;
@@ -35,12 +52,35 @@ public class EnemyController : MonoBehaviour
         this.GetComponent<AStar>().openNodes = new List<AStar.Node>();
         this.GetComponent<AStar>().closedNodes = new List<AStar.Node>();
 
-        StartCoroutine(callAstarPathUpdate());
+        //StartCoroutine(callAstarPathUpdate());
+    }
+
+    public void FixedUpdate()
+    {
+        distanceToPlayer = Vector2.Distance(playerTruePos.position, npcTruePos.position);
+
+        if ((distanceToPlayer <= checkRadius) && (pathFindingRN == false))
+        {
+            Debug.DrawRay(npcTruePos.position, playerTruePos.position - npcTruePos.position);
+            
+            // Ray Cast to check if player is visible
+            if (Physics2D.Raycast(npcTruePos.position, playerTruePos.position - npcTruePos.position, checkRadius).collider.tag == "Player")
+            {
+                Debug.Log("Starting Path Finding");
+                pathFindingRN = true;
+                StartCoroutine(callAstarPathUpdate());
+            }
+        }
+        else if ((distanceToPlayer > checkRadius) && (pathFindingRN == true))
+        {
+            pathFindingRN = false;
+            StopCoroutine(callAstarPathUpdate());
+        }
     }
 
     IEnumerator callAstarPathUpdate()
     {
-        while (true)
+        while (pathFindingRN)
         {
             yield return new WaitForSeconds(updatePathTimeDelay);
 
@@ -48,8 +88,6 @@ public class EnemyController : MonoBehaviour
             playerNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
 
             yield return StartCoroutine(AstarController.FindPath(npcNodePos, playerNodePos, true));
-
-            Debug.Log(PathToPlayer.Count);
 
             if (PathToPlayer != null)
             {
