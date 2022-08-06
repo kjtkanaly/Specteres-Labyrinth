@@ -22,17 +22,26 @@ public class EnemyController : MonoBehaviour
     public Vector2Int npcNodePos;
     public Transform  playerTruePos;
     public Vector2Int playerNodePos;
+    public Vector2    pathNodePos;
 
     //////////////////////////////
-    // Generic Variables
+    // Generic Variables w/ Values
     // distanceToPlayer:    The radial distance to the player
     // updatePathTimeDelay: Delta time between updating A* path
     // debugPath:           Flag used to display NPC's path
     public float distanceToPlayer    = float.MaxValue;
     public float updatePathTimeDelay = 2f;
     public float checkRadius         = 10f;
+    public float pathNodeRadius      = 0.5f;
+    public float npcSpeed            = 10f;
+    public int   pathNodeIndex       = 0;
     public bool  debugPath           = true;
     public bool  pathFindingRN       = false;
+    public bool  followPath          = false;
+
+    //////////////////////////////
+    // Generic Variables w/out Values
+    public float step;
 
     void Awake()
     {
@@ -57,6 +66,9 @@ public class EnemyController : MonoBehaviour
 
     public void FixedUpdate()
     {
+
+        //////////////////////////////////
+        // Path Finding Control
         distanceToPlayer = Vector2.Distance(playerTruePos.position, npcTruePos.position);
 
         if ((distanceToPlayer <= checkRadius) && (pathFindingRN == false))
@@ -68,13 +80,36 @@ public class EnemyController : MonoBehaviour
             {
                 Debug.Log("Starting Path Finding");
                 pathFindingRN = true;
+                followPath = true;
                 StartCoroutine(callAstarPathUpdate());
             }
         }
         else if ((distanceToPlayer > checkRadius) && (pathFindingRN == true))
         {
+            Debug.Log("Haulting Path Finding");
             pathFindingRN = false;
+            followPath = false;
             StopCoroutine(callAstarPathUpdate());
+            //StopCoroutine(FollowPath());
+        }
+
+        //////////////////////////////////
+        // Following Path Control
+        if ((PathToPlayer.Count > 0) && followPath == true)
+        {
+            pathNodePos = new Vector2(PathToPlayer[pathNodeIndex].worldX, PathToPlayer[pathNodeIndex].worldY);
+
+            if (Vector2.Distance(this.transform.position, pathNodePos) < pathNodeRadius)
+            {
+                pathNodeIndex += 1;
+            }
+
+            if (pathNodeIndex < PathToPlayer.Count)
+            {
+                Debug.Log("Path Node Index: " + pathNodeIndex);
+                step = npcSpeed * Time.fixedDeltaTime;
+                this.transform.position = Vector2.MoveTowards(this.transform.position, pathNodePos, step);
+            }
         }
     }
 
@@ -91,6 +126,8 @@ public class EnemyController : MonoBehaviour
 
             if (PathToPlayer != null)
             {
+                pathNodeIndex = 0;
+
                 if (debugPath == true)
                 {
                     for (int listIndex = 0; listIndex < PathToPlayer.Count - 1; listIndex++)
