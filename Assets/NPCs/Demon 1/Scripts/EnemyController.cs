@@ -99,9 +99,12 @@ public class EnemyController : MonoBehaviour
 
         //////////////////////////////////
         // Slowing Down the NPC
-        if (followPath == false)
+        if ((followPath == false) && (npcVelocity.magnitude > 0.001f))
         {
-            npcVelocity += (Time.fixedDeltaTime * -npcAcceleration) * npcRigidBody.velocity;
+            Debug.Log("Slowing Down");
+            //npcVelocity -= (Time.fixedDeltaTime * npcAcceleration) * npcRigidBody.velocity;
+            npcVelocity /= 2f;
+            npcRigidBody.velocity = npcVelocity;            
         }
 
         //velocity.x -= Time.deltaTime * acceleration;
@@ -115,12 +118,10 @@ public class EnemyController : MonoBehaviour
 
             npcVelocity += ((pathNodePos - (Vector2)npcTruePos.position) * (npcAcceleration * Time.fixedDeltaTime));
             npcRigidBody.velocity = Vector2.ClampMagnitude(npcVelocity, npcMaxVelocity);
-            
-            Debug.Log(npcRigidBody.velocity.magnitude);
 
             if (Vector2.Distance(this.transform.position, pathNodePos) < pathNodeRadius)
             {
-                Debug.Log("Reached Node");
+                //Debug.Log("Reached Node");
                 PathToPlayer.RemoveAt(0);
             }
         }
