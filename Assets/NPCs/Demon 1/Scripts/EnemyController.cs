@@ -97,18 +97,15 @@ public class EnemyController : MonoBehaviour
         // Following Path Control
         if ((PathToPlayer.Count > 0) && followPath == true)
         {
-            pathNodePos = new Vector2(PathToPlayer[pathNodeIndex].worldX, PathToPlayer[pathNodeIndex].worldY);
+            pathNodePos = new Vector2(PathToPlayer[0].worldX, PathToPlayer[0].worldY);            
+
+            step = npcSpeed * Time.fixedDeltaTime;
+            this.transform.position = Vector2.MoveTowards(this.transform.position, pathNodePos, step);
 
             if (Vector2.Distance(this.transform.position, pathNodePos) < pathNodeRadius)
             {
-                pathNodeIndex += 1;
-            }
-
-            if (pathNodeIndex < PathToPlayer.Count)
-            {
-                Debug.Log("Path Node Index: " + pathNodeIndex);
-                step = npcSpeed * Time.fixedDeltaTime;
-                this.transform.position = Vector2.MoveTowards(this.transform.position, pathNodePos, step);
+                Debug.Log("Reached Node");
+                PathToPlayer.RemoveAt(0);
             }
         }
     }
