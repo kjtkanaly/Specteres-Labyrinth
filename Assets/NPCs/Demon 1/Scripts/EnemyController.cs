@@ -8,8 +8,9 @@ public class EnemyController : MonoBehaviour
     ///////////////////////////////////////
     // Generic Methods
     public LevelGeneration LevelGen;
-    public AStar           AstarController;
+    public AStar           npcAstarControl;
     public Transform       PlayerPos;
+    public Rigidbody2D     npcRigidBody;
     public GameObject      PlayerObject;
     public RaycastHit2D    rayCastHit;
     public LayerMask       playerLayer;
@@ -29,15 +30,17 @@ public class EnemyController : MonoBehaviour
     // distanceToPlayer:    The radial distance to the player
     // updatePathTimeDelay: Delta time between updating A* path
     // debugPath:           Flag used to display NPC's path
-    public float distanceToPlayer    = float.MaxValue;
-    public float updatePathTimeDelay = 2f;
-    public float checkRadius         = 10f;
-    public float pathNodeRadius      = 0.5f;
-    public float npcSpeed            = 10f;
-    public int   pathNodeIndex       = 0;
-    public bool  debugPath           = true;
-    public bool  pathFindingRN       = false;
-    public bool  followPath          = false;
+    public Vector2 npcVelocity         = new Vector2(0, 0);
+    public float   npcSpeed            = 10f;
+    public float   npcAcceleration     = 100f;
+    public float   npcMaxVelocity      = 12f;
+    public float   distanceToPlayer    = float.MaxValue;
+    public float   updatePathTimeDelay = 2f;
+    public float   checkRadius         = 10f;
+    public float   pathNodeRadius      = 0.5f;
+    public bool    debugPath           = true;
+    public bool    pathFindingRN       = false;
+    public bool    followPath          = false;
 
     //////////////////////////////
     // Generic Variables w/out Values
@@ -48,9 +51,10 @@ public class EnemyController : MonoBehaviour
         // Initializing General Enemy Controller Parameters
         PlayerObject    = GameObject.FindGameObjectWithTag("Player");
         playerLayer     = LayerMask.GetMask("Player");
-        AstarController = this.GetComponent<AStar>();
         LevelGen        = GameObject.FindGameObjectWithTag("Main Game").GetComponent<LevelGeneration>();
+        npcAstarControl = this.GetComponent<AStar>();
         npcTruePos      = this.transform;
+        npcRigidBody    = this.GetComponent<Rigidbody2D>();
         playerTruePos   = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         PathToPlayer    = new List<AStar.Node>();
 
@@ -94,13 +98,25 @@ public class EnemyController : MonoBehaviour
         }
 
         //////////////////////////////////
-        // Following Path Control
-        if ((PathToPlayer.Count > 0) && followPath == true)
+        // Slowing Down the NPC
+        if (followPath == false)
         {
-            pathNodePos = new Vector2(PathToPlayer[0].worldX, PathToPlayer[0].worldY);            
+            npcVelocity += (Time.fixedDeltaTime * -npcAcceleration) * npcRigidBody.velocity;
+        }
 
-            step = npcSpeed * Time.fixedDeltaTime;
-            this.transform.position = Vector2.MoveTowards(this.transform.position, pathNodePos, step);
+        //velocity.x -= Time.deltaTime * acceleration;
+        //velocity.x = Mathf.Clamp(velocity.x, 0f, veloictyCap);
+
+        //////////////////////////////////
+        // Following Path Control
+        if ((PathToPlayer.Count > 0) && (followPath == true))
+        {
+            pathNodePos = new Vector2(PathToPlayer[0].worldX, PathToPlayer[0].worldY);
+
+            npcVelocity += ((pathNodePos - (Vector2)npcTruePos.position) * (npcAcceleration * Time.fixedDeltaTime));
+            npcRigidBody.velocity = Vector2.ClampMagnitude(npcVelocity, npcMaxVelocity);
+            
+            Debug.Log(npcRigidBody.velocity.magnitude);
 
             if (Vector2.Distance(this.transform.position, pathNodePos) < pathNodeRadius)
             {
@@ -119,11 +135,10 @@ public class EnemyController : MonoBehaviour
             npcNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
             playerNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
 
-            yield return StartCoroutine(AstarController.FindPath(npcNodePos, playerNodePos, true));
+            yield return StartCoroutine(npcAstarControl.FindPath(npcNodePos, playerNodePos, true));
 
             if (PathToPlayer != null)
             {
-                pathNodeIndex = 0;
 
                 if (debugPath == true)
                 {

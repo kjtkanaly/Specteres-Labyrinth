@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 1689927576285344280}
   - component: {fileID: 322011088675395712}
   - component: {fileID: 3377584092304728841}
+  - component: {fileID: -5132165027874610519}
   m_Layer: 0
   m_Name: Demon 1
   m_TagString: Enemy
@@ -152,8 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelGen: {fileID: 0}
-  AstarController: {fileID: 0}
+  npcAstarControl: {fileID: 0}
   PlayerPos: {fileID: 0}
+  npcRigidBody: {fileID: 0}
   PlayerObject: {fileID: 0}
   playerLayer:
     serializedVersion: 2
@@ -162,11 +164,19 @@ MonoBehaviour:
   npcNodePos: {x: 0, y: 0}
   playerTruePos: {fileID: 0}
   playerNodePos: {x: 0, y: 0}
+  pathNodePos: {x: 0, y: 0}
+  npcVelocity: {x: 0, y: 0}
+  npcSpeed: 10
+  npcAcceleration: 100
+  npcMaxVelocity: 10
   distanceToPlayer: 3.4028235e+38
   updatePathTimeDelay: 1
   checkRadius: 10
+  pathNodeRadius: 0.5
   debugPath: 1
   pathFindingRN: 0
+  followPath: 0
+  step: 0
 --- !u!114 &3377584092304728841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,3 +191,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelGen: {fileID: 0}
   NPCController: {fileID: 0}
+--- !u!50 &-5132165027874610519
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689927576285344281}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
