@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1689927576285344280}
-  - component: {fileID: 322011088675395712}
+  - component: {fileID: 4671908721764514693}
   - component: {fileID: 3377584092304728841}
   - component: {fileID: -5132165027874610519}
   m_Layer: 0
@@ -140,7 +140,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &322011088675395712
+--- !u!114 &4671908721764514693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,34 +149,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1689927576285344281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e57a318290641fb4693cfe34f191a1f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 710f5cdcb4c364ce8876fb5f06d807be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelGen: {fileID: 0}
-  npcAstarControl: {fileID: 0}
-  PlayerPos: {fileID: 0}
-  npcRigidBody: {fileID: 0}
-  PlayerObject: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  npcTruePos: {fileID: 0}
-  npcNodePos: {x: 0, y: 0}
-  playerTruePos: {fileID: 0}
-  playerNodePos: {x: 0, y: 0}
-  pathNodePos: {x: 0, y: 0}
-  npcVelocity: {x: 0, y: 0}
-  npcSpeed: 10
-  npcAcceleration: 100
-  npcMaxVelocity: 10
-  distanceToPlayer: 3.4028235e+38
-  updatePathTimeDelay: 1
-  checkRadius: 10
-  pathNodeRadius: 0.5
-  debugPath: 1
-  pathFindingRN: 0
-  followPath: 0
-  step: 0
+  State: 0
+  StartingPos: {x: 0, y: 0, z: 0}
 --- !u!114 &3377584092304728841
 MonoBehaviour:
   m_ObjectHideFlags: 0

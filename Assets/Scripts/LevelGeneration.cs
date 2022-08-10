@@ -133,8 +133,8 @@ public class LevelGeneration : MonoBehaviour
         //nodeMap = this.GetComponent<AStar>().SetupAStarNodeMap(FloorMap, nodeMapSize, nodeMapDebug);
 
         /////////////////////////////////////////////
-        //for (int i = 0; i < Tree[Tree.Count - 1].Count; i++)
-        for (int i = 0; i < 1; i++)
+        // for (int i = 0; i < 1; i++)
+        for (int i = 0; i < Tree[Tree.Count - 1].Count; i++)
         {
             if (Tree[Tree.Count - 1][i] != startingRoom)
             {
