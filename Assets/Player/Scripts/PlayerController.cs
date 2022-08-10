@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D playerRB;
     [SerializeField] private Collider2D playerBoundaryCollider;
     [SerializeField] private Vector2 velocity = new Vector2(0, 0);
-    [SerializeField] private Vector3 rollingAngluarVelocity = new Vector3(0, 0, 1000f);
     [SerializeField] private float acceleration = 300;
     [SerializeField] private float veloictyCap = 10;
     [SerializeField] private float rollTime = 0.25f;

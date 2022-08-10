@@ -23,28 +23,42 @@ public class EnemyController : MonoBehaviour
     public Vector2Int npcNodePos;
     public Transform  playerTruePos;
     public Vector2Int playerNodePos;
+    public Vector2Int playerPrevNodePos;
     public Vector2    pathNodePos;
 
-    //////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
     // Generic Variables w/ Values
-    // distanceToPlayer:    The radial distance to the player
-    // updatePathTimeDelay: Delta time between updating A* path
-    // debugPath:           Flag used to display NPC's path
-    public Vector2 npcVelocity         = new Vector2(0, 0);
-    public float   npcSpeed            = 10f;
-    public float   npcAcceleration     = 100f;
-    public float   npcMaxVelocity      = 12f;
+    //
+    // velocity:            Velocity of the NPC
+    // acceleration:        Acceleration of the NPC during path Finding
+    // movementSpeed:       Speed of the NPC during path finding
+    // distanceToPlayer:    Radial distance to player
+    // updatePathTimeDelta: Time between updating path
+    // followPlayerRadius:  The radial cutoff to start following the player
+    // pathNodeRadius:      A node's radial cutoff
+    // attackRadius:        The radial cutoff to attack the player
+    // debugPath:           Toggles debug mode for the path following
+    // pathFinding:         Path following flag
+    // followPath:          Following the path flag
+
+    public Vector2 velocity            = new Vector2(0, 0);
+    public float   acceleration        = 100f;
+    public float   movementSpeed       = 12f;
     public float   distanceToPlayer    = float.MaxValue;
-    public float   updatePathTimeDelay = 2f;
-    public float   checkRadius         = 10f;
+    public float   updatePathTimeDelta = 2f;
+    public float   followPlayerRadius  = 10f;
     public float   pathNodeRadius      = 0.5f;
+    public int     attackRadius        = 2;
     public bool    debugPath           = true;
-    public bool    pathFindingRN       = false;
+    public bool    canUpdatePath       = true;
+    public bool    pathFinding         = false;
     public bool    followPath          = false;
 
     //////////////////////////////
     // Generic Variables w/out Values
-    public float step;
+    public  float       step;
+    private IEnumerator callPathFinding;
+    private IEnumerator pathFindingFx;
 
     void Awake()
     {
@@ -75,84 +89,129 @@ public class EnemyController : MonoBehaviour
         // Path Finding Control
         distanceToPlayer = Vector2.Distance(playerTruePos.position, npcTruePos.position);
 
-        if ((distanceToPlayer <= checkRadius) && (pathFindingRN == false))
-        {
-            Debug.DrawRay(npcTruePos.position, playerTruePos.position - npcTruePos.position);
-            
+        if ((distanceToPlayer <= followPlayerRadius) && (distanceToPlayer > attackRadius) && (canUpdatePath == true))
+        {            
             // Ray Cast to check if player is visible
-            if (Physics2D.Raycast(npcTruePos.position, playerTruePos.position - npcTruePos.position, checkRadius).collider.tag == "Player")
+            if (Physics2D.Raycast(npcTruePos.position, playerTruePos.position - npcTruePos.position, followPlayerRadius).collider.tag == "Player")
             {
-                Debug.Log("Starting Path Finding");
-                pathFindingRN = true;
-                followPath = true;
-                StartCoroutine(callAstarPathUpdate());
+                Debug.Log("Starting Path Finding");            
+                callPathFinding = UpdateAstarPath();
+                StartCoroutine(callPathFinding);
             }
         }
-        else if ((distanceToPlayer > checkRadius) && (pathFindingRN == true))
+
+
+        if ((distanceToPlayer > followPlayerRadius) && (followPath == true))
         {
             Debug.Log("Haulting Path Finding");
-            pathFindingRN = false;
             followPath = false;
-            StopCoroutine(callAstarPathUpdate());
-            //StopCoroutine(FollowPath());
+        }
+
+        //////////////////////////////////
+        // Following Path Control
+        if ((PathToPlayer.Count > attackRadius) && (followPath == true))
+        {
+            pathNodePos = new Vector2(PathToPlayer[0].worldX, PathToPlayer[0].worldY);
+
+            step = movementSpeed * Time.fixedDeltaTime;
+
+            npcTruePos.position = Vector2.MoveTowards(npcTruePos.position, pathNodePos, step);
+
+            //velocity += ((pathNodePos - (Vector2)npcTruePos.position) * (acceleration * Time.fixedDeltaTime));
+            //npcRigidBody.velocity = Vector2.ClampMagnitude(velocity, npcMaxVelocity);
+
+            if (Vector2.Distance(this.transform.position, pathNodePos) < pathNodeRadius)
+            {
+                PathToPlayer.RemoveAt(0);
+            }
         }
 
         //////////////////////////////////
         // Slowing Down the NPC
-        if ((followPath == false) && (npcVelocity.magnitude > 0.001f))
+        if ((followPath == false) && (velocity.magnitude > 0.001f))
         {
-            Debug.Log("Slowing Down");
-            //npcVelocity -= (Time.fixedDeltaTime * npcAcceleration) * npcRigidBody.velocity;
-            npcVelocity /= 2f;
-            npcRigidBody.velocity = npcVelocity;            
+            velocity = velocity / 2f;
+            npcRigidBody.velocity = velocity;            
         }
+        
+    }
 
-        //velocity.x -= Time.deltaTime * acceleration;
-        //velocity.x = Mathf.Clamp(velocity.x, 0f, veloictyCap);
+    // Used to hault all Path Finding Coroutines
+    public void stopPathFindingCoroutines()
+    {
+        StopCoroutine(callPathFinding);
+        StopCoroutine(pathFindingFx);
+    }
 
-        //////////////////////////////////
-        // Following Path Control
-        if ((PathToPlayer.Count > 0) && (followPath == true))
+    IEnumerator UpdateAstarPath()
+    {
+        // Updating the NPC and Player's Node Positions
+        npcNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
+        playerNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
+
+        // Checking if the player is in a new node
+        if (playerNodePos != playerPrevNodePos)
         {
-            pathNodePos = new Vector2(PathToPlayer[0].worldX, PathToPlayer[0].worldY);
+            // Updating the Player's Previous Node
+            playerPrevNodePos = playerNodePos;
 
-            npcVelocity += ((pathNodePos - (Vector2)npcTruePos.position) * (npcAcceleration * Time.fixedDeltaTime));
-            npcRigidBody.velocity = Vector2.ClampMagnitude(npcVelocity, npcMaxVelocity);
+            // Calling for the NPC's path to be updated
+            pathFindingFx = npcAstarControl.FindPath(npcNodePos, playerNodePos, true);
+            yield return StartCoroutine(pathFindingFx);
 
-            if (Vector2.Distance(this.transform.position, pathNodePos) < pathNodeRadius)
+            canUpdatePath = false;
+            followPath = true;
+
+            StartCoroutine(UpdateAstarPathTimer(updatePathTimeDelta));
+
+            // Checking if the path exsist and if the path finding is in debug mode
+            if ((PathToPlayer != null) && (debugPath == true))
             {
-                //Debug.Log("Reached Node");
-                PathToPlayer.RemoveAt(0);
+                for (int listIndex = 0; listIndex < PathToPlayer.Count - 1; listIndex++)
+                {
+                    Debug.DrawLine(new Vector3(PathToPlayer[listIndex].worldX + 0.5f, PathToPlayer[listIndex].worldY + 0.5f, 0), new Vector3(PathToPlayer[listIndex + 1].worldX + 0.5f, PathToPlayer[listIndex + 1].worldY + 0.5f, 0), Color.green,
+                                                updatePathTimeDelta, true);
+                }
             }
         }
     }
 
-    IEnumerator callAstarPathUpdate()
+    IEnumerator UpdateAstarPathTimer(float updatePathTimeDelay)
     {
-        while (pathFindingRN)
-        {
-            yield return new WaitForSeconds(updatePathTimeDelay);
-
-            npcNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
-            playerNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
-
-            yield return StartCoroutine(npcAstarControl.FindPath(npcNodePos, playerNodePos, true));
-
-            if (PathToPlayer != null)
-            {
-
-                if (debugPath == true)
-                {
-                    for (int listIndex = 0; listIndex < PathToPlayer.Count - 1; listIndex++)
-                    {
-                        Debug.DrawLine(new Vector3(PathToPlayer[listIndex].worldX + 0.5f, PathToPlayer[listIndex].worldY + 0.5f, 0), new Vector3(PathToPlayer[listIndex + 1].worldX + 0.5f, PathToPlayer[listIndex + 1].worldY + 0.5f, 0), Color.green,
-                                                    updatePathTimeDelay, true);
-                    }
-                }
-            }
-        }
+        yield return new WaitForSeconds(updatePathTimeDelay);
+        canUpdatePath = true;
     }
 }
 
 
 // Add logic to follow the path, now that we have it.
+
+
+//////////////////////////////////
+/// Old Code
+/// IEnumerator callAstarPathUpdate()
+/*
+{
+    while (pathFinding)
+    {
+        npcNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(npcTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
+        playerNodePos = new Vector2Int(Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.x)), Mathf.RoundToInt(Mathf.Floor(playerTruePos.position.y))) + (LevelGen.nodeMapSize / 2);
+
+        yield return StartCoroutine(npcAstarControl.FindPath(npcNodePos, playerNodePos, true));
+
+        if (PathToPlayer != null)
+        {
+
+            if (debugPath == true)
+            {
+                for (int listIndex = 0; listIndex < PathToPlayer.Count - 1; listIndex++)
+                {
+                    Debug.DrawLine(new Vector3(PathToPlayer[listIndex].worldX + 0.5f, PathToPlayer[listIndex].worldY + 0.5f, 0), new Vector3(PathToPlayer[listIndex + 1].worldX + 0.5f, PathToPlayer[listIndex + 1].worldY + 0.5f, 0), Color.green,
+                                                updatePathTimeDelta, true);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(updatePathTimeDelta);
+    }
+}*/

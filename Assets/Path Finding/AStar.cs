@@ -50,11 +50,11 @@ public class AStar : MonoBehaviour
 	public Node[,]         nodeMap;
 	public LevelGeneration LevelGen;
 	public EnemyController NPCController;
-	public List<Node> openNodes;
-	public List<Node> closedNodes;
-	public List<Node> PathToPlayer;
-	public Node currentNode;
-	public Node neighborNode;
+	public List<Node>      openNodes;
+	public List<Node>      closedNodes;
+	public List<Node>      PathToPlayer;
+	public Node            currentNode;
+	public Node            neighborNode;
 
 	//public List<Node> FindPath(Vector2Int APos, Vector2Int BPos, Node[,] nodeMap, bool debugMode = false)
 	public IEnumerator FindPath(Vector2Int APos, Vector2Int BPos, bool debugMode = false)
