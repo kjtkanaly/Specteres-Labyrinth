@@ -25,22 +25,25 @@ public class EnemyControllerBranch : MonoBehaviour
 	private float RoamDistanceMinimum = 1f;
 	private float RoamDistanceMaximum = 4f;
 	private float chasePlayerRange = 15f;
+	private bool  ReadyForNewRoamDirection = true;
 
-	private GameObject  player;
-	private IEnumerator RoamingTimerInstance;
-	public  States      State;
-	public  Vector3     StartingPos;
-	public  Vector3     RoamPosition;
-	private float       RoamMaxTime;
-	private float       maxRoamingStep;
-	private float       RoamDistance;
-	public  float       distanceToPlayer;
-	private int         RoamDirection;
-	private bool        ReadyForNewRoamDirection = true;
+	private GameObject   player;
+	private RaycastHit2D hit;
+	private LayerMask    mask;
+	private IEnumerator  RoamingTimerInstance;
+	public  States       State;
+	public  Vector3      StartingPos;
+	public  Vector3      RoamPosition;
+	private float        RoamMaxTime;
+	private float        maxRoamingStep;
+	private float        RoamDistance;
+	public  float        distanceToPlayer;
+	private int          RoamDirection;
 
 	public void Awake()
 	{
 		player = GameObject.FindGameObjectWithTag("Player");
+		mask   = LayerMask.GetMask("Player");
 
 		State       = States.Roam;
 		StartingPos = this.transform.position;
@@ -59,9 +62,13 @@ public class EnemyControllerBranch : MonoBehaviour
 		// Checking if I should start chasing the Player
 		if ((distanceToPlayer <= chasePlayerRange) && (State != States.ChasePlayer))
 		{
+			// Casting a ray to check for line of sigh with player
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, chasePlayerRange, mask);
+
 			// Ray Cast to see if the player is visible to the Demon
-			if (Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, chasePlayerRange).collider.tag == "Player")
+			if (hit.collider.tag == "Player")
 			{
+				// Remebering that I am now chasing the player
 				State = States.ChasePlayer;
 
 				// Debug
@@ -145,8 +152,11 @@ public class EnemyControllerBranch : MonoBehaviour
 		// If I am in the Chase Player State
 		else if (State == States.ChasePlayer)
 		{
+			// Casting a ray to check for line of sigh with player
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, chasePlayerRange, mask);
+
 			// Checking if I should stop chasing the Player
-			if ((distanceToPlayer > chasePlayerRange) || ((Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, chasePlayerRange).collider.tag != "Player")))
+			if ((distanceToPlayer > chasePlayerRange) || (hit.collider.tag != "Player"))
 			{
 				// Set my state back to Roam
 				State = States.Roam;
