@@ -1160,7 +1160,6 @@ MonoBehaviour:
   playerRB: {fileID: 494501827}
   playerBoundaryCollider: {fileID: 494501833}
   velocity: {x: 0, y: 0}
-  rollingAngluarVelocity: {x: 0, y: 0, z: 1000}
   acceleration: 300
   veloictyCap: 10
   rollTime: 0.35
