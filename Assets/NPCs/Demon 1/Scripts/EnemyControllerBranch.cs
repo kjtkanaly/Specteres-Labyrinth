@@ -78,7 +78,7 @@ public class EnemyControllerBranch : MonoBehaviour
 
 
 		///////////////////////////////////////////////////////////////////////
-		/// I already know I'm in the right State
+		/// I have determined my state
 
 		// If I am in the Roam State
 		if (State == States.Roam)
@@ -167,6 +167,19 @@ public class EnemyControllerBranch : MonoBehaviour
 		}
 
 	}
+	
+	
+	void OnCollisionEnter2D(Collision2D col)
+	{
+		Debug.Log(col.GameObject.name);
+		
+		if ((col.GameObject.tag == "Boundary") && (state == States.Roam) && (ReadyForNewRoamDirection == false))
+		{
+			StopCoroutine(RoamingTimerInstance);
+			ReadyForNewRoamDirection = true;
+		}
+	}
+	
 
 	// Roaming Timer - Keeps me from Roaming for too long
 	public IEnumerator RoamingTimer(float timer)
