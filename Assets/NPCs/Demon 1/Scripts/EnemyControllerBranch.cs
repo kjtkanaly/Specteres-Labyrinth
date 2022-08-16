@@ -22,9 +22,10 @@ public class EnemyControllerBranch : MonoBehaviour
     }
 
 	private float RoamingSpeed = 4f;
+	private float ChasingSpeed = 6f;
 	private float RoamDistanceMinimum = 1f;
 	private float RoamDistanceMaximum = 4f;
-	private float chasePlayerRange = 15f;
+	private float ChasePlayerRange = 15f;
 	private bool  ReadyForNewRoamDirection = true;
 
 	private GameObject   player;
@@ -35,9 +36,10 @@ public class EnemyControllerBranch : MonoBehaviour
 	public  Vector3      StartingPos;
 	public  Vector3      RoamPosition;
 	private float        RoamMaxTime;
-	private float        maxRoamingStep;
+	private float        MaxRoamingStep;
+	private float        MaxChaseStep;
 	private float        RoamDistance;
-	public  float        distanceToPlayer;
+	public  float        DistanceToPlayer;
 	private int          RoamDirection;
 
 	public void Awake()
@@ -57,13 +59,13 @@ public class EnemyControllerBranch : MonoBehaviour
 		/// Checking if I am in the right state
 
 		// Updating the distance to player
-		distanceToPlayer = Vector2.Distance(this.transform.position, player.transform.position);
+		DistanceToPlayer = Vector2.Distance(this.transform.position, player.transform.position);
 
 		// Checking if I should start chasing the Player
-		if ((distanceToPlayer <= chasePlayerRange) && (State != States.ChasePlayer))
+		if ((DistanceToPlayer <= ChasePlayerRange) && (State != States.ChasePlayer))
 		{
 			// Casting a ray to check for line of sigh with player
-			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, chasePlayerRange, mask);
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
 
 			// Ray Cast to see if the player is visible to the Demon
 			if (hit.collider.tag == "Player")
@@ -96,19 +98,19 @@ public class EnemyControllerBranch : MonoBehaviour
 				switch (RoamDirection)
 				{
 					// Up
-					case 1:
+					case Direction.Up:
 						RoamPosition = this.transform.position + new Vector3(0, RoamDistance, 0);
 						break;
 					// Right
-					case 2:
+					case Direction.Right:
 						RoamPosition = this.transform.position + new Vector3(RoamDistance, 0, 0);
 						break;
 					// Down
-					case 3:
+					case Direction.Down:
 						RoamPosition = this.transform.position + new Vector3(0, -RoamDistance, 0);
 						break;
 					// Left
-					case 4:
+					case Direction.Left:
 						RoamPosition = this.transform.position + new Vector3(-RoamDistance, 0, 0);
 						break;
 					// Stand Still
@@ -131,10 +133,10 @@ public class EnemyControllerBranch : MonoBehaviour
 				if (RoamPosition != null)
 				{
 					// Setting my max Step for this frame
-					maxRoamingStep = RoamingSpeed * Time.deltaTime;
+					MaxRoamingStep = RoamingSpeed * Time.deltaTime;
 
 					// Moving towards my target
-					this.transform.position = Vector3.MoveTowards(this.transform.position, RoamPosition, maxRoamingStep);
+					this.transform.position = Vector3.MoveTowards(this.transform.position, RoamPosition, MaxRoamingStep);
 				}
 
 				// If I have reached my target
@@ -153,10 +155,10 @@ public class EnemyControllerBranch : MonoBehaviour
 		else if (State == States.ChasePlayer)
 		{
 			// Casting a ray to check for line of sigh with player
-			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, chasePlayerRange, mask);
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
 
 			// Checking if I should stop chasing the Player
-			if ((distanceToPlayer > chasePlayerRange) || (hit.collider.tag != "Player"))
+			if ((DistanceToPlayer > ChasePlayerRange) || (hit.collider.tag != "Player"))
 			{
 				// Set my state back to Roam
 				State = States.Roam;
@@ -164,6 +166,14 @@ public class EnemyControllerBranch : MonoBehaviour
 				// Debug
 				Debug.Log("Hault Chasing the Player");
 			}
+			
+			// If I should be still chasing the player
+			else
+			{
+				MaxChaseStep = ChasingSpeed * Time.deltaTime;
+				
+				this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, MaxChaseStep);
+			}	
 		}
 
 	}
