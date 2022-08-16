@@ -26,12 +26,16 @@ public class EnemyControllerBranch : MonoBehaviour
 	private float RoamDistanceMinimum = 1f;
 	private float RoamDistanceMaximum = 4f;
 	private float ChasePlayerRange = 15f;
+	private int   AttackDamage = 2;
+	private int   FramesToDamagePlayer = 12;
 	private bool  ReadyForNewRoamDirection = true;
+	public  bool  CanDamagePlayer = false;
 
 	private GameObject   player;
 	private RaycastHit2D hit;
 	private LayerMask    mask;
 	private IEnumerator  RoamingTimerInstance;
+	private IEnumerator  DamagePlayerFrameDelayInstance;
 	public  States       State;
 	public  Vector3      StartingPos;
 	public  Vector3      RoamPosition;
@@ -178,6 +182,37 @@ public class EnemyControllerBranch : MonoBehaviour
 
 	}
 	
+	// When I make first contact with 
+	void OnTriggerEnter2D(Collider2D col)
+	{
+		DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
+		StartCoroutine(DamagePlayerFrameDelayInstance);
+	}
+	
+	void OnTriggerStay2D(Collider2D col)
+	{
+		if ((player.PlayerController.canTakeDamage == true) && (CanDamagePlayer == true))
+		{
+			StartCoroutine(PlayerHitAnimation());
+			
+			player.PlayerController.canTakeDamage = false;
+			CanDamagePlayer = false;
+			
+			player.currentHealth -= AttackDamage; 
+			player.healthBar.SetHealth(player.currentHealth);
+			
+			DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
+			StartCoroutine(DamagePlayerFrameDelayInstance);
+		}
+	}
+	
+	void OnTriggerExit2D(Collider2D col)
+	{
+		if (DamagePlayerFrameDelayInstance != null)
+		{
+			StopCoroutine(DamagePlayerFrameDelayInstance);
+		}
+	}
 	
 	void OnCollisionEnter2D(Collision2D col)
 	{
@@ -190,7 +225,13 @@ public class EnemyControllerBranch : MonoBehaviour
 		}
 	}
 	
-
+	public IEnumerator DamagePlayerFrameDelay()
+	{
+		yield return new WaitForFrames(FramesToDamagePlayer);
+		
+		CanDamagePlayer = true;
+	}
+	
 	// Roaming Timer - Keeps me from Roaming for too long
 	public IEnumerator RoamingTimer(float timer)
     {

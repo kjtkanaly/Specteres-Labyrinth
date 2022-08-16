@@ -43,8 +43,9 @@ public class PlayerController : MonoBehaviour
     public int healthCurrent = 10;
 
     // Player Defence/I Frame Parameters
-    public bool canTakeDamage = true;
-    public float iFrameTime = 0.1f;
+    public  bool canTakeDamage = true;
+	public  bool runningIFrameTimer = false;
+    private int hitAnimationFrames
 
     // Attacking Parameters
     private float timeSinceLastManaUpdate = 0f;
@@ -74,8 +75,6 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove == true)
         {
-
-
             reticlePos.position = getMouseWorldPosition();
 
             avgBetweenPlyAndReticle.localPosition = Vector3.ClampMagnitude((reticlePos.localPosition), avgDiffMax);
@@ -223,12 +222,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator PlayerHitAnimation(float hitAnimationTime)
+    public IEnumerator PlayerHitAnimation()
     {
         playerSprite.material.shader = shaderGUItext;
         playerSprite.color = Color.white;
 
-        yield return new WaitForSeconds(hitAnimationTime);
+        yield return new WaitForFrames(hitAnimationFrames);
 
         canTakeDamage = true;
 
