@@ -242,6 +242,4 @@ public class EnemyControllerBranch : MonoBehaviour
 		ReadyForNewRoamDirection = true;
     }
 
-
-
 }
