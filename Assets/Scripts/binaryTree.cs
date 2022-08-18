@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class Solution {
     
     public class node {
@@ -20,7 +24,7 @@ public class Solution {
         }
     }
     
-    public string LongestCommonPrefix(string[] strs) {
+    public string binaryTree(string[] strs) {
      
         int levels = 2;
         
@@ -52,7 +56,7 @@ public class Solution {
     // Debug Function
     public void printTree(node Node)
     {
-        Console.WriteLine(Node.level);
+        Debug.Log(Node.level);
         
         if (Node.Left != null)
         {

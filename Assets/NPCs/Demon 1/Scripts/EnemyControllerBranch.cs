@@ -27,28 +27,30 @@ public class EnemyControllerBranch : MonoBehaviour
 	private float RoamDistanceMaximum = 4f;
 	private float ChasePlayerRange = 15f;
 	private int   AttackDamage = 2;
-	private int   FramesToDamagePlayer = 12;
+	private int   FramesToDamagePlayer = 1;
 	private bool  ReadyForNewRoamDirection = true;
 	public  bool  CanDamagePlayer = false;
 
-	private GameObject   player;
-	private RaycastHit2D hit;
-	private LayerMask    mask;
-	private IEnumerator  RoamingTimerInstance;
-	private IEnumerator  DamagePlayerFrameDelayInstance;
-	public  States       State;
-	public  Vector3      StartingPos;
-	public  Vector3      RoamPosition;
-	private float        RoamMaxTime;
-	private float        MaxRoamingStep;
-	private float        MaxChaseStep;
-	private float        RoamDistance;
-	public  float        DistanceToPlayer;
-	private int          RoamDirection;
+	private GameObject       player;
+	private PlayerController playerController;
+	private RaycastHit2D     hit;
+	private LayerMask        mask;
+	private IEnumerator      RoamingTimerInstance;
+	private IEnumerator      DamagePlayerFrameDelayInstance;
+	public  States           State;
+	public  Vector3          StartingPos;
+	public  Vector3          RoamPosition;
+	private float            RoamMaxTime;
+	private float            MaxRoamingStep;
+	private float            MaxChaseStep;
+	private float            RoamDistance;
+	public  float            DistanceToPlayer;
+	private int              RoamDirection;
 
 	public void Awake()
 	{
 		player = GameObject.FindGameObjectWithTag("Player");
+		playerController = player.GetComponent<PlayerController>();
 		mask   = LayerMask.GetMask("Player");
 
 		State       = States.Roam;
@@ -102,19 +104,19 @@ public class EnemyControllerBranch : MonoBehaviour
 				switch (RoamDirection)
 				{
 					// Up
-					case Direction.Up:
+					case (int)Direction.Up:
 						RoamPosition = this.transform.position + new Vector3(0, RoamDistance, 0);
 						break;
 					// Right
-					case Direction.Right:
+					case (int)Direction.Right:
 						RoamPosition = this.transform.position + new Vector3(RoamDistance, 0, 0);
 						break;
 					// Down
-					case Direction.Down:
+					case (int)Direction.Down:
 						RoamPosition = this.transform.position + new Vector3(0, -RoamDistance, 0);
 						break;
 					// Left
-					case Direction.Left:
+					case (int)Direction.Left:
 						RoamPosition = this.transform.position + new Vector3(-RoamDistance, 0, 0);
 						break;
 					// Stand Still
@@ -191,15 +193,15 @@ public class EnemyControllerBranch : MonoBehaviour
 	
 	void OnTriggerStay2D(Collider2D col)
 	{
-		if ((player.PlayerController.canTakeDamage == true) && (CanDamagePlayer == true))
+		if ((playerController.canTakeDamage == true) && (CanDamagePlayer == true))
 		{
-			StartCoroutine(PlayerHitAnimation());
+			StartCoroutine(playerController.PlayerHitAnimation());
 			
-			player.PlayerController.canTakeDamage = false;
+			playerController.canTakeDamage = false;
 			CanDamagePlayer = false;
 			
-			player.currentHealth -= AttackDamage; 
-			player.healthBar.SetHealth(player.currentHealth);
+			playerController.healthCurrent -= AttackDamage; 
+			playerController.healthBar.SetHealth(playerController.healthCurrent);
 			
 			DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
 			StartCoroutine(DamagePlayerFrameDelayInstance);
@@ -216,9 +218,9 @@ public class EnemyControllerBranch : MonoBehaviour
 	
 	void OnCollisionEnter2D(Collision2D col)
 	{
-		Debug.Log(col.GameObject.name);
+		Debug.Log(col.gameObject.name);
 		
-		if ((col.GameObject.tag == "Boundary") && (state == States.Roam) && (ReadyForNewRoamDirection == false))
+		if ((col.gameObject.tag == "Boundary") && (State == States.Roam) && (ReadyForNewRoamDirection == false))
 		{
 			StopCoroutine(RoamingTimerInstance);
 			ReadyForNewRoamDirection = true;
@@ -227,7 +229,7 @@ public class EnemyControllerBranch : MonoBehaviour
 	
 	public IEnumerator DamagePlayerFrameDelay()
 	{
-		yield return new WaitForFrames(FramesToDamagePlayer);
+		yield return new WaitForSeconds(FramesToDamagePlayer); // <-- Change this to frames instead of seconds.
 		
 		CanDamagePlayer = true;
 	}

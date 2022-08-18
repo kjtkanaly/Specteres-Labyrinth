@@ -115,7 +115,7 @@ public class EnemyOneController : MonoBehaviour
             playerControl.healthBar.SetHealth(Player.GetComponent<PlayerController>().healthCurrent);
 
             playerControl.canTakeDamage = false;
-            StartCoroutine(playerControl.PlayerHitAnimation(playerControl.iFrameTime));
+            StartCoroutine(playerControl.PlayerHitAnimation());
 
         }
     }

@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     // Player Defence/I Frame Parameters
     public  bool canTakeDamage = true;
 	public  bool runningIFrameTimer = false;
-    private int hitAnimationFrames
+    private int hitAnimationFrames = 1;
 
     // Attacking Parameters
     private float timeSinceLastManaUpdate = 0f;
@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour
         playerSprite.material.shader = shaderGUItext;
         playerSprite.color = Color.white;
 
-        yield return new WaitForFrames(hitAnimationFrames);
+        yield return new WaitForSeconds(hitAnimationFrames); // <Change this to be frames instead of seconds. Will require a fx
 
         canTakeDamage = true;
 
