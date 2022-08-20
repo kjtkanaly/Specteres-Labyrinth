@@ -31,8 +31,10 @@ public class EnemyControllerBranch : MonoBehaviour
 	private bool  ReadyForNewRoamDirection = true;
 	public  bool  CanDamagePlayer = false;
 
-	private GameObject       player;
-	private PlayerController playerController;
+	private GameObject        player;
+	private PlayerController  playerController;
+	private CapsuleCollider2D playerCollider;
+
 	private RaycastHit2D     hit;
 	private LayerMask        mask;
 	private IEnumerator      RoamingTimerInstance;
@@ -49,8 +51,9 @@ public class EnemyControllerBranch : MonoBehaviour
 
 	public void Awake()
 	{
-		player = GameObject.FindGameObjectWithTag("Player");
+		player           = GameObject.FindGameObjectWithTag("Player");
 		playerController = player.GetComponent<PlayerController>();
+		playerCollider   = player.GetComponent<CapsuleCollider2D>();
 		mask   = LayerMask.GetMask("Player");
 
 		State       = States.Roam;
@@ -187,8 +190,34 @@ public class EnemyControllerBranch : MonoBehaviour
 	// When I make first contact with 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
-		StartCoroutine(DamagePlayerFrameDelayInstance);
+		if (col.gameObject.tag == "Player")
+        {
+			DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
+			StartCoroutine(DamagePlayerFrameDelayInstance);
+		}
+
+		if ((col.gameObject.tag == "Boundary") && (State == States.Roam) && (ReadyForNewRoamDirection == false))
+		{
+
+			Debug.Log("Ran into the Wall");
+
+			if ((RoamDirection == (int)Direction.Up) || (RoamDirection == (int)Direction.Down))
+			{
+				RoamPosition = new Vector3(1f * RoamPosition.x, -1f * RoamPosition.y, 1f * RoamPosition.z);
+
+			}
+
+			else if ((RoamDirection == (int)Direction.Left) || (RoamDirection == (int)Direction.Right))
+			{
+				RoamPosition = new Vector3(-1f * RoamPosition.x, 1f * RoamPosition.y, 1f * RoamPosition.z);
+
+			}
+
+			/*
+			StopCoroutine(RoamingTimerInstance);
+			ReadyForNewRoamDirection = true;
+			*/
+		}
 	}
 	
 	void OnTriggerStay2D(Collider2D col)
@@ -216,15 +245,13 @@ public class EnemyControllerBranch : MonoBehaviour
 		}
 	}
 	
-	void OnCollisionEnter2D(Collision2D col)
-	{
-		Debug.Log(col.gameObject.name);
-		
-		if ((col.gameObject.tag == "Boundary") && (State == States.Roam) && (ReadyForNewRoamDirection == false))
+	void OnCollisionEnter2D(Collision2D col) {
+
+		if (col.gameObject.tag == "Player")
 		{
-			StopCoroutine(RoamingTimerInstance);
-			ReadyForNewRoamDirection = true;
+			Physics2D.IgnoreCollision(col.otherCollider, col.collider);
 		}
+
 	}
 	
 	public IEnumerator DamagePlayerFrameDelay()

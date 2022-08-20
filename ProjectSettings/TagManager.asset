@@ -20,6 +20,7 @@ TagManager:
   - Main Game
   - Floor Map
   - Debug Map
+  - Boundary
   layers:
   - Default
   - TransparentFX
