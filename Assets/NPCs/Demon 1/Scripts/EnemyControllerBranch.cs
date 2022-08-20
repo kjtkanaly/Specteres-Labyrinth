@@ -27,7 +27,7 @@ public class EnemyControllerBranch : MonoBehaviour
 	private float RoamDistanceMaximum = 4f;
 	private float ChasePlayerRange = 15f;
 	private int   AttackDamage = 2;
-	private int   FramesToDamagePlayer = 1;
+	private int   FramesToDamagePlayer = 12/60;
 	private bool  ReadyForNewRoamDirection = true;
 	public  bool  CanDamagePlayer = false;
 
@@ -192,6 +192,7 @@ public class EnemyControllerBranch : MonoBehaviour
 	{
 		if (col.gameObject.tag == "Player")
         {
+			//Debug.Log("Contact with Player!!!");
 			DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
 			StartCoroutine(DamagePlayerFrameDelayInstance);
 		}

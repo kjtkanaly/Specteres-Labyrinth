@@ -1186,6 +1186,7 @@ MonoBehaviour:
   healthCurrent: 10
   canTakeDamage: 0
   runningIFrameTimer: 0
+  hitAnimationFrames: 0.2
   shotTimeDelta: 0.4
   manaTimeDelta: 0.2
 --- !u!70 &494501833

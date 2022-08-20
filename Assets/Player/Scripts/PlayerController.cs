@@ -43,9 +43,9 @@ public class PlayerController : MonoBehaviour
     public int healthCurrent = 10;
 
     // Player Defence/I Frame Parameters
-    public  bool canTakeDamage = true;
-	public  bool runningIFrameTimer = false;
-    private int hitAnimationFrames = 1;
+    public  bool  canTakeDamage = true;
+	public  bool  runningIFrameTimer = false;
+    public  float hitAnimationFrames = 12/60;
 
     // Attacking Parameters
     private float timeSinceLastManaUpdate = 0f;
