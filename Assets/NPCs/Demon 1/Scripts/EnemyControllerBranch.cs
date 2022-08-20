@@ -21,19 +21,23 @@ public class EnemyControllerBranch : MonoBehaviour
 		Left
     }
 
-	private float RoamingSpeed = 4f;
-	private float ChasingSpeed = 6f;
-	private float RoamDistanceMinimum = 1f;
-	private float RoamDistanceMaximum = 4f;
-	private float ChasePlayerRange = 15f;
-	private int   AttackDamage = 2;
+	private float RoamingSpeed         = 4f;
+	private float ChasingSpeed         = 6f;
+	private float RoamDistanceMinimum  = 1f;
+	private float RoamDistanceMaximum  = 4f;
+	private float ChasePlayerRange     = 15f;
+	private float AttackRange          = 5f;
+	private float LungeSpeed           = 8f;
+	private float TimeBetweenLunges    = 1f;
+	private int   AttackDamage         = 2;
 	private int   FramesToDamagePlayer = 12/60;
 	private bool  ReadyForNewRoamDirection = true;
+	private bool  CanLungeAtPlayer = true;
 	public  bool  CanDamagePlayer = false;
 
 	private GameObject        player;
 	private PlayerController  playerController;
-	private CapsuleCollider2D playerCollider;
+	private Rigidbody2D       DemonRigidBody;
 
 	private RaycastHit2D     hit;
 	private LayerMask        mask;
@@ -42,6 +46,7 @@ public class EnemyControllerBranch : MonoBehaviour
 	public  States           State;
 	public  Vector3          StartingPos;
 	public  Vector3          RoamPosition;
+	public  Vector3          AttackPosition;
 	private float            RoamMaxTime;
 	private float            MaxRoamingStep;
 	private float            MaxChaseStep;
@@ -53,7 +58,7 @@ public class EnemyControllerBranch : MonoBehaviour
 	{
 		player           = GameObject.FindGameObjectWithTag("Player");
 		playerController = player.GetComponent<PlayerController>();
-		playerCollider   = player.GetComponent<CapsuleCollider2D>();
+		DemonRigidBody   = this.GetComponent<Rigidbody2D>();
 		mask   = LayerMask.GetMask("Player");
 
 		State       = States.Roam;
@@ -70,6 +75,24 @@ public class EnemyControllerBranch : MonoBehaviour
 		// Updating the distance to player
 		DistanceToPlayer = Vector2.Distance(this.transform.position, player.transform.position);
 
+		// Checking if I can Attack the Player
+		// Checking if I can Lunge for the player
+		if (DistanceToPlayer < AttackRange)
+		{
+			// Casting a ray to check for line of sigh with player
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
+
+			if(hit.collider.tag == "Player")
+            {
+				// Set my state to Attack
+				State = States.Attack;
+
+				// Debug
+				Debug.Log("Attack the Player!!!");
+			}
+		}
+
+		/*
 		// Checking if I should start chasing the Player
 		if ((DistanceToPlayer <= ChasePlayerRange) && (State != States.ChasePlayer))
 		{
@@ -85,7 +108,7 @@ public class EnemyControllerBranch : MonoBehaviour
 				// Debug
 				Debug.Log("Begin chasing the Player!!!");
 			}
-		}
+		}*/
 
 
 		///////////////////////////////////////////////////////////////////////
@@ -166,6 +189,7 @@ public class EnemyControllerBranch : MonoBehaviour
 			// Casting a ray to check for line of sigh with player
 			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
 
+
 			// Checking if I should stop chasing the Player
 			if ((DistanceToPlayer > ChasePlayerRange) || (hit.collider.tag != "Player"))
 			{
@@ -184,6 +208,15 @@ public class EnemyControllerBranch : MonoBehaviour
 				this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, MaxChaseStep);
 			}	
 		}
+
+		// If my state is Attack
+		if ((State == States.Attack) && (CanLungeAtPlayer))
+        {
+			DemonRigidBody.AddForce(new Vector2(player.transform.position.x - this.transform.position.x, player.transform.position.y - this.transform.position.y).normalized * LungeSpeed);
+
+			CanLungeAtPlayer = false;
+			StartCoroutine(LungeTimer());
+        }
 
 	}
 	
@@ -261,7 +294,14 @@ public class EnemyControllerBranch : MonoBehaviour
 		
 		CanDamagePlayer = true;
 	}
-	
+
+	public IEnumerator LungeTimer()
+    {
+		yield return new WaitForSeconds(TimeBetweenLunges);
+
+		CanLungeAtPlayer = true;
+    }
+
 	// Roaming Timer - Keeps me from Roaming for too long
 	public IEnumerator RoamingTimer(float timer)
     {
