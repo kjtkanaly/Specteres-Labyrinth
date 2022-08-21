@@ -27,7 +27,7 @@ public class EnemyControllerBranch : MonoBehaviour
 	private float RoamDistanceMaximum  = 4f;
 	private float ChasePlayerRange     = 15f;
 	private float AttackRange          = 5f;
-	private float LungeSpeed           = 8f;
+	private float LungeSpeed           = 700f;
 	private float TimeBetweenLunges    = 1f;
 	private int   AttackDamage         = 2;
 	private int   FramesToDamagePlayer = 12/60;
@@ -91,24 +91,6 @@ public class EnemyControllerBranch : MonoBehaviour
 				Debug.Log("Attack the Player!!!");
 			}
 		}
-
-		/*
-		// Checking if I should start chasing the Player
-		if ((DistanceToPlayer <= ChasePlayerRange) && (State != States.ChasePlayer))
-		{
-			// Casting a ray to check for line of sigh with player
-			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
-
-			// Ray Cast to see if the player is visible to the Demon
-			if (hit.collider.tag == "Player")
-			{
-				// Remebering that I am now chasing the player
-				State = States.ChasePlayer;
-
-				// Debug
-				Debug.Log("Begin chasing the Player!!!");
-			}
-		}*/
 
 
 		///////////////////////////////////////////////////////////////////////
@@ -184,39 +166,30 @@ public class EnemyControllerBranch : MonoBehaviour
 		}
 
 		// If I am in the Chase Player State
-		else if (State == States.ChasePlayer)
+		else if (State == States.Attack)
 		{
 			// Casting a ray to check for line of sigh with player
 			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
 
 
 			// Checking if I should stop chasing the Player
-			if ((DistanceToPlayer > ChasePlayerRange) || (hit.collider.tag != "Player"))
+			if ((DistanceToPlayer > AttackRange) || (hit.collider.tag != "Player"))
 			{
 				// Set my state back to Roam
 				State = States.Roam;
 
 				// Debug
-				Debug.Log("Hault Chasing the Player");
+				Debug.Log("Hault Attacking the Player...");
 			}
-			
-			// If I should be still chasing the player
-			else
-			{
-				MaxChaseStep = ChasingSpeed * Time.deltaTime;
-				
-				this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, MaxChaseStep);
-			}	
+
+			if (CanLungeAtPlayer)
+            {
+				DemonRigidBody.AddForce(new Vector2(player.transform.position.x - this.transform.position.x, player.transform.position.y - this.transform.position.y).normalized * LungeSpeed);
+
+				CanLungeAtPlayer = false;
+				StartCoroutine(LungeTimer());
+			}
 		}
-
-		// If my state is Attack
-		if ((State == States.Attack) && (CanLungeAtPlayer))
-        {
-			DemonRigidBody.AddForce(new Vector2(player.transform.position.x - this.transform.position.x, player.transform.position.y - this.transform.position.y).normalized * LungeSpeed);
-
-			CanLungeAtPlayer = false;
-			StartCoroutine(LungeTimer());
-        }
 
 	}
 	
@@ -313,3 +286,52 @@ public class EnemyControllerBranch : MonoBehaviour
     }
 
 }
+
+
+/*
+ * 
+ * 		/*
+		// Checking if I should start chasing the Player
+		if ((DistanceToPlayer <= ChasePlayerRange) && (State != States.ChasePlayer))
+		{
+			// Casting a ray to check for line of sigh with player
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
+
+			// Ray Cast to see if the player is visible to the Demon
+			if (hit.collider.tag == "Player")
+			{
+				// Remebering that I am now chasing the player
+				State = States.ChasePlayer;
+
+				// Debug
+				Debug.Log("Begin chasing the Player!!!");
+			}
+		}
+*
+* // If I am in the Chase Player State
+		else if (State == States.ChasePlayer)
+		{
+			// Casting a ray to check for line of sigh with player
+			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
+
+
+			// Checking if I should stop chasing the Player
+			if ((DistanceToPlayer > ChasePlayerRange) || (hit.collider.tag != "Player"))
+			{
+				// Set my state back to Roam
+				State = States.Roam;
+
+				// Debug
+				Debug.Log("Hault Chasing the Player");
+			}
+
+			/*
+			// If I should be still chasing the player
+			else
+			{
+				MaxChaseStep = ChasingSpeed * Time.deltaTime;
+				
+				this.transform.position = Vector3.MoveTowards(this.transform.position, player.transform.position, MaxChaseStep);
+			}
+		}
+ */
