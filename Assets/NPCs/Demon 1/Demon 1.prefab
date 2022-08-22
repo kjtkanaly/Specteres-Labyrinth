@@ -158,6 +158,7 @@ MonoBehaviour:
   State: 0
   StartingPos: {x: 0, y: 0, z: 0}
   RoamPosition: {x: 0, y: 0, z: 0}
+  AttackPosition: {x: 0, y: 0, z: 0}
   DistanceToPlayer: 0
 --- !u!114 &3377584092304728841
 MonoBehaviour:
@@ -186,7 +187,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}

@@ -22,18 +22,17 @@ public class EnemyControllerBranch : MonoBehaviour
     }
 
 	private float RoamingSpeed         = 4f;
-	private float ChasingSpeed         = 6f;
 	private float RoamDistanceMinimum  = 1f;
 	private float RoamDistanceMaximum  = 4f;
 	private float ChasePlayerRange     = 15f;
 	private float AttackRange          = 5f;
-	private float LungeSpeed           = 700f;
-	private float TimeBetweenLunges    = 1f;
+	private float LungeSpeed           = 1000f;
+	private float TimeBeforeLunges     = 0.1f;
+	private float TimeBetweenLunges    = 3f;
 	private int   AttackDamage         = 2;
-	private int   FramesToDamagePlayer = 12/60;
 	private bool  ReadyForNewRoamDirection = true;
 	private bool  CanLungeAtPlayer = true;
-	public  bool  CanDamagePlayer = false;
+	public  bool  CanDamagePlayer = true;
 
 	private GameObject        player;
 	private PlayerController  playerController;
@@ -42,14 +41,14 @@ public class EnemyControllerBranch : MonoBehaviour
 	private RaycastHit2D     hit;
 	private LayerMask        mask;
 	private IEnumerator      RoamingTimerInstance;
-	private IEnumerator      DamagePlayerFrameDelayInstance;
+	private IEnumerator      PreLungeTimerInstance;
+	private IEnumerator      PostLungeTimerInstance;
 	public  States           State;
 	public  Vector3          StartingPos;
 	public  Vector3          RoamPosition;
 	public  Vector3          AttackPosition;
 	private float            RoamMaxTime;
 	private float            MaxRoamingStep;
-	private float            MaxChaseStep;
 	private float            RoamDistance;
 	public  float            DistanceToPlayer;
 	private int              RoamDirection;
@@ -77,7 +76,7 @@ public class EnemyControllerBranch : MonoBehaviour
 
 		// Checking if I can Attack the Player
 		// Checking if I can Lunge for the player
-		if (DistanceToPlayer < AttackRange)
+		if ((DistanceToPlayer < AttackRange) && (State != States.Attack))
 		{
 			// Casting a ray to check for line of sigh with player
 			hit = Physics2D.Raycast(this.transform.position, player.transform.position - this.transform.position, ChasePlayerRange, mask);
@@ -182,12 +181,12 @@ public class EnemyControllerBranch : MonoBehaviour
 				Debug.Log("Hault Attacking the Player...");
 			}
 
-			if (CanLungeAtPlayer)
+			if (CanLungeAtPlayer == true)
             {
-				DemonRigidBody.AddForce(new Vector2(player.transform.position.x - this.transform.position.x, player.transform.position.y - this.transform.position.y).normalized * LungeSpeed);
-
 				CanLungeAtPlayer = false;
-				StartCoroutine(LungeTimer());
+
+				PreLungeTimerInstance = PreLungeTimer();
+				StartCoroutine(PreLungeTimerInstance);
 			}
 		}
 
@@ -196,11 +195,14 @@ public class EnemyControllerBranch : MonoBehaviour
 	// When I make first contact with 
 	void OnTriggerEnter2D(Collider2D col)
 	{
-		if (col.gameObject.tag == "Player")
-        {
-			//Debug.Log("Contact with Player!!!");
-			DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
-			StartCoroutine(DamagePlayerFrameDelayInstance);
+		if ((col.gameObject.tag == "Player") && (playerController.canTakeDamage == true))
+		{
+			StartCoroutine(playerController.PlayerHitAnimation());
+
+			playerController.canTakeDamage = false;
+
+			playerController.healthCurrent -= AttackDamage;
+			playerController.healthBar.SetHealth(playerController.healthCurrent);
 		}
 
 		if ((col.gameObject.tag == "Boundary") && (State == States.Roam) && (ReadyForNewRoamDirection == false))
@@ -219,56 +221,32 @@ public class EnemyControllerBranch : MonoBehaviour
 				RoamPosition = new Vector3(-1f * RoamPosition.x, 1f * RoamPosition.y, 1f * RoamPosition.z);
 
 			}
+		}
+	}
 
-			/*
-			StopCoroutine(RoamingTimerInstance);
-			ReadyForNewRoamDirection = true;
-			*/
-		}
-	}
-	
-	void OnTriggerStay2D(Collider2D col)
+	// Ignoring collisions with the player's body
+	void OnCollisionEnter2D(Collision2D col)
 	{
-		if ((playerController.canTakeDamage == true) && (CanDamagePlayer == true))
-		{
-			StartCoroutine(playerController.PlayerHitAnimation());
-			
-			playerController.canTakeDamage = false;
-			CanDamagePlayer = false;
-			
-			playerController.healthCurrent -= AttackDamage; 
-			playerController.healthBar.SetHealth(playerController.healthCurrent);
-			
-			DamagePlayerFrameDelayInstance = DamagePlayerFrameDelay();
-			StartCoroutine(DamagePlayerFrameDelayInstance);
-		}
-	}
-	
-	void OnTriggerExit2D(Collider2D col)
-	{
-		if (DamagePlayerFrameDelayInstance != null)
-		{
-			StopCoroutine(DamagePlayerFrameDelayInstance);
-		}
-	}
-	
-	void OnCollisionEnter2D(Collision2D col) {
-
 		if (col.gameObject.tag == "Player")
 		{
 			Physics2D.IgnoreCollision(col.otherCollider, col.collider);
 		}
 
 	}
-	
-	public IEnumerator DamagePlayerFrameDelay()
-	{
-		yield return new WaitForSeconds(FramesToDamagePlayer); // <-- Change this to frames instead of seconds.
-		
-		CanDamagePlayer = true;
+
+	// Waiting to lunge at the player
+	public IEnumerator PreLungeTimer()
+    {
+		yield return new WaitForSeconds(TimeBeforeLunges);
+
+		DemonRigidBody.AddForce(new Vector2(player.transform.position.x - this.transform.position.x, player.transform.position.y - this.transform.position.y).normalized * LungeSpeed);
+
+		PostLungeTimerInstance = PostLungeTimer();
+		StartCoroutine(PostLungeTimerInstance);
 	}
 
-	public IEnumerator LungeTimer()
+	// Waiting to try lunging at the player again
+	public IEnumerator PostLungeTimer()
     {
 		yield return new WaitForSeconds(TimeBetweenLunges);
 
@@ -277,18 +255,18 @@ public class EnemyControllerBranch : MonoBehaviour
 
 	// Roaming Timer - Keeps me from Roaming for too long
 	public IEnumerator RoamingTimer(float timer)
-    {
+	{
 		// Waits for my max roaming time
 		yield return new WaitForSeconds(timer);
 
 		// Remeber that I need a new Roaming Direction
 		ReadyForNewRoamDirection = true;
-    }
+	}
 
 }
 
 
-/*
+/* The old chasing code OwO
  * 
  * 		/*
 		// Checking if I should start chasing the Player

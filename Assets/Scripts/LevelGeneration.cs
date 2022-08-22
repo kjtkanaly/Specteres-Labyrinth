@@ -76,7 +76,7 @@ public class LevelGeneration : MonoBehaviour
     // A* Parameters
 
     public void Start()
-    {
+    { 
         FillInEmptySpaceTiles(WallMap, emptySpaceTile, DungeonDim + new Vector2Int(20, 20));
 
         var Root = new List<Room>();
