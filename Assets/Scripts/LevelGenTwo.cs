@@ -43,20 +43,27 @@ public class LevelGenTwo : MonoBehaviour
         
         printTree(Parent);
 		
-        GenerateRoomsFromTree(Parent);
+		// Point the Parent Room is centered on
+		new Vector2Int Origin = new Vector2Int(0, 0);
+		
+        GenerateRoomsFromTree(Parent, Origin);
     }
 	
-	public void GenerateRoomsFromTree(node Node) {
+	public void GenerateRoomsFromTree(node Node, Vector2Int Origin) {
 		
-		SetTilesInTheGivenArea();
+		SetTilesInTheGivenArea(Origin);
 		
 		if (Node.Left) 
 		{
-			GenerateRoomsFromTree(Node.Left);
+			Origin = new Vector2Int(Origin.x - Node.level * 10, Origin.y);
+			
+			GenerateRoomsFromTree(Node.Left, Origin);
 		}
 		if (Node.Right)
 		{
-			GenerateRoomsFromTree(Node.Right);
+			Origin = new Vector2Int(Origin.x + Node.level * 10, Origin.y);
+			
+			GenerateRoomsFromTree(Node.Right, Origin);
 		}
 	}
 	
