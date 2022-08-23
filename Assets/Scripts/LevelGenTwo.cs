@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class LevelGenTwo : MonoBehaviour
 {
@@ -28,26 +29,60 @@ public class LevelGenTwo : MonoBehaviour
 	////////////////////////////////////
 	/// Variables and Parameters
 	
-	private int levels = 2;
+	// RoomFootPrint.x = width, RoomFootPrint.y = height
+	private Vector2Int RoomFootPrint = new Vector2Int(10,10);
+	private int TreeLevels = 2;
 	
+	public Tilemap FloorTileMap;
+	public Tile FloorTile;
 	private node Parent;
     
     public void Start() { 
 
-        Parent = createTree(0, levels, null);
+        Parent = createTree(0, TreeLevels, null);
         
         printTree(Parent);
-        
+		
+        GenerateRoomsFromTree(Parent);
     }
+	
+	public void GenerateRoomsFromTree(node Node) {
+		
+		SetTilesInTheGivenArea();
+		
+		if (Node.Left) 
+		{
+			GenerateRoomsFromTree(Node.Left);
+		}
+		if (Node.Right)
+		{
+			GenerateRoomsFromTree(Node.Right);
+		}
+	}
+	
+	public void SetTilesInTheGivenArea(Vector2Int Origin)
+	{
+		int width = RoomFootPrint.x;
+		int height = RoomFootPrint.y;
+		
+		for (int row = -height/2 + Origin.y; row < height/2 + Origin.y; row++)
+		{
+			for (int col = -width/2 + Origin.x; col < width/2 + Origin.x; col++)
+			{
+				FloorTileMap.SetTile(row, col, FloorTile);
+			}
+		}
+		
+	}
     
-    public node createTree(int currentLevel, int levels, node Parent) {
+    public node createTree(int currentLevel, int TreeLevels, node Parent) {
         
         node Node = new node(Parent, currentLevel);
         
-        if (currentLevel < levels)
+        if (currentLevel < TreeLevels)
         {
-            Node.Left = createTree(currentLevel + 1, levels, Node);
-            Node.Right = createTree(currentLevel + 1, levels, Node);
+            Node.Left = createTree(currentLevel + 1, TreeLevels, Node);
+            Node.Right = createTree(currentLevel + 1, TreeLevels, Node);
         }
         else 
         {
