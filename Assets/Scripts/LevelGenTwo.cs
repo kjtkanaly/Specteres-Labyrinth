@@ -71,7 +71,7 @@ public class LevelGenTwo : MonoBehaviour
 		if (Node.Left != null) 
 		{
 			// Set the Origin for the next Room based on the direction
-			Origin = new Vector2Int(Origin.x - Node.level * 10, Origin.y, leftNodeDirection);
+			Origin = TranslateVector(Origin, 10, leftNodeDirection);
 			
 			GenerateRoomsFromTree(Node.Left, Origin);
 		}
@@ -85,10 +85,37 @@ public class LevelGenTwo : MonoBehaviour
 		
 		if (Node.Right != null)
 		{
-			Origin = new Vector2Int(Origin.x + Node.level * 10, Origin.y, rightNodeDirection);
+			// Set the Origin for the next Room based on the direction
+			Origin = TranslateVector(Origin, 10, rightNodeDirection);
 			
 			GenerateRoomsFromTree(Node.Right, Origin);
 		}
+	}
+	
+	public Vector2Int TranslateVector(Vector2Int Vector, int Distance, Direction direction)
+	{
+		Vector2Int newVector;
+		
+		switch(direction) 
+		{
+		case Direction.Up:
+			newVector = new Vector2Int(Vector.x, Vector.y + Distance);
+			break;
+		case Direction.Right:
+			newVector = new Vector2Int(Vector.x + Distance, Vector.y);
+			break;
+		case Direction.Down:
+			newVector = new Vector2Int(Vector.x, Vector.y - Distance);
+			break;
+		case Direction.Left:
+			newVector = new Vector2Int(Vector.x - Distance, Vector.y);
+			break;
+		default:
+			newVector = new Vector2Int(Vector.x, Vector.y);
+			break;
+		}
+		
+		return newVector;
 	}
 	
 	public void SetTilesInTheGivenArea(Vector2Int Origin)
