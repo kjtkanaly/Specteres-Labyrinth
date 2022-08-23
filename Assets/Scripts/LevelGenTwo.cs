@@ -40,6 +40,7 @@ public class LevelGenTwo : MonoBehaviour
 	// RoomFootPrint.x = width, RoomFootPrint.y = height
 	private Vector2Int RoomFootPrint = new Vector2Int(10,10);
 	private int TreeLevels = 2;
+	private int RoomSpacing = 15;
 	
 	public Tilemap FloorTileMap;
 	public Tile FloorTile;
@@ -71,7 +72,7 @@ public class LevelGenTwo : MonoBehaviour
 		if (Node.Left != null) 
 		{
 			// Set the Origin for the next Room based on the direction
-			Origin = TranslateVector(Origin, 10, leftNodeDirection);
+			Origin = TranslateVector(Origin, RoomSpacing, leftNodeDirection);
 			
 			GenerateRoomsFromTree(Node.Left, Origin);
 		}
@@ -86,7 +87,7 @@ public class LevelGenTwo : MonoBehaviour
 		if (Node.Right != null)
 		{
 			// Set the Origin for the next Room based on the direction
-			Origin = TranslateVector(Origin, 10, rightNodeDirection);
+			Origin = TranslateVector(Origin, RoomSpacing, rightNodeDirection);
 			
 			GenerateRoomsFromTree(Node.Right, Origin);
 		}
