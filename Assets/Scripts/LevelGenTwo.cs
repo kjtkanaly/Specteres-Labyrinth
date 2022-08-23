@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Solution {
+public class LevelGenTwo : MonoBehaviour
+{
     
     public class node {
         
@@ -23,16 +24,20 @@ public class Solution {
             Right = null;
         }
     }
+	
+	////////////////////////////////////
+	/// Variables and Parameters
+	
+	private int levels = 2;
+	
+	private node Parent;
     
-    public string binaryTree(string[] strs) {
-     
-        int levels = 2;
-        
-        node Parent = createTree(0, levels, null);
+    public void Start() { 
+
+        Parent = createTree(0, levels, null);
         
         printTree(Parent);
         
-        return "";
     }
     
     public node createTree(int currentLevel, int levels, node Parent) {
