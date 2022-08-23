@@ -28,10 +28,11 @@ public class LevelGenTwo : MonoBehaviour
 	
 	public enum Direction
     {
-		Up,
-		Right,
-		Down,
-		Left
+		Up = 0,
+		Right = 1,
+		Down = 2,
+		Left = 3,
+		None = 4
     }
 	
 	////////////////////////////////////
@@ -49,47 +50,56 @@ public class LevelGenTwo : MonoBehaviour
     public void Start() { 
 
         Parent = createTree(0, TreeLevels, null);
-        
-        printTree(Parent);
-		
+
+		//printTree(Parent);
+
 		// Point the Parent Room is centered on
-		new Vector2Int Origin = new Vector2Int(0, 0);
+		Vector2Int Origin = new Vector2Int(0, 0);
 		
-        GenerateRoomsFromTree(Parent, Origin, null);
+        GenerateRoomsFromTree(Parent, Origin, Direction.Up);
     }
 	
 	public void GenerateRoomsFromTree(node Node, Vector2Int Origin, Direction NodeDirection) {
 		
 		SetTilesInTheGivenArea(Origin);
+
+		// Debug
+		Debug.Log("Node #" + Node.level + " Origin: " + Origin);
 		
 		// Chosing the Left Node's Direction
 		Direction leftNodeDirection = NodeDirection;
 		while(leftNodeDirection == NodeDirection)
 		{
-			leftNodeDirection = (Direction)Randome.Range(0, 4);
+			leftNodeDirection = (Direction)Random.Range(0, 4);
 		}
 		
 		if (Node.Left != null) 
 		{
+			// Debug
+			Debug.Log("Right Node #" + Node.Right.level + " " + leftNodeDirection);
+
 			// Set the Origin for the next Room based on the direction
 			Origin = TranslateVector(Origin, RoomSpacing, leftNodeDirection);
 			
-			GenerateRoomsFromTree(Node.Left, Origin);
+			GenerateRoomsFromTree(Node.Left, Origin, leftNodeDirection);
 		}
 		
 		// Chosing the Right Node's Direction
 		Direction rightNodeDirection = NodeDirection;
 		while((rightNodeDirection == NodeDirection) && (rightNodeDirection == leftNodeDirection))
 		{
-			rightNodeDirection = (Direction)Randome.Range(0, 4);
+			rightNodeDirection = (Direction)Random.Range(0, 4);
 		}
 		
 		if (Node.Right != null)
 		{
+			// Debug
+			Debug.Log("Right Node #" + Node.Right.level + " " + rightNodeDirection);
+
 			// Set the Origin for the next Room based on the direction
 			Origin = TranslateVector(Origin, RoomSpacing, rightNodeDirection);
 			
-			GenerateRoomsFromTree(Node.Right, Origin);
+			GenerateRoomsFromTree(Node.Right, Origin, rightNodeDirection);
 		}
 	}
 	
@@ -128,7 +138,7 @@ public class LevelGenTwo : MonoBehaviour
 		{
 			for (int col = -width/2 + Origin.x; col < width/2 + Origin.x; col++)
 			{
-				FloorTileMap.SetTile(row, col, FloorTile);
+				FloorTileMap.SetTile(new Vector3Int(col, row, 0), FloorTile);
 			}
 		}
 		
