@@ -26,6 +26,14 @@ public class LevelGenTwo : MonoBehaviour
         }
     }
 	
+	public enum Direction
+    {
+		Up,
+		Right,
+		Down,
+		Left
+    }
+	
 	////////////////////////////////////
 	/// Variables and Parameters
 	
@@ -46,22 +54,38 @@ public class LevelGenTwo : MonoBehaviour
 		// Point the Parent Room is centered on
 		new Vector2Int Origin = new Vector2Int(0, 0);
 		
-        GenerateRoomsFromTree(Parent, Origin);
+        GenerateRoomsFromTree(Parent, Origin, null);
     }
 	
-	public void GenerateRoomsFromTree(node Node, Vector2Int Origin) {
+	public void GenerateRoomsFromTree(node Node, Vector2Int Origin, Direction NodeDirection) {
 		
 		SetTilesInTheGivenArea(Origin);
 		
-		if (Node.Left) 
+		// Chosing the Left Node's Direction
+		Direction leftNodeDirection = NodeDirection;
+		while(leftNodeDirection == NodeDirection)
 		{
-			Origin = new Vector2Int(Origin.x - Node.level * 10, Origin.y);
+			leftNodeDirection = (Direction)Randome.Range(0, 4);
+		}
+		
+		if (Node.Left != null) 
+		{
+			// Set the Origin for the next Room based on the direction
+			Origin = new Vector2Int(Origin.x - Node.level * 10, Origin.y, leftNodeDirection);
 			
 			GenerateRoomsFromTree(Node.Left, Origin);
 		}
-		if (Node.Right)
+		
+		// Chosing the Right Node's Direction
+		Direction rightNodeDirection = NodeDirection;
+		while((rightNodeDirection == NodeDirection) && (rightNodeDirection == leftNodeDirection))
 		{
-			Origin = new Vector2Int(Origin.x + Node.level * 10, Origin.y);
+			rightNodeDirection = (Direction)Randome.Range(0, 4);
+		}
+		
+		if (Node.Right != null)
+		{
+			Origin = new Vector2Int(Origin.x + Node.level * 10, Origin.y, rightNodeDirection);
 			
 			GenerateRoomsFromTree(Node.Right, Origin);
 		}
