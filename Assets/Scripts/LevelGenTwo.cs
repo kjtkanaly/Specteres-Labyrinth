@@ -40,7 +40,7 @@ public class LevelGenTwo : MonoBehaviour
 	
 	// RoomFootPrint.x = width, RoomFootPrint.y = height
 	private Vector2Int RoomFootPrint = new Vector2Int(10,10);
-	private int TreeLevels = 2;
+	private int TreeLevels = 3;
 	private int RoomSpacing = 15;
 	
 	public Tilemap FloorTileMap;
