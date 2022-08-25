@@ -883,7 +883,7 @@ MonoBehaviour:
   playerSpriteObj: {fileID: 1558473382}
   playerSpriteRender: {fileID: 1558473385}
   wandSpriteRender: []
-  levelGenerator: {fileID: 981506592}
+  levelGenerator: {fileID: 0}
   fadingImage: {fileID: 1176319331}
   frameTime: 0.016666668
   faddingRate: 0.05
@@ -2032,9 +2032,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 981506591}
-  - component: {fileID: 981506592}
   - component: {fileID: 981506593}
   - component: {fileID: 981506590}
+  - component: {fileID: 981506594}
   m_Layer: 0
   m_Name: Main Game Object
   m_TagString: Main Game
@@ -2072,42 +2072,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &981506592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981506589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b693368ee96fd34a814ae4efcc6da88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerTrans: {fileID: 494501829}
-  DungeonDim: {x: 75, y: 50}
-  RandomRangeMultiplyer: {x: 0.2, y: 0.15}
-  bspIterations: 3
-  minRoomDim: 15
-  roomPadding: 4
-  hallwayPadding: 4
-  Enemy: {fileID: 1689927576285344281, guid: fc0c2bf6dfb976c4eb834dedb6d2d9a7, type: 3}
-  Ladder: {fileID: 227786024}
-  FloorMap: {fileID: 947345950}
-  WallMap: {fileID: 165836064}
-  TopLayerWallMap: {fileID: 971405792}
-  wallTile: {fileID: 11400000, guid: cf5e10f968162d94bac55c3f52121e1e, type: 2}
-  markerTile: {fileID: 0}
-  floorTile: {fileID: 11400000, guid: 3029b4da690ce7148a18a55c0d8d0299, type: 2}
-  ladderTile: {fileID: 11400000, guid: f307db6bac0295a44ba19883691afe20, type: 2}
-  emptySpaceTile: {fileID: 11400000, guid: 7fb5a4bcbae50de4abc1598c3854770e, type: 2}
-  wallBtmMidleTile: {fileID: 0}
-  wallBtmLeftTile: {fileID: 0}
-  wallBtmRightTile: {fileID: 0}
-  wallBtmLeftCornner: {fileID: 0}
-  wallBtmRightCornner: {fileID: 0}
-  nodeMapSize: {x: 140, y: 100}
-  nodeMapDebug: 0
 --- !u!114 &981506593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2120,6 +2084,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9032548d151814eaa9058829801408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &981506594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981506589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0cbedeae45e4c46ab0cf5920d9779f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FloorTileMap: {fileID: 947345950}
+  FloorTile: {fileID: 11400000, guid: 2577f42dde2643342b98610a9a296ba7, type: 2}
 --- !u!1 &1060324498
 GameObject:
   m_ObjectHideFlags: 0
