@@ -6,13 +6,21 @@ using UnityEngine.Tilemaps;
 // Perlin Noise Map Generation
 public class LevelGenThree : MonoBehaviour
 {
+	public enum Mode
+    {
+		Perlin,
+		Maze,
+		Combo
+    }
+
 	public Tilemap FloorMap;
 	public Tile FloorTile;
 	
 	// MapArea: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
-	public Vector2Int MapArea = new Vector2Int(200, 75);
+	public Vector2Int MapArea = new Vector2Int(201, 75);
 	public Vector2Int Offset  = new Vector2Int(0, 0);
+	public Mode       OperationMode = Mode.Maze;
 	
 	// Scale:       Used to scale my perlin coord
 	// RoundCutOff: Used to round the perlin values
@@ -23,29 +31,92 @@ public class LevelGenThree : MonoBehaviour
 	{
 		GenerateZone(MapArea, new Vector2Int(0, 0));
 	}
-	
-	// Lays floor tiles for a given area by calling perlin noise
-	public void GenerateZone(Vector2Int ZoneSize, Vector2Int ZoneOffet)
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+			FloorMap.ClearAllTiles();
+			GenerateZone(MapArea, new Vector2Int(0, 0));
+		}
+    }
+
+    // Lays floor tiles for a given area by calling perlin noise
+    public void GenerateZone(Vector2Int ZoneSize, Vector2Int ZoneOffet)
 	{
-		// Iterate through the rows
-		for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
-		{
-			// Iterate through the cols
-			for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
+		if (OperationMode == Mode.Perlin)
+        {
+			// Iterate through the rows
+			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
 			{
-				int sample = CalcNoise(col, row);
-				
-				if (sample == 1)
+				// Iterate through the cols
+				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
 				{
-					FloorMap.SetTile(new Vector2Int(col, row), FloorTile);
-				}
-				else
-				{
-					// Can set an empy tile if we want
+					int sample = CalcNoise(col, row);
+
+					if (sample == 0)
+					{
+						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+					}
+					else
+					{
+						// Can set an empy tile if we want
+					}
 				}
 			}
 		}
+		else if (OperationMode == Mode.Maze)
+        {
+			int[,] Maze = GenerateMaze(ZoneSize);
+
+			// Laying down floor tiles according the Maze
+			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
+			{
+				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
+				{
+					if (Maze[row, col] == 0)
+                    {
+						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+					}
+				}
+			}
+
+		}
 	}
+
+	public int[,] GenerateMaze(Vector2Int MazeSize)
+    {
+		int[,] Maze = new int[MazeSize.y, MazeSize.x];
+
+		// Setting the Seeds
+		for (int row = 1; row < MazeSize.y - 1; row+=2)
+        {
+			for (int col = 1; col < MazeSize.x - 1; col+=2)
+            {
+				Maze[row, col] = 1;
+
+				int dir = Random.Range(0, 4);
+
+				switch (dir)
+				{
+					case 0:
+						Maze[row + 1, col] = 1;
+						break;
+					case 1:
+						Maze[row, col + 1] = 1;
+						break;
+					case 2:
+						Maze[row - 1, col] = 1;
+						break;
+					case 3:
+						Maze[row, col - 1] = 1;
+						break;
+				}
+			}
+        }
+
+		return Maze;
+    }
 	
 	// Returns rounded Perlin Noise Values: (0 -or- 1)
 	public int CalcNoise(int x, int y)
