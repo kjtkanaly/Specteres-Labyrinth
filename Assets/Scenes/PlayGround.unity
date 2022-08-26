@@ -154,9 +154,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FloorMap: {fileID: 715731813}
   FloorTile: {fileID: 11400000, guid: 2577f42dde2643342b98610a9a296ba7, type: 2}
-  MapArea: {x: 201, y: 75}
+  MapArea: {x: 101, y: 45}
   Offset: {x: 0, y: 0}
-  OperationMode: 1
+  OperationMode: 0
   Scale: 10
   RoundCutOff: 0.5
 --- !u!4 &256787876
@@ -227,7 +227,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 50
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -251,7 +251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 270674363}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 35, z: -10}
+  m_LocalPosition: {x: 50, y: 22, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

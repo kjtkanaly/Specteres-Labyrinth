@@ -10,7 +10,8 @@ public class LevelGenThree : MonoBehaviour
     {
 		Perlin,
 		Maze,
-		Combo
+		Combo,
+		PerlinRooms
     }
 
 	public Tilemap FloorMap;
@@ -81,6 +82,29 @@ public class LevelGenThree : MonoBehaviour
 				}
 			}
 
+		}
+		else if (OperationMode == Mode.Combo)
+        {
+			int[,] Maze = GenerateMaze(ZoneSize);
+
+			// Iterate through the rows
+			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
+			{
+				// Iterate through the cols
+				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
+				{
+					int sample = CalcNoise(col, row);
+
+					if (sample == 0 || Maze[row, col] == 0)
+					{
+						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+					}
+					else
+					{
+						// Can set an empy tile if we want
+					}
+				}
+			}
 		}
 	}
 
