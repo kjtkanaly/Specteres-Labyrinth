@@ -27,7 +27,9 @@ public class LevelGenThree : MonoBehaviour
 	// RoundCutOff: Used to round the perlin values
 	public float Scale = 20f;
 	public float RoundCutOff = 0.5f;
-	
+	public int   MazeScale = 2;
+
+
 	public void Start()
 	{
 		GenerateZone(MapArea, new Vector2Int(0, 0));
@@ -112,28 +114,46 @@ public class LevelGenThree : MonoBehaviour
     {
 		int[,] Maze = new int[MazeSize.y, MazeSize.x];
 
+		Debug.Log(MazeScale);
+
 		// Setting the Seeds
-		for (int row = 1; row < MazeSize.y - 1; row+=2)
+		for (int row = MazeScale; row < MazeSize.y - MazeScale; row+=(MazeScale))
         {
-			for (int col = 1; col < MazeSize.x - 1; col+=2)
+			for (int col = MazeScale; col < MazeSize.x - MazeScale; col+=(MazeScale))
             {
 				Maze[row, col] = 1;
 
 				int dir = Random.Range(0, 4);
-
+				
 				switch (dir)
 				{
 					case 0:
-						Maze[row + 1, col] = 1;
+						//Maze[row + MazeScale, col] = 1;
+						for (int i = row + 1; i <= row + MazeScale; i++)
+                        {
+							Maze[i, col] = 1;
+                        }
 						break;
 					case 1:
-						Maze[row, col + 1] = 1;
+						//Maze[row, col + MazeScale] = 1;
+						for (int i = col + 1; i <= col + MazeScale; i++)
+						{
+							Maze[row, i] = 1;
+						}
 						break;
 					case 2:
-						Maze[row - 1, col] = 1;
+						//Maze[row - MazeScale, col] = 1;
+						for (int i = row - 1; i >= row - MazeScale; i--)
+						{
+							Maze[i, col] = 1;
+						}
 						break;
 					case 3:
-						Maze[row, col - 1] = 1;
+						//Maze[row, col - MazeScale] = 1;
+						for (int i = col - 1; i >= col - MazeScale; i--)
+						{
+							Maze[row, i] = 1;
+						}
 						break;
 				}
 			}
@@ -141,7 +161,12 @@ public class LevelGenThree : MonoBehaviour
 
 		return Maze;
     }
-	
+
+	public void setArrayRangeOfElements(int[,] array, int start, int end, int dir)
+    {
+
+    }
+
 	// Returns rounded Perlin Noise Values: (0 -or- 1)
 	public int CalcNoise(int x, int y)
 	{
