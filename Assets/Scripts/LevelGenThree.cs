@@ -71,23 +71,40 @@ public class LevelGenThree : MonoBehaviour
 				}
 			}
 		}
+
 		else if (OperationMode == Mode.Maze)
         {
 			int[,] Maze = GenerateMaze(ZoneSize);
 
-			// Laying down floor tiles according the Maze
-			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
-			{
-				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
-				{
-					if (Maze[row, col] == 0)
-                    {
-						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
-					}
-				}
-			}
+			int row = 0;
 
+			while (row < ZoneSize.y/MazeScale)
+            {
+				int col = 0;
+
+				while (col < ZoneSize.x/MazeScale)
+                {
+					for (int tileRow = row * MazeScale; tileRow < row * MazeScale + MazeScale; tileRow++)
+                    {
+						for (int tileCol = col * MazeScale; tileCol < col * MazeScale + MazeScale; tileCol++)
+                        {
+							if (Maze[row, col] == 0)
+							{
+								FloorMap.SetTile(new Vector3Int(tileCol, tileRow), FloorTile);
+							}
+							else
+							{
+							}
+						}
+                    }
+
+					col += 1;
+				}
+
+				row += 1;
+			}
 		}
+
 		else if (OperationMode == Mode.Combo)
         {
 			int[,] Maze = GenerateMaze(ZoneSize);
@@ -136,7 +153,7 @@ public class LevelGenThree : MonoBehaviour
 			// Add N Rooms Randomly
 			for (int RoomCount = 0; RoomCount < TotalRooms; RoomCount++)
 			{
-				Vector2Int RoomOrigin = new Vector2Int(Random.Range(1 + RoomSizes.x, MapArea.x - RoomSizes.x), Random.Range(1 + RoomSizes.y, MapArea.y - RoomSizes.y));
+				Vector2Int RoomOrigin = new Vector2Int(Random.Range(1, MapArea.x - RoomSizes.x), Random.Range(1, MapArea.y - RoomSizes.y));
 
 				for (int row = RoomOrigin.y; row < RoomOrigin.y + RoomSizes.y; row++)
                 {
@@ -153,12 +170,10 @@ public class LevelGenThree : MonoBehaviour
     {
 		int[,] Maze = new int[MazeSize.y, MazeSize.x];
 
-		Debug.Log(MazeScale);
-
 		// Setting the Seeds
-		for (int row = MazeScale; row < MazeSize.y - MazeScale; row+=(MazeScale))
+		for (int row = 1; row < MazeSize.y; row+=2)
         {
-			for (int col = MazeScale; col < MazeSize.x - MazeScale; col+=(MazeScale))
+			for (int col = 1; col < MazeSize.x; col+=2)
             {
 				Maze[row, col] = 1;
 
@@ -167,32 +182,16 @@ public class LevelGenThree : MonoBehaviour
 				switch (dir)
 				{
 					case 0:
-						//Maze[row + MazeScale, col] = 1;
-						for (int i = row + 1; i <= row + MazeScale; i++)
-                        {
-							Maze[i, col] = 1;
-                        }
+						Maze[row + 1, col] = 1;
 						break;
 					case 1:
-						//Maze[row, col + MazeScale] = 1;
-						for (int i = col + 1; i <= col + MazeScale; i++)
-						{
-							Maze[row, i] = 1;
-						}
+						Maze[row, col + 1] = 1;
 						break;
 					case 2:
-						//Maze[row - MazeScale, col] = 1;
-						for (int i = row - 1; i >= row - MazeScale; i--)
-						{
-							Maze[i, col] = 1;
-						}
+						Maze[row - 1, col] = 1;
 						break;
 					case 3:
-						//Maze[row, col - MazeScale] = 1;
-						for (int i = col - 1; i >= col - MazeScale; i--)
-						{
-							Maze[row, i] = 1;
-						}
+						Maze[row, col - 1] = 1;
 						break;
 				}
 			}
