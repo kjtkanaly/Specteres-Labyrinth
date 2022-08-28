@@ -19,8 +19,10 @@ public class LevelGenThree : MonoBehaviour
 	
 	// MapArea: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
-	public Vector2Int MapArea = new Vector2Int(201, 75);
-	public Vector2Int Offset  = new Vector2Int(0, 0);
+	// RoomsSizes: The dimensions of room footprints (height, width)
+	public Vector2Int MapArea   = new Vector2Int(201, 75);
+	public Vector2Int Offset    = new Vector2Int(0, 0);
+	public Vector2Int RoomSizes = new Vector2Int(20, 10);
 	public Mode       OperationMode = Mode.Maze;
 	
 	// Scale:       Used to scale my perlin coord
@@ -28,6 +30,7 @@ public class LevelGenThree : MonoBehaviour
 	public float Scale = 20f;
 	public float RoundCutOff = 0.5f;
 	public int   MazeScale = 2;
+	public int   TotalRooms = 3;
 
 
 	public void Start()
@@ -106,6 +109,42 @@ public class LevelGenThree : MonoBehaviour
 						// Can set an empy tile if we want
 					}
 				}
+			}
+		}
+		else if (OperationMode == Mode.PerlinRooms)
+        {
+			// Perlin Section
+			// Iterate through the rows
+			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
+			{
+				// Iterate through the cols
+				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
+				{
+					int sample = CalcNoise(col, row);
+
+					if (sample == 0)
+					{
+						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+					}
+					else
+					{
+						// Can set an empy tile if we want
+					}
+				}
+			}
+
+			// Add N Rooms Randomly
+			for (int RoomCount = 0; RoomCount < TotalRooms; RoomCount++)
+			{
+				Vector2Int RoomOrigin = new Vector2Int(Random.Range(1 + RoomSizes.x, MapArea.x - RoomSizes.x), Random.Range(1 + RoomSizes.y, MapArea.y - RoomSizes.y));
+
+				for (int row = RoomOrigin.y; row < RoomOrigin.y + RoomSizes.y; row++)
+                {
+					for (int col = RoomOrigin.x; col < RoomOrigin.x + RoomSizes.x; col++)
+                    {
+						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+                    }
+                }
 			}
 		}
 	}
