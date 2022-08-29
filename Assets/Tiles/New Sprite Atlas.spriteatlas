@@ -51,6 +51,7 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: e975bf90dfa5ec84580b20f6db75651b, type: 3}
+  - {fileID: -2090507702, guid: bb3685b43cf014559bab8e52cb299bcb, type: 3}
   - {fileID: 21300000, guid: e2885cf51dd63e34d91730e5d58eff43, type: 3}
   - {fileID: 7270303750508923730, guid: 31aaf908ad25f664bad2e9ce83d5e4cc, type: 3}
   - {fileID: -5416187343913231278, guid: 31aaf908ad25f664bad2e9ce83d5e4cc, type: 3}
@@ -186,6 +187,7 @@ SpriteAtlas:
   - {fileID: -3392365132414931624, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   m_PackedSpriteNamesToIndex:
   - Blue Floor 2
+  - Screen Shot 2022-08-28 at 9.59.47 PM_0
   - Floor Tiles 2
   - Floor TIles_1
   - Floor TIles_0
