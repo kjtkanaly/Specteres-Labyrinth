@@ -36,7 +36,29 @@ public class LevelGenThree : MonoBehaviour
 
 	public void Start()
 	{
-		GenerateZone(MapArea, new Vector2Int(0, 0));
+		GenerateZone(MapArea, Offset);
+		
+		string   FileData = System.IO.File.ReadAllText(path);
+		String[] Lines    = fileData.Split("\n"[0]);
+		String[] lineData = (lines[0].Trim()).Split(","[0]);
+	}
+	
+	public void Test()
+	{
+		int NumberOfZones = 3;
+		
+		int[] BtmRow new int[]{0, -25, -250};
+		int[] TopRow new int[]{200, 0, -25};
+		int[] LftCol new int[]{0, 0, 0};
+		int[] RgtCol new int[]{200, 200, 200};
+		
+		for (int i = 0; i < NumberOfZones; i++)
+		{
+			MapArea = new Vector2Int(RgtCol[i] - LftCol[i], TopRow[i] - BtmRow[i]);
+			Offset  = new Vector2Int(BtmRow[i], LftCol[i]);
+			
+			GenerateZone(MapArea, new Vector2Int(0, 0));
+		}
 	}
 
     public void Update()
