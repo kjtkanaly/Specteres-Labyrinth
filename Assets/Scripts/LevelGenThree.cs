@@ -14,9 +14,10 @@ public class LevelGenThree : MonoBehaviour
 		PerlinRooms
     }
 
-	public Tilemap FloorMap;
-	public Tile FloorTile;
+	public Tilemap FloorMap, WallMap;
+	public Tile FloorTile, EmptySpaceTile;
 	public Tile[] FloorTileSet;
+	public RuleTile WallTile;
 	
 	// MapArea: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
@@ -91,6 +92,7 @@ public class LevelGenThree : MonoBehaviour
 					if (sample == 0)
 					{
 						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
+						WallMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), WallTile);
 					}
 					else
 					{
@@ -119,6 +121,7 @@ public class LevelGenThree : MonoBehaviour
 							if (Maze[row, col] == 0)
 							{
 								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTile);
+								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
 							}
 							else
 							{
@@ -154,12 +157,19 @@ public class LevelGenThree : MonoBehaviour
 							if (Maze[row,col] == 0)
                             {
 								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[0]);
+								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
 							}
 
 							if (sample == 0)
                             {
 								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[1]);
+								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
 							}
+
+							if (Maze[row,col] == 1 && sample == 1)
+                            {
+								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), EmptySpaceTile);
+                            }
 
 							/*
 							if ((Maze[row, col] == 0) || (sample == 0))
