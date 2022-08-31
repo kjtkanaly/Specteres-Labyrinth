@@ -21,9 +21,10 @@ public class LevelGenThree : MonoBehaviour
 	// MapArea: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
 	// RoomsSizes: The dimensions of room footprints (height, width)
-	public Vector2Int MapArea   = new Vector2Int(201, 75);
-	public Vector2Int Offset    = new Vector2Int(0, 0);
-	public Vector2Int RoomSizes = new Vector2Int(20, 10);
+	public Vector2Int MapArea       = new Vector2Int(201, 75);
+	public Vector2Int MapOffset     = new Vector2Int(0, 0);
+	public Vector2Int PerlinOffset  = new Vector2Int(0, 0);
+	public Vector2Int RoomSizes     = new Vector2Int(20, 10);
 	public Mode       OperationMode = Mode.Maze;
 	
 	// Scale:       Used to scale my perlin coord
@@ -36,28 +37,32 @@ public class LevelGenThree : MonoBehaviour
 
 	public void Start()
 	{
-		GenerateZone(MapArea, Offset);
-		
+		GenerateZone(MapArea, MapOffset, PerlinOffset);
+		GenerateZone(MapArea, MapOffset + new Vector2Int(100, 0), PerlinOffset);
+
+		//Test();
+
+		/*
 		string   FileData = System.IO.File.ReadAllText(path);
 		String[] Lines    = fileData.Split("\n"[0]);
-		String[] lineData = (lines[0].Trim()).Split(","[0]);
+		String[] lineData = (lines[0].Trim()).Split(","[0]);*/
 	}
 	
 	public void Test()
 	{
 		int NumberOfZones = 3;
 		
-		int[] BtmRow new int[]{0, -25, -250};
-		int[] TopRow new int[]{200, 0, -25};
-		int[] LftCol new int[]{0, 0, 0};
-		int[] RgtCol new int[]{200, 200, 200};
+		int[] BtmRow = new int[]{0, 200, 250};
+		int[] TopRow = new int[]{200, 250, 450};
+		int[] LftCol = new int[]{0, 0, 0};
+		int[] RgtCol = new int[]{200, 200, 200};
 		
-		for (int i = 0; i < NumberOfZones; i++)
+		for (int i = 0; i < NumberOfZones; i+=2)
 		{
 			MapArea = new Vector2Int(RgtCol[i] - LftCol[i], TopRow[i] - BtmRow[i]);
-			Offset  = new Vector2Int(BtmRow[i], LftCol[i]);
+			MapOffset = new Vector2Int(BtmRow[i], LftCol[i]);
 			
-			GenerateZone(MapArea, new Vector2Int(0, 0));
+			GenerateZone(MapArea, MapOffset, new Vector2Int(0, 0));
 		}
 	}
 
@@ -66,26 +71,26 @@ public class LevelGenThree : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
 			FloorMap.ClearAllTiles();
-			GenerateZone(MapArea, new Vector2Int(0, 0));
+			GenerateZone(MapArea, MapOffset, new Vector2Int(0, 0));
 		}
     }
 
-    // Lays floor tiles for a given area by calling perlin noise
-    public void GenerateZone(Vector2Int ZoneSize, Vector2Int ZoneOffet)
+	// Lays floor tiles for a given area by calling perlin noise
+	public void GenerateZone(Vector2Int ZoneSize, Vector2Int ZoneOffset, Vector2Int PerlinOffset)
 	{
 		if (OperationMode == Mode.Perlin)
         {
 			// Iterate through the rows
-			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
+			for (int row = 0; row < ZoneSize.y + PerlinOffset.y; row++)
 			{
 				// Iterate through the cols
-				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
+				for (int col = 0; col < ZoneSize.x + PerlinOffset.x; col++)
 				{
 					int sample = CalcNoise(col, row);
 
 					if (sample == 0)
 					{
-						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
 					}
 					else
 					{
@@ -113,7 +118,7 @@ public class LevelGenThree : MonoBehaviour
                         {
 							if (Maze[row, col] == 0)
 							{
-								FloorMap.SetTile(new Vector3Int(tileCol, tileRow), FloorTile);
+								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTile);
 							}
 							else
 							{
@@ -148,12 +153,12 @@ public class LevelGenThree : MonoBehaviour
 
 							if (Maze[row,col] == 0)
                             {
-								FloorMap.SetTile(new Vector3Int(tileCol, tileRow), FloorTileSet[0]);
+								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[0]);
 							}
 
 							if (sample == 0)
                             {
-								FloorMap.SetTile(new Vector3Int(tileCol, tileRow), FloorTileSet[1]);
+								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[1]);
 							}
 
 							/*
@@ -179,16 +184,16 @@ public class LevelGenThree : MonoBehaviour
         {
 			// Perlin Section
 			// Iterate through the rows
-			for (int row = 0; row < ZoneSize.y + ZoneOffet.y; row++)
+			for (int row = 0; row < ZoneSize.y + PerlinOffset.y; row++)
 			{
 				// Iterate through the cols
-				for (int col = 0; col < ZoneSize.x + ZoneOffet.x; col++)
+				for (int col = 0; col < ZoneSize.x + PerlinOffset.x; col++)
 				{
 					int sample = CalcNoise(col, row);
 
 					if (sample == 0)
 					{
-						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
 					}
 					else
 					{
@@ -206,7 +211,7 @@ public class LevelGenThree : MonoBehaviour
                 {
 					for (int col = RoomOrigin.x; col < RoomOrigin.x + RoomSizes.x; col++)
                     {
-						FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
                     }
                 }
 			}
@@ -256,8 +261,8 @@ public class LevelGenThree : MonoBehaviour
 	public int CalcNoise(int x, int y)
 	{
 		// Perlin Coord x = 0 -> 0, x = width -> 1
-		float xCoord = (float)x / MapArea.x * Scale + Offset.x;
-		float yCoord = (float)y / MapArea.y * Scale + Offset.y;
+		float xCoord = (float)x / MapArea.x * Scale + PerlinOffset.x;
+		float yCoord = (float)y / MapArea.y * Scale + PerlinOffset.y;
 		
 		// Get the perlin value for the Coords
 		float sample = Mathf.PerlinNoise(xCoord, yCoord);
