@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 // Perlin Noise Map Generation
-public class LevelGeneration : MonoBehaviour
+public class WorldGeneration : MonoBehaviour
 {
 	public enum Mode
     {
@@ -22,11 +22,11 @@ public class LevelGeneration : MonoBehaviour
 	// MapArea: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
 	// RoomsSizes: The dimensions of room footprints (height, width)
-	public Vector2Int MapArea       = new Vector2Int(201, 75);
-	public Vector2Int MapOffset     = new Vector2Int(0, 0);
-	public Vector2Int PerlinOffset  = new Vector2Int(0, 0);
-	public Vector2Int RoomSizes     = new Vector2Int(20, 10);
-	public Mode       OperationMode = Mode.Maze;
+	public Mode       OperationMode    = Mode.Maze;
+	public Vector2Int MapArea          = new Vector2Int(201, 75);
+	public Vector2Int MapOffset        = new Vector2Int(0, 0);
+	public Vector2Int PerlinOffset     = new Vector2Int(0, 0);
+	public Vector2Int RoomSizes        = new Vector2Int(20, 10);
 	
 	// Scale:       Used to scale my perlin coord
 	// RoundCutOff: Used to round the perlin values

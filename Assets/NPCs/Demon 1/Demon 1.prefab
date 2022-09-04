@@ -115,7 +115,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1689927576285344280}
   - component: {fileID: 4671908721764514693}
-  - component: {fileID: 3377584092304728841}
   - component: {fileID: -5132165027874610519}
   - component: {fileID: 9104048947527433793}
   - component: {fileID: -2040364209660776155}
@@ -160,20 +159,6 @@ MonoBehaviour:
   RoamPosition: {x: 0, y: 0, z: 0}
   AttackPosition: {x: 0, y: 0, z: 0}
   DistanceToPlayer: 0
---- !u!114 &3377584092304728841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1689927576285344281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3becaf9f3232a9747b05a1ae6c561679, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LevelGen: {fileID: 0}
-  NPCController: {fileID: 0}
 --- !u!50 &-5132165027874610519
 Rigidbody2D:
   serializedVersion: 4

@@ -808,85 +808,6 @@ Transform:
   m_Father: {fileID: 494501829}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &227786024
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 227786025}
-  - component: {fileID: 227786026}
-  - component: {fileID: 227786027}
-  m_Layer: 0
-  m_Name: Ladder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &227786025
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 227786024}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -100, y: 100, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 981506591}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &227786026
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 227786024}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0.5}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &227786027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 227786024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2727c581aeca2fc46838351c91b55aa5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 494501826}
-  playerSpriteObj: {fileID: 1558473382}
-  playerSpriteRender: {fileID: 1558473385}
-  wandSpriteRender: []
-  levelGenerator: {fileID: 0}
-  fadingImage: {fileID: 1176319331}
-  frameTime: 0.016666668
-  faddingRate: 0.05
 --- !u!1 &260706202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,8 +1954,6 @@ GameObject:
   m_Component:
   - component: {fileID: 981506591}
   - component: {fileID: 981506593}
-  - component: {fileID: 981506590}
-  - component: {fileID: 981506594}
   m_Layer: 0
   m_Name: Main Game Object
   m_TagString: Main Game
@@ -2042,20 +1961,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &981506590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981506589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3becaf9f3232a9747b05a1ae6c561679, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LevelGen: {fileID: 0}
-  NPCController: {fileID: 0}
 --- !u!4 &981506591
 Transform:
   m_ObjectHideFlags: 0
@@ -2067,8 +1972,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 227786025}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2084,20 +1988,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9032548d151814eaa9058829801408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &981506594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981506589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c0cbedeae45e4c46ab0cf5920d9779f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FloorTileMap: {fileID: 947345950}
-  FloorTile: {fileID: 11400000, guid: 2577f42dde2643342b98610a9a296ba7, type: 2}
 --- !u!1 &1060324498
 GameObject:
   m_ObjectHideFlags: 0

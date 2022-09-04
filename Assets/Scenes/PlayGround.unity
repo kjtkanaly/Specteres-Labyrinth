@@ -169,7 +169,7 @@ MonoBehaviour:
   OperationMode: 2
   Scale: 4
   RoundCutOff: 0.4
-  MazeScale: 6
+  MazeScale: 8
   TotalRooms: 3
 --- !u!4 &256787876
 Transform:
