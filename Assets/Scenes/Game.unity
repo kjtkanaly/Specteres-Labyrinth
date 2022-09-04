@@ -1954,6 +1954,7 @@ GameObject:
   m_Component:
   - component: {fileID: 981506591}
   - component: {fileID: 981506593}
+  - component: {fileID: 981506594}
   m_Layer: 0
   m_Name: Main Game Object
   m_TagString: Main Game
@@ -1988,6 +1989,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9032548d151814eaa9058829801408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &981506594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981506589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836a3be9913a544258740f1176904f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerTransform: {fileID: 494501829}
+  FloorMap: {fileID: 947345950}
+  WallMap: {fileID: 165836064}
+  EmptySpaceTile: {fileID: 11400000, guid: 7fb5a4bcbae50de4abc1598c3854770e, type: 2}
+  FloorTileSet:
+  - {fileID: 11400000, guid: 2577f42dde2643342b98610a9a296ba7, type: 2}
+  - {fileID: 11400000, guid: b4f01885e13759943af113d3adcf526b, type: 2}
+  WallTile: {fileID: 11400000, guid: cf5e10f968162d94bac55c3f52121e1e, type: 2}
+  OperationMode: 2
+  StartingRoomSize: {x: 30, y: 30}
+  PerlinScale: 20
+  RoundCutOff: 0.4
+  MazeScale: 8
+  TotalRooms: 3
+  StartingHallwayDepth: 24
 --- !u!1 &1060324498
 GameObject:
   m_ObjectHideFlags: 0

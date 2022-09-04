@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.IO;
 
 // Perlin Noise Map Generation
 public class WorldGeneration : MonoBehaviour
@@ -13,33 +14,49 @@ public class WorldGeneration : MonoBehaviour
 		Combo,
 		PerlinRooms
     }
-
+    
+    public Transform PlayerTransform;
 	public Tilemap FloorMap, WallMap;
-	public Tile FloorTile, EmptySpaceTile;
+	public Tile EmptySpaceTile;
 	public Tile[] FloorTileSet;
 	public RuleTile WallTile;
 	
-	// MapArea: The area that we will fill with noise
+	// Vector 2: x = Width/Cols, y = Height/Rows
+	// MapSize: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
 	// RoomsSizes: The dimensions of room footprints (height, width)
 	public Mode       OperationMode    = Mode.Maze;
-	public Vector2Int MapArea          = new Vector2Int(201, 75);
-	public Vector2Int MapOffset        = new Vector2Int(0, 0);
-	public Vector2Int PerlinOffset     = new Vector2Int(0, 0);
-	public Vector2Int RoomSizes        = new Vector2Int(20, 10);
+	public Vector2Int StartingRoomSize = new Vector2Int(30,30);
+	private Vector2Int MapSize          = new Vector2Int(401, 301);
+	private Vector2Int MapOffset        = new Vector2Int(0, 0);
+	private Vector2Int RoomSizes        = new Vector2Int(20, 10);
+	private Vector2Int PerlinOffset;
 	
-	// Scale:       Used to scale my perlin coord
+	// PerlinScale:       Used to scale my perlin coord
 	// RoundCutOff: Used to round the perlin values
-	public float Scale = 20f;
+	public float PerlinScale = 20f;
 	public float RoundCutOff = 0.5f;
-	public int   MazeScale = 2;
+	public int   MazeScale = 8;
 	public int   TotalRooms = 3;
+	public int   StartingHallwayDepth = 24;
 
 
 	public void Start()
 	{
-		GenerateZone(MapArea, MapOffset, PerlinOffset);
-		GenerateZone(MapArea, MapOffset + new Vector2Int(100, 0), PerlinOffset);
+	    // Place Starting Room
+	    Vector2Int StartingRoomOrigin = new Vector2Int(MapSize.x/2 - StartingRoomSize.x/2, MapSize.y);
+	    PlaceRoom(StartingRoomOrigin, StartingRoomSize);
+	    
+	    // Setting the Hallway to connect the Starting Room to the Maze
+	    Vector2Int StartingHallwayOrigin = new Vector2Int(MapSize.x/2 - MazeScale/2, MapSize.y - StartingHallwayDepth);
+	    PlaceRoom(StartingHallwayOrigin, new Vector2Int(MazeScale, StartingHallwayDepth));
+	    
+	    // Generate First Zone
+	    PerlinOffset = new Vector2Int(Random.Range(-1000,1001), Random.Range(-1000, 1001));
+	    GenerateZone(MapSize, MapOffset, PerlinOffset);
+		
+		// Move Player to Starting Room
+		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
 
 		//Test();
 
@@ -49,94 +66,46 @@ public class WorldGeneration : MonoBehaviour
 		String[] lineData = (lines[0].Trim()).Split(","[0]);*/
 	}
 	
-	public void Test()
+	public void PlaceRoom(Vector2Int RoomOrigin, Vector2Int RoomSize)
 	{
-		int NumberOfZones = 3;
-		
-		int[] BtmRow = new int[]{0, 200, 250};
-		int[] TopRow = new int[]{200, 250, 450};
-		int[] LftCol = new int[]{0, 0, 0};
-		int[] RgtCol = new int[]{200, 200, 200};
-		
-		for (int i = 0; i < NumberOfZones; i+=2)
-		{
-			MapArea = new Vector2Int(RgtCol[i] - LftCol[i], TopRow[i] - BtmRow[i]);
-			MapOffset = new Vector2Int(BtmRow[i], LftCol[i]);
-			
-			GenerateZone(MapArea, MapOffset, new Vector2Int(0, 0));
-		}
+	    // Placing Floor
+	    for (int row = RoomOrigin.y; row < RoomOrigin.y + RoomSize.y; row++)
+	    {
+	        for (int col = RoomOrigin.x; col < RoomOrigin.x + RoomSize.x; col++)
+	        {
+	            FloorMap.SetTile(new Vector3Int(col, row), FloorTileSet[0]);
+	        }
+	    }
+	     
+	    // Placing Walls
+	    for (int row = RoomOrigin.y - 1; row < RoomOrigin.y + RoomSize.y + 1; row++)
+	    {
+	        for (int col = RoomOrigin.x - 1; col < RoomOrigin.x + RoomSize.x + 1; col++)
+	        {
+	            WallMap.SetTile(new Vector3Int(col, row), WallTile);
+	        }
+	    }  
 	}
+	
+	/*
+	static void ReadString()
+    {
+        string path = "Assets/Resources/test.txt";
+        //Read the text from directly from the test.txt file
+        StreamReader reader = new StreamReader(path); 
+        Debug.Log(reader.ReadToEnd());
+        reader.Close();
+    }
+    */
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-			FloorMap.ClearAllTiles();
-			GenerateZone(MapArea, MapOffset, new Vector2Int(0, 0));
-		}
     }
 
 	// Lays floor tiles for a given area by calling perlin noise
 	public void GenerateZone(Vector2Int ZoneSize, Vector2Int ZoneOffset, Vector2Int PerlinOffset)
 	{
-		if (OperationMode == Mode.Perlin)
-        {
-			// Iterate through the rows
-			for (int row = 0; row < ZoneSize.y + PerlinOffset.y; row++)
-			{
-				// Iterate through the cols
-				for (int col = 0; col < ZoneSize.x + PerlinOffset.x; col++)
-				{
-					int sample = CalcNoise(col, row);
-
-					if (sample == 0)
-					{
-						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
-						WallMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), WallTile);
-					}
-					else
-					{
-						// Can set an empy tile if we want
-					}
-				}
-			}
-		}
-
-		else if (OperationMode == Mode.Maze)
-        {
-			int[,] Maze = GenerateMaze(ZoneSize);
-
-			int row = 0;
-
-			while (row < ZoneSize.y/MazeScale)
-            {
-				int col = 0;
-
-				while (col < ZoneSize.x/MazeScale)
-                {
-					for (int tileRow = row * MazeScale; tileRow < row * MazeScale + MazeScale; tileRow++)
-                    {
-						for (int tileCol = col * MazeScale; tileCol < col * MazeScale + MazeScale; tileCol++)
-                        {
-							if (Maze[row, col] == 0)
-							{
-								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTile);
-								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
-							}
-							else
-							{
-							}
-						}
-                    }
-
-					col += 1;
-				}
-
-				row += 1;
-			}
-		}
-
-		else if (OperationMode == Mode.Combo)
+		if (OperationMode == Mode.Combo)
 		{
 			int[,] Maze = GenerateMaze(ZoneSize);
 
@@ -190,42 +159,6 @@ public class WorldGeneration : MonoBehaviour
 				row += 1;
 			}
 		}
-		else if (OperationMode == Mode.PerlinRooms)
-        {
-			// Perlin Section
-			// Iterate through the rows
-			for (int row = 0; row < ZoneSize.y + PerlinOffset.y; row++)
-			{
-				// Iterate through the cols
-				for (int col = 0; col < ZoneSize.x + PerlinOffset.x; col++)
-				{
-					int sample = CalcNoise(col, row);
-
-					if (sample == 0)
-					{
-						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
-					}
-					else
-					{
-						// Can set an empy tile if we want
-					}
-				}
-			}
-
-			// Add N Rooms Randomly
-			for (int RoomCount = 0; RoomCount < TotalRooms; RoomCount++)
-			{
-				Vector2Int RoomOrigin = new Vector2Int(Random.Range(1, MapArea.x - RoomSizes.x), Random.Range(1, MapArea.y - RoomSizes.y));
-
-				for (int row = RoomOrigin.y; row < RoomOrigin.y + RoomSizes.y; row++)
-                {
-					for (int col = RoomOrigin.x; col < RoomOrigin.x + RoomSizes.x; col++)
-                    {
-						FloorMap.SetTile(new Vector3Int(col + ZoneOffset.y, row + ZoneOffset.x), FloorTile);
-                    }
-                }
-			}
-		}
 	}
 
 	public int[,] GenerateMaze(Vector2Int MazeSize)
@@ -271,8 +204,8 @@ public class WorldGeneration : MonoBehaviour
 	public int CalcNoise(int x, int y)
 	{
 		// Perlin Coord x = 0 -> 0, x = width -> 1
-		float xCoord = (float)x / MapArea.x * Scale + PerlinOffset.x;
-		float yCoord = (float)y / MapArea.y * Scale + PerlinOffset.y;
+		float xCoord = (float)x / MapSize.x * PerlinScale + PerlinOffset.x;
+		float yCoord = (float)y / MapSize.y * PerlinScale + PerlinOffset.y;
 		
 		// Get the perlin value for the Coords
 		float sample = Mathf.PerlinNoise(xCoord, yCoord);
