@@ -26,8 +26,8 @@ public class WorldGeneration : MonoBehaviour
 	// Offset:  Offsets the perlin cordinates
 	// RoomsSizes: The dimensions of room footprints (height, width)
 	public Mode       OperationMode    = Mode.Maze;
-	public Vector2Int StartingRoomSize = new Vector2Int(30,30);
-	private Vector2Int MapSize          = new Vector2Int(401, 301);
+	private Vector2Int StartingRoomSize = new Vector2Int(20,15);
+	private Vector2Int MapSize          = new Vector2Int(301, 201);
 	private Vector2Int MapOffset        = new Vector2Int(0, 0);
 	private Vector2Int RoomSizes        = new Vector2Int(20, 10);
 	private Vector2Int PerlinOffset;
@@ -56,7 +56,7 @@ public class WorldGeneration : MonoBehaviour
 	    TileArea(StartingHallwayOrigin, new Vector2Int(MazeScale, StartingHallwayDepth), FloorTileSet[0]);
 	    
 	    // Setting the Walls
-	    PlaceWallTiles(MapOffset, new Vector2Int(MapSize.x, MapSize.y + StartingRoomSize.y), WallTile);
+	    PlaceWallTiles(new Vector2Int(MapOffset.x - 10, MapOffset.y - 10), new Vector2Int(MapSize.x + 20, MapSize.y + StartingRoomSize.y + 20), WallTile);
 		
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
