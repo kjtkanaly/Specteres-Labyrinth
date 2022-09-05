@@ -45,7 +45,7 @@ public class WorldGeneration : MonoBehaviour
 	{
 	    // Place Starting Room
 	    Vector2Int StartingRoomOrigin = new Vector2Int(MapSize.x/2 - StartingRoomSize.x/2, MapSize.y);
-	    PlaceRoom(StartingRoomOrigin, StartingRoomSize);
+	    TileArea(StartingRoomOrigin, StartingRoomSize, FloorTileSet[0]);
 	    	    
 	    // Generate First Zone
 	    PerlinOffset = new Vector2Int(Random.Range(-1000,1001), Random.Range(-1000, 1001));
@@ -53,7 +53,10 @@ public class WorldGeneration : MonoBehaviour
 	    
 	    // Setting the Hallway to connect the Starting Room to the Maze
 	    Vector2Int StartingHallwayOrigin = new Vector2Int(MapSize.x/2 - MazeScale/2, MapSize.y - StartingHallwayDepth);
-	    PlaceRoom(StartingHallwayOrigin, new Vector2Int(MazeScale, StartingHallwayDepth));
+	    TileArea(StartingHallwayOrigin, new Vector2Int(MazeScale, StartingHallwayDepth), FloorTileSet[0]);
+	    
+	    // Setting the Walls
+	    PlaceWallTiles(MapOffset, new Vector2Int(MapSize.x, MapSize.y + StartingRoomSize.y), WallTile);
 		
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
@@ -66,25 +69,31 @@ public class WorldGeneration : MonoBehaviour
 		String[] lineData = (lines[0].Trim()).Split(","[0]);*/
 	}
 	
-	public void PlaceRoom(Vector2Int RoomOrigin, Vector2Int RoomSize)
+	public void TileArea(Vector2Int ZoneOrigin, Vector2Int ZoneSize, Tile tile)
 	{
-	    // Placing Floor
-	    for (int row = RoomOrigin.y; row < RoomOrigin.y + RoomSize.y; row++)
-	    {
-	        for (int col = RoomOrigin.x; col < RoomOrigin.x + RoomSize.x; col++)
-	        {
-	            FloorMap.SetTile(new Vector3Int(col, row), FloorTileSet[0]);
-	        }
-	    }
-	     
 	    // Placing Walls
-	    for (int row = RoomOrigin.y - 1; row < RoomOrigin.y + RoomSize.y + 1; row++)
+	    for (int row = ZoneOrigin.y; row < ZoneOrigin.y + ZoneSize.y + 1; row++)
 	    {
-	        for (int col = RoomOrigin.x - 1; col < RoomOrigin.x + RoomSize.x + 1; col++)
+	        for (int col = ZoneOrigin.x; col < ZoneOrigin.x + ZoneSize.x + 1; col++)
 	        {
-	            WallMap.SetTile(new Vector3Int(col, row), WallTile);
+	            FloorMap.SetTile(new Vector3Int(col, row), tile);
 	        }
-	    }  
+	    } 
+	}
+	
+	public void PlaceWallTiles(Vector2Int ZoneOrigin, Vector2Int ZoneSize, RuleTile tile)
+	{
+	    // Placing Walls
+	    for (int row = ZoneOrigin.y; row < ZoneOrigin.y + ZoneSize.y + 1; row++)
+	    {
+	        for (int col = ZoneOrigin.x; col < ZoneOrigin.x + ZoneSize.x + 1; col++)
+	        {
+	            if (FloorMap.GetTile(new Vector3Int(col, row)) == null)
+	            {
+	                WallMap.SetTile(new Vector3Int(col, row), tile);
+	            }
+	        }
+	    } 
 	}
 	
 	/*
@@ -126,30 +135,17 @@ public class WorldGeneration : MonoBehaviour
 							if (Maze[row,col] == 0)
                             {
 								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[0]);
-								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
 							}
 
 							if (sample == 0)
                             {
 								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[1]);
-								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
 							}
 
 							if (Maze[row,col] == 1 && sample == 1)
                             {
-								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), EmptySpaceTile);
+								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
                             }
-
-							/*
-							if ((Maze[row, col] == 0) || (sample == 0))
-							{
-								int tileNumber = Random.Range(0, FloorTileSet.Length);
-
-								FloorMap.SetTile(new Vector3Int(tileCol, tileRow), FloorTileSet[tileNumber]);
-							}
-							else
-							{
-							}*/
 						}
 					}
 

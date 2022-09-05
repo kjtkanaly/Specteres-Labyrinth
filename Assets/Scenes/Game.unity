@@ -2008,7 +2008,7 @@ MonoBehaviour:
   FloorTileSet:
   - {fileID: 11400000, guid: 2577f42dde2643342b98610a9a296ba7, type: 2}
   - {fileID: 11400000, guid: b4f01885e13759943af113d3adcf526b, type: 2}
-  WallTile: {fileID: 11400000, guid: cf5e10f968162d94bac55c3f52121e1e, type: 2}
+  WallTile: {fileID: 11400000, guid: 678beb8fcc40d40a2a5a57067fdad9d0, type: 2}
   OperationMode: 2
   StartingRoomSize: {x: 30, y: 30}
   PerlinScale: 20
