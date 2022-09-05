@@ -34,6 +34,7 @@ public class WorldGeneration : MonoBehaviour
 	
 	// PerlinScale:       Used to scale my perlin coord
 	// RoundCutOff: Used to round the perlin values
+	public  bool  SpawnEnemies = true;
 	public  float PerlinScale = 20f;
 	public  float RoundCutOff = 0.5f;
 	public  int   MazeScale = 8;
@@ -64,23 +65,24 @@ public class WorldGeneration : MonoBehaviour
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
 
-		
-		// Spawn Demons
-		for (int DemonCount = 0; DemonCount < NumberOfDemons; DemonCount++)
+		if (SpawnEnemies == true)
 		{
-		    while (true)
+		    // Spawn Demons
+		    for (int DemonCount = 0; DemonCount < NumberOfDemons; DemonCount++)
 		    {
-		        Vector3Int DemonPosition = new Vector3Int(Random.Range(MapOffset.x + 1, MapSize.x), Random.Range(MapOffset.y + 1, MapSize.y), 0);
-		        
-		        if (FloorMap.GetTile(DemonPosition) != null)
+		        while (true)
 		        {
-		            Instantiate(Demon, DemonPosition, Quaternion.identity);
-		            break;
-		        }
+		            Vector3Int DemonPosition = new Vector3Int(Random.Range(MapOffset.x + 1, MapSize.x), Random.Range(MapOffset.y + 1, MapSize.y), 0);
+		        
+		            if (FloorMap.GetTile(DemonPosition) != null)
+		            {
+		                Instantiate(Demon, DemonPosition, Quaternion.identity);
+		                break;
+		            }
+		        } 
 		    }
-		    
-		    
 		}
+		
 	}
 	
 	public void TileArea(Vector2Int ZoneOrigin, Vector2Int ZoneSize, Tile tile)

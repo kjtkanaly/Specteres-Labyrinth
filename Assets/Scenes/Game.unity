@@ -2010,11 +2010,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4f01885e13759943af113d3adcf526b, type: 2}
   WallTile: {fileID: 11400000, guid: 678beb8fcc40d40a2a5a57067fdad9d0, type: 2}
   OperationMode: 2
+  SpawnEnemies: 0
   PerlinScale: 20
   RoundCutOff: 0.4
   MazeScale: 8
-  TotalRooms: 3
-  StartingHallwayDepth: 24
   Demon: {fileID: 1689927576285344281, guid: fc0c2bf6dfb976c4eb834dedb6d2d9a7, type: 3}
 --- !u!1 &1060324498
 GameObject:
