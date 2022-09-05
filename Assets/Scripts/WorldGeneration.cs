@@ -25,7 +25,7 @@ public class WorldGeneration : MonoBehaviour
 	// MapSize: The area that we will fill with noise
 	// Offset:  Offsets the perlin cordinates
 	// RoomsSizes: The dimensions of room footprints (height, width)
-	public Mode       OperationMode    = Mode.Maze;
+	public  Mode       OperationMode    = Mode.Maze;
 	private Vector2Int StartingRoomSize = new Vector2Int(20,15);
 	private Vector2Int MapSize          = new Vector2Int(301, 201);
 	private Vector2Int MapOffset        = new Vector2Int(0, 0);
@@ -34,12 +34,15 @@ public class WorldGeneration : MonoBehaviour
 	
 	// PerlinScale:       Used to scale my perlin coord
 	// RoundCutOff: Used to round the perlin values
-	public float PerlinScale = 20f;
-	public float RoundCutOff = 0.5f;
-	public int   MazeScale = 8;
-	public int   TotalRooms = 3;
-	public int   StartingHallwayDepth = 24;
+	public  float PerlinScale = 20f;
+	public  float RoundCutOff = 0.5f;
+	public  int   MazeScale = 8;
+	private int   StartingHallwayDepth = 24;
 
+    /////////////////////////////////////////////
+    // NPC Parameters
+    public  GameObject Demon;
+    private int NumberOfDemons = 10;
 
 	public void Start()
 	{
@@ -61,12 +64,23 @@ public class WorldGeneration : MonoBehaviour
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
 
-		//Test();
-
-		/*
-		string   FileData = System.IO.File.ReadAllText(path);
-		String[] Lines    = fileData.Split("\n"[0]);
-		String[] lineData = (lines[0].Trim()).Split(","[0]);*/
+		
+		// Spawn Demons
+		for (int DemonCount = 0; DemonCount < NumberOfDemons; DemonCount++)
+		{
+		    while (true)
+		    {
+		        Vector3Int DemonPosition = new Vector3Int(Random.Range(MapOffset.x + 1, MapSize.x), Random.Range(MapOffset.y + 1, MapSize.y), 0);
+		        
+		        if (FloorMap.GetTile(DemonPosition) != null)
+		        {
+		            Instantiate(Demon, DemonPosition, Quaternion.identity);
+		            break;
+		        }
+		    }
+		    
+		    
+		}
 	}
 	
 	public void TileArea(Vector2Int ZoneOrigin, Vector2Int ZoneSize, Tile tile)
@@ -106,10 +120,6 @@ public class WorldGeneration : MonoBehaviour
         reader.Close();
     }
     */
-
-    public void Update()
-    {
-    }
 
 	// Lays floor tiles for a given area by calling perlin noise
 	public void GenerateZone(Vector2Int ZoneSize, Vector2Int ZoneOffset, Vector2Int PerlinOffset)
@@ -189,11 +199,6 @@ public class WorldGeneration : MonoBehaviour
         }
 
 		return Maze;
-    }
-
-	public void setArrayRangeOfElements(int[,] array, int start, int end, int dir)
-    {
-
     }
 
 	// Returns rounded Perlin Noise Values: (0 -or- 1)
