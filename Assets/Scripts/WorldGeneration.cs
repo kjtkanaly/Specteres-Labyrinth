@@ -46,14 +46,14 @@ public class WorldGeneration : MonoBehaviour
 	    // Place Starting Room
 	    Vector2Int StartingRoomOrigin = new Vector2Int(MapSize.x/2 - StartingRoomSize.x/2, MapSize.y);
 	    PlaceRoom(StartingRoomOrigin, StartingRoomSize);
+	    	    
+	    // Generate First Zone
+	    PerlinOffset = new Vector2Int(Random.Range(-1000,1001), Random.Range(-1000, 1001));
+	    GenerateZone(MapSize, MapOffset, PerlinOffset);
 	    
 	    // Setting the Hallway to connect the Starting Room to the Maze
 	    Vector2Int StartingHallwayOrigin = new Vector2Int(MapSize.x/2 - MazeScale/2, MapSize.y - StartingHallwayDepth);
 	    PlaceRoom(StartingHallwayOrigin, new Vector2Int(MazeScale, StartingHallwayDepth));
-	    
-	    // Generate First Zone
-	    PerlinOffset = new Vector2Int(Random.Range(-1000,1001), Random.Range(-1000, 1001));
-	    GenerateZone(MapSize, MapOffset, PerlinOffset);
 		
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
