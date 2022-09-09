@@ -29,7 +29,7 @@ public class WorldGeneration : MonoBehaviour
     
     public Transform PlayerTransform;
 	public Tilemap FloorMap, WallMap;
-	public Tile EmptySpaceTile;
+	public Tile EmptySpaceTile, DebugTile;
 	public Tile[] FloorTileSet;
 	public RuleTile WallTile;
 	
@@ -82,6 +82,7 @@ public class WorldGeneration : MonoBehaviour
 	    // Setting the "Spell Rooms" using a bsp method
 	    SpellRooms.Add(new SpellRoom(MapSize, MapOffset));
 	    BinarySplit(SpellRooms);
+	    PlaceSpellRooms(SpellRooms, FloorMap, DebugTile);
 		
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
@@ -103,7 +104,17 @@ public class WorldGeneration : MonoBehaviour
 		        } 
 		    }
 		}
-		
+	}
+	
+	public void PlaceSpellRooms(List<SpellRoom> SpellRooms, Tilemap FloorMap, Tile FloorTile)
+	{
+	    for (int RoomCount = 0; RoomCount < SpellRooms.Count; RoomCount++)
+	    {
+	        FloorMap.SetTile(new Vector3Int(SpellRooms[RoomCount].Origin.x, SpellRooms[RoomCount].Origin.y), FloorTile);
+	        
+	        // Debug
+	        Debug.Log("Spell Room #" + (RoomCount + 1) + " Origin: " + SpellRooms[RoomCount].Origin.x + "," + SpellRooms[RoomCount].Origin.y);
+	    }
 	}
 	
 	public void BinarySplit(List<SpellRoom> SpellRooms)
@@ -119,17 +130,17 @@ public class WorldGeneration : MonoBehaviour
 	            
 	            if (DivideDirection == 0)
 	            {
-	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x/2, Size.y), Origin));
-	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x/2, Size.y), new Vector2Int(Origin.x + Size.x/2, Origin.y)));
+	                SpellRooms.Insert(RoomCount, new SpellRoom(new Vector2Int(Size.x/2, Size.y), Origin));
+	                SpellRooms.Insert(RoomCount, new SpellRoom(new Vector2Int(Size.x/2, Size.y), new Vector2Int(Origin.x + Size.x/2, Origin.y)));
 	            
-	                SpellRooms.RemoveAt(RoomCount);
+	                SpellRooms.RemoveAt(RoomCount + 2);
 	            }
 	            else
 	            {
-	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x, Size.y/2), Origin));
-	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x, Size.y/2), new Vector2Int(Origin.x, Origin.y + Size.y/2)));
+	                SpellRooms.Insert(RoomCount, new SpellRoom(new Vector2Int(Size.x, Size.y/2), Origin));
+	                SpellRooms.Insert(RoomCount, new SpellRoom(new Vector2Int(Size.x, Size.y/2), new Vector2Int(Origin.x, Origin.y + Size.y/2)));
 	            
-	                SpellRooms.RemoveAt(RoomCount);
+	                SpellRooms.RemoveAt(RoomCount + 2);
 	            }
 	        }
 	        
@@ -143,7 +154,7 @@ public class WorldGeneration : MonoBehaviour
 	        }
 	    }
 	    
-	    Debug.Log(SpellRooms.Count);
+	    Debug.Log("Spell Room Count: " + SpellRooms.Count);
 	}
 	
 	public void TileArea(Vector2Int ZoneOrigin, Vector2Int ZoneSize, Tile tile)
