@@ -55,7 +55,8 @@ public class WorldGeneration : MonoBehaviour
 	/////////////////////////////////////////////
 	// Spell Room Parameters
 	private List<SpellRoom> SpellRooms = new List<SpellRoom>();
-	private int NumberOfBspDivisions = 3;
+	private int NumberOfBspDivisions   = 3;
+	private Vector2Int SpellRoomSize   = new Vector2Int(15,10);
 
     /////////////////////////////////////////////
     // NPC Parameters
@@ -76,13 +77,13 @@ public class WorldGeneration : MonoBehaviour
 	    Vector2Int StartingHallwayOrigin = new Vector2Int(MapSize.x/2 - MazeScale/2, MapSize.y - StartingHallwayDepth);
 	    TileArea(StartingHallwayOrigin, new Vector2Int(MazeScale, StartingHallwayDepth), FloorTileSet[0]);
 	    
-	    // Setting the Walls
-	    PlaceWallTiles(new Vector2Int(MapOffset.x - 10, MapOffset.y - 10), new Vector2Int(MapSize.x + 20, MapSize.y + StartingRoomSize.y + 20), WallTile);
-	    
 	    // Setting the "Spell Rooms" using a bsp method
 	    SpellRooms.Add(new SpellRoom(MapSize, MapOffset));
 	    BinarySplit(SpellRooms);
 	    PlaceSpellRooms(SpellRooms, FloorMap, DebugTile);
+	    
+	    // Setting the Walls
+	    PlaceWallTiles(new Vector2Int(MapOffset.x - 10, MapOffset.y - 10), new Vector2Int(MapSize.x + 20, MapSize.y + StartingRoomSize.y + 20), WallTile);
 		
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
@@ -111,6 +112,20 @@ public class WorldGeneration : MonoBehaviour
 	    for (int RoomCount = 0; RoomCount < SpellRooms.Count; RoomCount++)
 	    {
 	        FloorMap.SetTile(new Vector3Int(SpellRooms[RoomCount].Origin.x, SpellRooms[RoomCount].Origin.y), FloorTile);
+	        
+	        // Setting the Spell Room's Random Origin
+	        Vector2Int Origin = new Vector2Int(Random.Range(SpellRooms[RoomCount].Origin.x, SpellRooms[RoomCount].Origin.x + SpellRooms[RoomCount].Size.x - SpellRoomSize.x), 
+	                                            Random.Range(SpellRooms[RoomCount].Origin.y,
+	        SpellRooms[RoomCount].Origin.y + SpellRooms[RoomCount].Size.y - SpellRoomSize.y));
+	        
+	        // Placing the Floor Tiles
+	        for (int row = Origin.y; row < Origin.y + SpellRoomSize.y; row++)
+	        {
+	            for (int col = Origin.x; col < Origin.x + SpellRoomSize.x; col++)
+	            {
+	                FloorMap.SetTile(new Vector3Int(col, row), FloorTile);
+	            }
+	        }
 	        
 	        // Debug
 	        Debug.Log("Spell Room #" + (RoomCount + 1) + " Origin: " + SpellRooms[RoomCount].Origin.x + "," + SpellRooms[RoomCount].Origin.y);
@@ -225,11 +240,6 @@ public class WorldGeneration : MonoBehaviour
                             {
 								FloorMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), FloorTileSet[1]);
 							}
-
-							if (Maze[row,col] == 1 && sample == 1)
-                            {
-								WallMap.SetTile(new Vector3Int(tileCol + ZoneOffset.y, tileRow + ZoneOffset.x), WallTile);
-                            }
 						}
 					}
 

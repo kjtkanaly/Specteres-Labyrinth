@@ -2005,6 +2005,7 @@ MonoBehaviour:
   FloorMap: {fileID: 947345950}
   WallMap: {fileID: 165836064}
   EmptySpaceTile: {fileID: 11400000, guid: 7fb5a4bcbae50de4abc1598c3854770e, type: 2}
+  DebugTile: {fileID: 11400000, guid: 62a06de6a0930a44b90b2f86fd3281d9, type: 2}
   FloorTileSet:
   - {fileID: 11400000, guid: 2577f42dde2643342b98610a9a296ba7, type: 2}
   - {fileID: 11400000, guid: b4f01885e13759943af113d3adcf526b, type: 2}
