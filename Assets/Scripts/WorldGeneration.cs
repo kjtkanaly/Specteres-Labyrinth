@@ -15,6 +15,18 @@ public class WorldGeneration : MonoBehaviour
 		PerlinRooms
     }
     
+    public class SpellRoom
+    {
+        public Vector2Int Size;
+        public Vector2Int Origin;
+        
+        public SpellRoom(Vector2Int SizeValue, Vector2Int OriginValue)
+        {
+            Size   = SizeValue;
+            Origin = OriginValue;
+        }
+    }
+    
     public Transform PlayerTransform;
 	public Tilemap FloorMap, WallMap;
 	public Tile EmptySpaceTile;
@@ -39,6 +51,11 @@ public class WorldGeneration : MonoBehaviour
 	public  float RoundCutOff = 0.5f;
 	public  int   MazeScale = 8;
 	private int   StartingHallwayDepth = 24;
+	
+	/////////////////////////////////////////////
+	// Spell Room Parameters
+	private List<SpellRoom> SpellRooms = new List<SpellRoom>();
+	private int NumberOfBspDivisions = 3;
 
     /////////////////////////////////////////////
     // NPC Parameters
@@ -61,6 +78,10 @@ public class WorldGeneration : MonoBehaviour
 	    
 	    // Setting the Walls
 	    PlaceWallTiles(new Vector2Int(MapOffset.x - 10, MapOffset.y - 10), new Vector2Int(MapSize.x + 20, MapSize.y + StartingRoomSize.y + 20), WallTile);
+	    
+	    // Setting the "Spell Rooms" using a bsp method
+	    SpellRooms.Add(new SpellRoom(MapSize, MapOffset));
+	    BinarySplit(SpellRooms);
 		
 		// Move Player to Starting Room
 		PlayerTransform.position = new Vector2(StartingRoomOrigin.x + StartingRoomSize.x/2, StartingRoomOrigin.y + StartingRoomSize.y/2);
@@ -83,6 +104,46 @@ public class WorldGeneration : MonoBehaviour
 		    }
 		}
 		
+	}
+	
+	public void BinarySplit(List<SpellRoom> SpellRooms)
+	{
+	    // 0 - Cut Vertical, 1 - Cut Horizontal
+	    int DivideDirection = 0;
+	    for (int DivisionCount = 0; DivisionCount < NumberOfBspDivisions; DivisionCount++)
+	    {
+	        for (int RoomCount = 0; RoomCount < SpellRooms.Count; RoomCount += 2)
+	        {
+	            Vector2Int Origin = SpellRooms[RoomCount].Origin;
+	            Vector2Int Size   = SpellRooms[RoomCount].Size;
+	            
+	            if (DivideDirection == 0)
+	            {
+	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x/2, Size.y), Origin));
+	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x/2, Size.y), new Vector2Int(Origin.x + Size.x/2, Origin.y)));
+	            
+	                SpellRooms.RemoveAt(RoomCount);
+	            }
+	            else
+	            {
+	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x, Size.y/2), Origin));
+	                SpellRooms.Add(new SpellRoom(new Vector2Int(Size.x, Size.y/2), new Vector2Int(Origin.x, Origin.y + Size.y/2)));
+	            
+	                SpellRooms.RemoveAt(RoomCount);
+	            }
+	        }
+	        
+	        if (DivideDirection == 0)
+	        {
+	            DivideDirection = 1;
+	        }
+	        else
+	        {
+	            DivideDirection = 0;
+	        }
+	    }
+	    
+	    Debug.Log(SpellRooms.Count);
 	}
 	
 	public void TileArea(Vector2Int ZoneOrigin, Vector2Int ZoneSize, Tile tile)
