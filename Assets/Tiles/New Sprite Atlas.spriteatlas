@@ -169,10 +169,14 @@ SpriteAtlas:
   - {fileID: -4792148961389258768, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
   - {fileID: -7140895418734123555, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
   - {fileID: -1534428748399128642, guid: ca8f7cdce2066f1458ab935b6f4da40a, type: 3}
+  - {fileID: -1478119664, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 1086300443, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: -170868747023359722, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: 6591520194161231140, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: 1718299518337864005, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: 6907327320701417569, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 1512017300, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -542626783, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: -6848361396491633648, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: 6551761282970094555, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: -6312712329330129904, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
@@ -185,6 +189,13 @@ SpriteAtlas:
   - {fileID: -9145712971646019251, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: 3790471376924324723, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   - {fileID: -3392365132414931624, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -164201444, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 759353485, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -585229607, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 1141693377, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -946114937, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: 1211732729, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
+  - {fileID: -275867307, guid: cf46013ecdc7c5a4da615aed7825c538, type: 3}
   m_PackedSpriteNamesToIndex:
   - Blue Floor 2
   - Screen Shot 2022-08-28 at 9.59.47 PM_0
@@ -305,10 +316,14 @@ SpriteAtlas:
   - 0x72_DungeonTilesetII_v1.4_83
   - 0x72_DungeonTilesetII_v1.4_80
   - 0x72_DungeonTilesetII_v1.4_81
+  - Brown Walls_18
+  - Brown Walls_19
   - Brown Walls_12
   - Brown Walls_13
   - Brown Walls_10
   - Brown Walls_11
+  - Brown Walls_16
+  - Brown Walls_17
   - Brown Walls_14
   - Brown Walls_15
   - Brown Walls_9
@@ -321,6 +336,13 @@ SpriteAtlas:
   - Brown Walls_2
   - Brown Walls_1
   - Brown Walls_0
+  - Brown Walls_26
+  - Brown Walls_25
+  - Brown Walls_24
+  - Brown Walls_23
+  - Brown Walls_22
+  - Brown Walls_21
+  - Brown Walls_20
   m_RenderDataMap: {}
   m_Tag: New Sprite Atlas
   m_IsVariant: 0
