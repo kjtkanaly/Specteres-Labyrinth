@@ -133,6 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 256787876}
   - component: {fileID: 256787875}
+  - component: {fileID: 256787877}
+  - component: {fileID: 256787878}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -186,6 +188,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &256787877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256787874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f2c3f848b3bc84fb5e185fde5d7f38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PooledObjects: []
+  ObjectToPool: {fileID: 6461749141419550961, guid: 422be2f03c41b1c449bf38f31f4ecb12, type: 3}
+  AmountToPool: 20
+--- !u!114 &256787878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256787874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a2199cf851ad94b9d84c2853e8e809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsShooting: 0
+  ShotTimeDelay: 1
 --- !u!1 &270674363
 GameObject:
   m_ObjectHideFlags: 0

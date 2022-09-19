@@ -5,33 +5,31 @@ using UnityEngine;
 public class ProjectileSpell : MonoBehaviour
 {
     public Rigidbody2D RB;
-    public GameObject Weapon;
+    public GameObject WandOfOrigin;
+    public WandLogic WandControl;
+    public Spell SpellProperties;
 
     public Vector2 reticlePosRelativeToHilt;
     public Vector2 projectileVelocity;
 
-    private void FixedUpdate()
+    private void Start()
     {
-        RB.velocity = projectileVelocity;
-        this.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * Mathf.Atan2(reticlePosRelativeToHilt.y, reticlePosRelativeToHilt.x));
+        // Get the Player Object
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        // Tell the projectile to ignore collisions with the player
+        Physics2D.IgnoreCollision(this.GetComponent<Collider2D>(), player.transform.gameObject.GetComponent<CapsuleCollider2D>());
     }
 
-    private void Awake()
+    private void OnEnable()
     {
-        // Grabbing 
-        Weapon = GameObject.FindGameObjectWithTag("Weapon");
 
-        this.transform.SetParent(Weapon.transform);
-        this.transform.localPosition = new Vector2(0f, 0f);
 
-        Debug.Log(projectileVelocity);
-
-        this.transform.SetParent(null);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
 
     /*

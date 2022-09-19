@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class WandLogic : MonoBehaviour
 {
-	public Wand wandProp;
-	private GameObject player, manaBar;
-	private GameObject projectile;
+	public  Wand wandProp;
+	public  ObjectPooling SpellBank;
+	private PlayerController PlayerControl;
+	private ManaBarScript    ManaBar;
 	
 	public bool playerIsCasting = false;
 	public bool wandCanCast = true;
@@ -14,12 +15,12 @@ public class WandLogic : MonoBehaviour
 	private int spellIndex = 0;
 	private float castSpreadValue = 0;
 	private float projectileAngle;
-	private Vector2 projectileDirection;
+	public  Vector2 projectileDirection;
 
     private void Awake()
     {
-		player = GameObject.FindGameObjectWithTag("Player");
-		manaBar = GameObject.FindGameObjectWithTag("Mana Bar");
+		PlayerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+		ManaBar       = GameObject.FindGameObjectWithTag("Mana Bar").GetComponent<ManaBarScript>();
     }
 
     private void Update()
@@ -42,32 +43,47 @@ public class WandLogic : MonoBehaviour
 	
 	public void CastSpell(Wand wandProp, int spellIndex)
 	{
-		// Create the projectile
-		projectile = (GameObject)Instantiate(wandProp.Spells[spellIndex].spellPreFab);
-		
-		// Tell the projectile to ignore collisions with the player
-		Physics2D.IgnoreCollision(projectile.GetComponent<Collider2D>(), player.transform.gameObject.GetComponent<CapsuleCollider2D>());
-		
-		// Finding the projectile's direction based on cursor Position and Cast Spread
-		projectileDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - this.transform.position;
-		projectileAngle = Mathf.Atan2(projectileDirection.y, projectileDirection.x);
-		
-		castSpreadValue = Mathf.Deg2Rad * Random.Range(-wandProp.castSpread, wandProp.castSpread);
+		// Pull the Projectile from the Projectile Pool
+		GameObject Spell = ObjectPooling.SharedInstance.GetPooledObject();
 
-		projectileAngle += castSpreadValue;
-		projectileDirection = new Vector2(Mathf.Cos(projectileAngle), Mathf.Sin(projectileAngle));
-		
-		// Setting the projectile's velocity and target
-		projectile.transform.gameObject.GetComponent<ProjectileSpell>().projectileVelocity = wandProp.Spells[spellIndex].speed * (projectileDirection).normalized;
-		projectile.transform.gameObject.GetComponent<ProjectileSpell>().reticlePosRelativeToHilt = projectileDirection;
+		if (Spell != null)
+		{
+			Spell.SetActive(true);
 
+			// Setting the Projectile's Starting Pos
+			Spell.transform.SetParent(this.transform);
+			Spell.transform.localPosition = new Vector2(0f, 0f);
 
-		player.transform.gameObject.GetComponent<PlayerController>().manaCurrent -= wandProp.Spells[spellIndex].manaCost;
-		manaBar.transform.gameObject.GetComponent<ManaBarScript>().SetMana(player.transform.gameObject.GetComponent<PlayerController>().manaCurrent);
-		
-		wandCanCast = false;
-		StartCoroutine(castTimer(wandProp.Spells[spellIndex].castDelay + wandProp.castDelay));
+			// Finding the projectile's direction based on cursor Position and Cast Spread
+			projectileDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - this.transform.position;
+			projectileAngle = Mathf.Atan2(projectileDirection.y, projectileDirection.x);
 
+			castSpreadValue = Mathf.Deg2Rad * Random.Range(-wandProp.castSpread, wandProp.castSpread);
+
+			projectileAngle += castSpreadValue;
+			projectileDirection = new Vector2(Mathf.Cos(projectileAngle), Mathf.Sin(projectileAngle));
+
+			// Setting the Projectile's Angle
+			Spell.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Rad2Deg * Mathf.Atan2(projectileDirection.y, projectileDirection.x));
+
+			// Setting the projectile's velocity using the pos of the reticle
+			Spell.GetComponent<Rigidbody2D>().velocity = Spell.GetComponent<Spell>().speed * (projectileDirection).normalized;
+
+			Spell.transform.SetParent(null);
+
+			PlayerControl.manaCurrent -= wandProp.Spells[spellIndex].manaCost;
+			ManaBar.SetMana(PlayerControl.manaCurrent);
+
+			wandCanCast = false;
+			StartCoroutine(castTimer(wandProp.Spells[spellIndex].castDelay + wandProp.castDelay));
+		}
+
+		else
+		{
+			Debug.Log("Spell Bank Empty... Sadge");
+			return;
+        }
+	
 	}
 	
 	IEnumerator castTimer(float waitTime)

@@ -14,4 +14,5 @@ public class Wand : MonoBehaviour
 	public List<Spell> Spells = new List<Spell>(); // Lists of spells in the Wand
 	
 	
+	
 }
