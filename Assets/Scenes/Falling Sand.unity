@@ -467,6 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc4114aa12347a40ad68928c2ce3bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WandDirection: {fileID: 1342541563}
   FireRate: 0.5
   RechargeRate: 0.5
 --- !u!1 &1555227000

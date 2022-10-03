@@ -136,4 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3330b4d0cfe48a47bd01f6d757c1ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 10
+  BallRB: {fileID: 0}
+  BallTrans: {fileID: 0}
+  Parent: {fileID: 0}
+  MouseDirection: {x: 0, y: 0}
+  Speed: 20

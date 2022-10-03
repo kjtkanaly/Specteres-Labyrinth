@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WandController : MonoBehaviour
 {
+    public WandOrientation WandDirection;
+
     public float FireRate = 0.5f;
     public float RechargeRate = 0.5f;
 
@@ -18,6 +20,9 @@ public class WandController : MonoBehaviour
             if (Spell != null)
             {
                 Spell.SetActive(true);
+                Spell.GetComponent<BouncingBallPhysics>().Parent         = this.transform;
+                Spell.GetComponent<BouncingBallPhysics>().MouseDirection = WandDirection.MousePos;
+                Spell.GetComponent<BouncingBallPhysics>().OnActive();
             }
 
             StartCoroutine(GeneralTimer(FireRate));
