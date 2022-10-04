@@ -118,6 +118,9 @@ public class WorldGeneration : MonoBehaviour
 	                                            Random.Range(SpellRooms[RoomCount].Origin.y,
 	        SpellRooms[RoomCount].Origin.y + SpellRooms[RoomCount].Size.y - SpellRoomSize.y));
 	        
+	        SpellRooms[RoomCount].Origin = Origin;
+	        SpellRooms[RoomCount].Size   = SpellRoomSize;
+	        
 	        // Placing the Floor Tiles
 	        for (int row = Origin.y; row < Origin.y + SpellRoomSize.y; row++)
 	        {
