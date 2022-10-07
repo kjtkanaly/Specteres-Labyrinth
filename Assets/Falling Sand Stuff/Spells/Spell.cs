@@ -12,12 +12,12 @@ public class Spell : MonoBehaviour
         PathMod
     }
 
-    // SpellPrefab: The gameobject that will be used for projectles
     // Type: The type of spell
+    // Name: Name of the spell
     // ManaDrain: Amount of mana that the spell will drain on each cast
-    public GameObject SpellPrefab;
     public SpellType Type;
-    public float ManaDrain;
+    public string    Name;
+    public float     ManaDrain;
 
     
 }

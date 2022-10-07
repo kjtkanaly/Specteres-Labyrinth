@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CastModiferSpell : MonoBehaviour
+public class CastModiferSpell : Spell
 {
     // MultiCast: How many additional cast will be made
     // SpreadMod: Change in the next spell's Spread

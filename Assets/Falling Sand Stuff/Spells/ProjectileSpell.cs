@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileSpell : MonoBehaviour
+public class ProjectileSpell : Spell
 {
     // Speed: Pixels per frame
     // Damage: Cost to a creature's health
@@ -14,4 +14,5 @@ public class ProjectileSpell : MonoBehaviour
     public float CastDelay  = 1f;
     public float Lifetime   = 20f;
     public float Spread     = 1f;
+
 }
