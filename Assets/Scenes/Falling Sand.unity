@@ -467,9 +467,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc4114aa12347a40ad68928c2ce3bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Shuffle: 0
+  CastRate: 1
+  ManaMax: 100
+  ManaCharge: 10
+  Capacity: 10
+  CastDelay: 1
+  RechargeTime: 1
+  Spread: 1
   WandDirection: {fileID: 1342541563}
-  FireRate: 0.5
-  RechargeRate: 0.5
+  SpellList:
+  - {fileID: 6210649262799263233, guid: 49009cc1ada28354b9cf6f8a12ea986d, type: 3}
 --- !u!1 &1555227000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2741,9 +2749,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940997995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09f2c3f848b3bc84fb5e185fde5d7f38, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c35bed610f23a8498f2461f67b36bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PooledObjects: []
-  ObjectToPool: {fileID: 5646572319819585933, guid: 49009cc1ada28354b9cf6f8a12ea986d, type: 3}
+  PooledSpell: []
+  SpellToPool: {fileID: 4993998568202392784, guid: de9e44cf8ec074e45961e705665fd3ba, type: 3}
   AmountToPool: 20

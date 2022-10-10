@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform reticlePos;
 
     // Weapon Parameters
-	public WandLogic wandController;
+	//public WandLogic wandController;
     [SerializeField] private Transform weaponHilt;
     [SerializeField] private SpriteRenderer weaponSprite;
     [SerializeField] private GameObject shotPrefab;
@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour
             // Shooting Logic
             if ((Input.GetMouseButton(0)) && (rolling == false) && (canShoot == true) && (manaCurrent > 0))
             {
-                wandController.playerIsCasting = true;
+                //wandController.playerIsCasting = true;
 				
 				/*
                 GameObject bullet = (GameObject)Instantiate(shotPrefab);
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
             }
 			if ((Input.GetMouseButtonUp(0)) || (manaCurrent <= 0))
 			{
-				wandController.playerIsCasting = false;
+				//wandController.playerIsCasting = false;
 			}
 			
 
