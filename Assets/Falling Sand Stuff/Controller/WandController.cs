@@ -46,6 +46,7 @@ public class WandController : Wand
                     GenericSpell.CastDelay  = CurrentProjectile.CastDelay;
                     GenericSpell.Lifetime   = CurrentProjectile.Lifetime;
                     GenericSpell.Spread     = CurrentProjectile.Spread;
+                    GenericSpell.CanBounce  = CurrentProjectile.CanBounce;
 
                     // Setting the spell's physic
                     GenericSpell.RB.sharedMaterial.bounciness = CurrentProjectile.Bounce;

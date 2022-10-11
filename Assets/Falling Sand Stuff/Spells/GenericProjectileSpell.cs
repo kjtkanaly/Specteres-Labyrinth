@@ -17,6 +17,14 @@ public class GenericProjectileSpell : Spell
         Spr     = this.GetComponentInChildren(typeof(SpriteRenderer), true) as SpriteRenderer;
     }
 
+    public void OnCollisionEnter2D()
+    {
+        if (CanBounce == false)
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
+
     private void OnDisable()
     {
         this.Name = "";
