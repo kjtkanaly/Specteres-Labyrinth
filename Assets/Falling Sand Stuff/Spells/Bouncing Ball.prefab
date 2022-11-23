@@ -55,3 +55,6 @@ MonoBehaviour:
   Spread: 1
   Bounce: 0.6
   Friction: 0.2
+  CanBounce: 1
+  MultiCast: 2
+  SpreadMod: 0
