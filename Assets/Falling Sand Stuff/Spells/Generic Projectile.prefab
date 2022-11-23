@@ -142,6 +142,9 @@ MonoBehaviour:
   Spread: 0
   Bounce: 0.6
   Friction: 0.2
+  CanBounce: 0
+  MultiCast: 2
+  SpreadMod: 0
   RB: {fileID: 0}
   Trans: {fileID: 0}
   Spr: {fileID: 0}
@@ -176,7 +179,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 86611d532c854044abe1f325974096b0, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

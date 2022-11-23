@@ -10,6 +10,11 @@ public class GenericProjectileSpell : Spell
     public Transform      Trans;
     public SpriteRenderer Spr;
 
+    public void Start()
+    {
+        //Physics.IgnoreCollision();
+    }
+
     public void Awake()
     {
         RB      = this.GetComponent<Rigidbody2D>();

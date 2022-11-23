@@ -2878,16 +2878,16 @@ MonoBehaviour:
   HeadCollider: {fileID: 1940998002}
   RightCollider: {fileID: 1940998004}
   LeftCollider: {fileID: 1940998003}
-  gravityConstant: -10
-  LevitationForce: 150
+  gravityConstant: -100
+  LevitationForce: 260
   walkingSpeed: 10
   FrictionRate: 100
   mass: 10
-  terminalVelocity: 15
+  terminalVelocity: 20
   maxHorizontalSpeed: 15
   LevitationMana: 100
   PlayerVelocity: {x: 0, y: 0}
-  AddGravity: 1
+  AddGravity: 0
   isHittingHead: 0
   isRunningLeftIntoWall: 0
   isRunningRightIntoWall: 0

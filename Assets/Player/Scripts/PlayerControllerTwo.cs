@@ -15,7 +15,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public float walkingSpeed       = 10f;
     public float FrictionRate       = 1f;
     public float mass               = 10f;
-    public float terminalVelocity   = 15f;
+    public float terminalVelocity   = -15f;
     public float maxHorizontalSpeed = 10f;
 
     public int LevitationMana       = 100;
@@ -30,11 +30,6 @@ public class PlayerControllerTwo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Add gravity
-        if (AddGravity)
-        {
-            PlayerVelocity += new Vector2(0f, gravityConstant * Time.deltaTime);
-        }
 
         // Check if player jumped
         if ((Input.GetKey(KeyCode.Space)) && (LevitationMana > 0))
@@ -46,6 +41,17 @@ public class PlayerControllerTwo : MonoBehaviour
             else
             {
                 PlayerVelocity = new Vector2(PlayerVelocity.x, 0f);
+            }
+        }
+        else 
+        {
+            if (AddGravity)
+            {
+                PlayerVelocity.y = Mathf.MoveTowards(PlayerVelocity.y, terminalVelocity, gravityConstant * Time.deltaTime);
+            }
+            else
+            {
+                PlayerVelocity.y = 0;
             }
         }
 
