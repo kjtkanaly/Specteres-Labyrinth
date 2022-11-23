@@ -13,6 +13,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public float gravityConstant    = -10f;
     public float LevitationForce    = 150f;
     public float walkingSpeed       = 10f;
+    public float FrictionRate       = 1f;
     public float mass               = 10f;
     public float terminalVelocity   = 15f;
     public float maxHorizontalSpeed = 10f;
@@ -76,6 +77,10 @@ public class PlayerControllerTwo : MonoBehaviour
         else if ((Input.GetKey(KeyCode.D)) && (Input.GetKey(KeyCode.A)))
         {
             PlayerVelocity = new Vector2(0, PlayerVelocity.y);
+        }
+        else
+        {
+            PlayerVelocity.x = Mathf.MoveTowards(PlayerVelocity.x, 0, FrictionRate * Time.deltaTime);
         }
         
         // Clamp Player Velocity

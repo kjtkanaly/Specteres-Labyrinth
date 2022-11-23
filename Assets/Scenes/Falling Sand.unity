@@ -2881,6 +2881,7 @@ MonoBehaviour:
   gravityConstant: -10
   LevitationForce: 150
   walkingSpeed: 10
+  FrictionRate: 100
   mass: 10
   terminalVelocity: 15
   maxHorizontalSpeed: 15
@@ -2888,6 +2889,8 @@ MonoBehaviour:
   PlayerVelocity: {x: 0, y: 0}
   AddGravity: 1
   isHittingHead: 0
+  isRunningLeftIntoWall: 0
+  isRunningRightIntoWall: 0
 --- !u!61 &1940998002
 BoxCollider2D:
   m_ObjectHideFlags: 0
