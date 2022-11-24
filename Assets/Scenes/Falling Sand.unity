@@ -2726,7 +2726,7 @@ GameObject:
   - component: {fileID: 1940998003}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2887,7 +2887,7 @@ MonoBehaviour:
   maxHorizontalSpeed: 15
   LevitationMana: 100
   PlayerVelocity: {x: 0, y: 0}
-  AddGravity: 0
+  AddGravity: 1
   isHittingHead: 0
   isRunningLeftIntoWall: 0
   isRunningRightIntoWall: 0
