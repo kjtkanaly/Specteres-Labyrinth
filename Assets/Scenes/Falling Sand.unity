@@ -195,7 +195,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2145701470261681926, guid: 3fa009500008a4646bfe4143c288f4ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -418,6 +418,7 @@ GameObject:
   - component: {fileID: 1342541562}
   - component: {fileID: 1342541563}
   - component: {fileID: 1342541564}
+  - component: {fileID: 1342541565}
   m_Layer: 0
   m_Name: Wand
   m_TagString: Untagged
@@ -479,6 +480,21 @@ MonoBehaviour:
   WandDirection: {fileID: 1342541563}
   SpellList:
   - {fileID: 6210649262799263233, guid: 49009cc1ada28354b9cf6f8a12ea986d, type: 3}
+--- !u!114 &1342541565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342541561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af7f2d022bfb1d49bf0b44e714a9b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particlePool: []
+  particle: {fileID: -1443324055129095122, guid: 92c6f066f6b36d94bb594ed11a788009, type: 3}
+  amountToPool: 100
 --- !u!1 &1555227000
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,7 +570,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
