@@ -17,6 +17,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public float mass               = 10f;
     public float terminalVelocity   = -15f;
     public float maxHorizontalSpeed = 10f;
+    public float flyingParticleChance = 0.1f; 
 
     public int LevitationMana       = 100;
 
@@ -36,7 +37,26 @@ public class PlayerControllerTwo : MonoBehaviour
         {
             if (isHittingHead == false)
             {
-                PlayerVelocity += new Vector2(0f, (LevitationForce/mass) * Time.deltaTime);
+                PlayerVelocity += new Vector2(0f, (LevitationForce / mass) * 
+                                                   Time.deltaTime);
+
+                float particleChance = Mathf.PerlinNoise(Time.time, 0.0f);
+                if (particleChance > flyingParticleChance)
+                {
+                    GenericParticle FlyingParticle = ParticlePooling.SharedInstance.GetPooledParticle();
+
+                    if (FlyingParticle != null)
+                    {
+                        FlyingParticle.gameObject.SetActive(true);
+
+                        // Setting the particle's spawn location
+                        FlyingParticle.Trans.SetParent(this.transform.GetChild(0).transform);
+                        FlyingParticle.Trans.localPosition = new Vector3(0f, -0.63f);
+                        FlyingParticle.Trans.SetParent(null);
+
+                        StartCoroutine(FlyingParticle.lifeTimeCounter());
+                    }
+                }
             }
             else
             {
@@ -47,7 +67,9 @@ public class PlayerControllerTwo : MonoBehaviour
         {
             if (AddGravity)
             {
-                PlayerVelocity.y = Mathf.MoveTowards(PlayerVelocity.y, terminalVelocity, gravityConstant * Time.deltaTime);
+                PlayerVelocity.y = Mathf.MoveTowards(PlayerVelocity.y, 
+                                                     terminalVelocity, 
+                                                     gravityConstant * Time.deltaTime);
             }
             else
             {
@@ -61,7 +83,6 @@ public class PlayerControllerTwo : MonoBehaviour
             if (isRunningRightIntoWall == false)
             {
                 PlayerVelocity = new Vector2(walkingSpeed, PlayerVelocity.y);
-                //PlayerVelocity += new Vector2(walkingSpeed * Time.deltaTime, 0f);
             }
             else
             {
@@ -73,7 +94,6 @@ public class PlayerControllerTwo : MonoBehaviour
             if (isRunningLeftIntoWall == false)
             {
                 PlayerVelocity = new Vector2(-walkingSpeed, PlayerVelocity.y);
-                //PlayerVelocity -= new Vector2(walkingSpeed * Time.deltaTime, 0f);
             }
             else
             {
@@ -90,9 +110,12 @@ public class PlayerControllerTwo : MonoBehaviour
         }
         
         // Clamp Player Velocity
-        //PlayerVelocity = Vector2.ClampMagnitude(PlayerVelocity, terminalVelocity);
-        PlayerVelocity.y = Mathf.Clamp(PlayerVelocity.y, -terminalVelocity, terminalVelocity);
-        PlayerVelocity.x = Mathf.Clamp(PlayerVelocity.x, -maxHorizontalSpeed, maxHorizontalSpeed);
+        PlayerVelocity.y = Mathf.Clamp(PlayerVelocity.y, 
+                                       -terminalVelocity, 
+                                       terminalVelocity);
+        PlayerVelocity.x = Mathf.Clamp(PlayerVelocity.x, 
+                                       -maxHorizontalSpeed, 
+                                       maxHorizontalSpeed);
 
         // Update RB
         RB.velocity = PlayerVelocity;
