@@ -99,8 +99,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RB: {fileID: 0}
-  lifeTimeRange: {x: 1, y: 2}
-  velocity: {x: 0, y: -6}
+  Trans: {fileID: 0}
+  SP: {fileID: 0}
+  lifeTimeRange: {x: 0.1, y: 0.4}
+  AlphaRange: {x: 0.55, y: 0.85}
+  downwardVelocity: -6
+  verticalSapwnPos: -0.5
+  horizontalVelocityRange: 0.75
+  horizontalSpawnRange: 0.12
+  airDrag: 0.2
   lifeTime: 0
 --- !u!50 &6360240295165560924
 Rigidbody2D:

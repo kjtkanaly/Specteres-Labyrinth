@@ -2887,7 +2887,7 @@ MonoBehaviour:
   mass: 10
   terminalVelocity: 20
   maxHorizontalSpeed: 15
-  flyingParticleChance: 0.1
+  flyingParticleChance: 0.8
   LevitationMana: 100
   PlayerVelocity: {x: 0, y: 0}
   AddGravity: 1
@@ -2986,4 +2986,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particlePool: []
   particle: {fileID: 6360240295165560925, guid: 1c7216e87e886ff4eb6240f48963859e, type: 3}
-  amountToPool: 10
+  amountToPool: 100

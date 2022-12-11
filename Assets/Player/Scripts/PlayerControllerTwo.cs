@@ -40,7 +40,8 @@ public class PlayerControllerTwo : MonoBehaviour
                 PlayerVelocity += new Vector2(0f, (LevitationForce / mass) * 
                                                    Time.deltaTime);
 
-                float particleChance = Mathf.PerlinNoise(Time.time, 0.0f);
+                //float particleChance = Mathf.PerlinNoise(Time.time, 0.0f);
+                float particleChance = Random.Range(0f,1f);
                 if (particleChance > flyingParticleChance)
                 {
                     GenericParticle FlyingParticle = ParticlePooling.SharedInstance.GetPooledParticle();
@@ -50,8 +51,10 @@ public class PlayerControllerTwo : MonoBehaviour
                         FlyingParticle.gameObject.SetActive(true);
 
                         // Setting the particle's spawn location
-                        FlyingParticle.Trans.SetParent(this.transform.GetChild(0).transform);
-                        FlyingParticle.Trans.localPosition = new Vector3(0f, -0.63f);
+                        FlyingParticle.Trans.SetParent(this.transform.transform);
+                        float HorizontalSpawnPos = Random.Range(-FlyingParticle.horizontalSpawnRange,
+                                                                FlyingParticle.horizontalSpawnRange);
+                        FlyingParticle.Trans.localPosition = new Vector3(HorizontalSpawnPos, FlyingParticle.verticalSapwnPos);
                         FlyingParticle.Trans.SetParent(null);
 
                         StartCoroutine(FlyingParticle.lifeTimeCounter());
