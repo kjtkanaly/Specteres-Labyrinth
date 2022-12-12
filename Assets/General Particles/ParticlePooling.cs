@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class ParticlePooling : MonoBehaviour
 {
-    public static ParticlePooling SharedInstance;
-
     public List<GenericParticle> particlePool;
     public GenericParticle particle;
 
     public int amountToPool;
 
+
     private void Awake()
     {
-        SharedInstance = this;
+        
     }
 
+
     // Start is called before the first frame update
-    private void Start()
+    public void Start()
+    {
+        setupInstancePool();
+    }
+
+
+    // Setup up Instance pool
+    public void setupInstancePool()
     {
         particlePool = new List<GenericParticle>();
         GameObject tmp;
@@ -28,8 +35,8 @@ public class ParticlePooling : MonoBehaviour
             tmp.SetActive(false);
             particlePool.Add(tmp.GetComponent<GenericParticle>());
         }
-
     }
+
 
     // Update is called once per frame
     public GenericParticle GetPooledParticle()

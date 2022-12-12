@@ -107,5 +107,6 @@ MonoBehaviour:
   horizontalVelocityRange: 0.5
   horizontalSpawnRange: 0.15
   airDrag: 0.2
+  alphaStep: 0.3
   lifeTime: 0
   type: 1

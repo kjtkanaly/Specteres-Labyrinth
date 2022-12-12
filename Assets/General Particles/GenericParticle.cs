@@ -52,9 +52,9 @@ public class GenericParticle : MonoBehaviour
         }
         else if (type == ParticleType.Trail)
         {
-
         }
     }
+
 
     private void Update()
     {   
@@ -67,16 +67,19 @@ public class GenericParticle : MonoBehaviour
         else if (type == ParticleType.Trail)
         {
             Color temp = SP.color;
-            if (temp.a <= 0)
-            {
-                this.gameObject.SetActive(false);
-            }
             temp.a -= alphaStep * Time.deltaTime;
             SP.color = temp;
         }
     }
+    
 
     public IEnumerator lifeTimeCounter()
+    {
+        yield return new WaitForSeconds(lifeTime);
+        this.gameObject.SetActive(false);
+    }
+
+    public IEnumerator lifeTimeCounter(float lifeTime)
     {
         yield return new WaitForSeconds(lifeTime);
         this.gameObject.SetActive(false);

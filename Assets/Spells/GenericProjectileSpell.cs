@@ -12,16 +12,17 @@ public class GenericProjectileSpell : Spell
     public CircleCollider2D Col;
     public BoxCollider2D[]  PlayerColliders;
 
-    public void Awake()
+    private void Awake()
     {
-        RB      = this.GetComponent<Rigidbody2D>();
-        Trans   = this.GetComponent<Transform>();        
-        Spr     = this.GetComponentInChildren(typeof(SpriteRenderer), true) as SpriteRenderer;
-        Col     = this.GetComponent<CircleCollider2D>();
+        RB = this.GetComponent<Rigidbody2D>();
+        Trans = this.GetComponent<Transform>();        
+        Spr = this.GetComponentInChildren(typeof(SpriteRenderer), true) as SpriteRenderer;
+        Col = this.GetComponent<CircleCollider2D>();
         PlayerColliders = GameObject.FindGameObjectWithTag("Player").GetComponents<BoxCollider2D>();
     }
 
-    public void OnEnable()
+
+    private void OnEnable()
     {
         Debug.Log(PlayerColliders.Length);
         foreach (BoxCollider2D playerCol in PlayerColliders)
@@ -30,7 +31,7 @@ public class GenericProjectileSpell : Spell
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
         /* if (col.collider.gameObject.tag == "Player")
         {
@@ -43,6 +44,7 @@ public class GenericProjectileSpell : Spell
         }
     }
 
+
     private void OnDisable()
     {
         this.Name = "";
@@ -54,6 +56,7 @@ public class GenericProjectileSpell : Spell
         this.Lifetime   = 0f;
         this.Spread     = 0f;
     }
+
 
     public IEnumerator LifetimeTimer()
     {

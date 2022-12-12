@@ -148,6 +148,11 @@ MonoBehaviour:
   RB: {fileID: 0}
   Trans: {fileID: 0}
   Spr: {fileID: 0}
+  Col: {fileID: 0}
+  PlayerColliders: []
+  PartPool: {fileID: 0}
+  particleShedDelay: 0.005
+  shedParticle: 1
 --- !u!50 &8618218929820810764
 Rigidbody2D:
   serializedVersion: 4

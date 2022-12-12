@@ -9,6 +9,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public Collider2D HeadCollider;
     public Collider2D RightCollider;
     public Collider2D LeftCollider;
+    public ParticlePooling FlyingPartiles;
 
     public float gravityConstant    = -10f;
     public float LevitationForce    = 150f;
@@ -39,31 +40,30 @@ public class PlayerControllerTwo : MonoBehaviour
             {
                 PlayerVelocity += new Vector2(0f, (LevitationForce / mass) * 
                                                    Time.deltaTime);
-
-                //float particleChance = Mathf.PerlinNoise(Time.time, 0.0f);
-                float particleChance = Random.Range(0f,1f);
-                if (particleChance > flyingParticleChance)
-                {
-                    GenericParticle FlyingParticle = ParticlePooling.SharedInstance.GetPooledParticle();
-
-                    if (FlyingParticle != null)
-                    {
-                        FlyingParticle.gameObject.SetActive(true);
-
-                        // Setting the particle's spawn location
-                        FlyingParticle.Trans.SetParent(this.transform.transform);
-                        float HorizontalSpawnPos = Random.Range(-FlyingParticle.horizontalSpawnRange,
-                                                                FlyingParticle.horizontalSpawnRange);
-                        FlyingParticle.Trans.localPosition = new Vector3(HorizontalSpawnPos, FlyingParticle.verticalSapwnPos);
-                        FlyingParticle.Trans.SetParent(null);
-
-                        StartCoroutine(FlyingParticle.lifeTimeCounter());
-                    }
-                }
             }
             else
             {
                 PlayerVelocity = new Vector2(PlayerVelocity.x, 0f);
+            }
+
+            float particleChance = Random.Range(0f,1f);
+            if (particleChance > flyingParticleChance)
+            {
+                GenericParticle FlyingParticle = FlyingPartiles.GetPooledParticle();
+
+                if (FlyingParticle != null)
+                {
+                    FlyingParticle.gameObject.SetActive(true);
+
+                    // Setting the particle's spawn location
+                    FlyingParticle.Trans.SetParent(this.transform.transform);
+                    float HorizontalSpawnPos = Random.Range(-FlyingParticle.horizontalSpawnRange,
+                                                            FlyingParticle.horizontalSpawnRange);
+                    FlyingParticle.Trans.localPosition = new Vector3(HorizontalSpawnPos, FlyingParticle.verticalSapwnPos);
+                    FlyingParticle.Trans.SetParent(null);
+
+                    StartCoroutine(FlyingParticle.lifeTimeCounter());
+                }
             }
         }
         else 
