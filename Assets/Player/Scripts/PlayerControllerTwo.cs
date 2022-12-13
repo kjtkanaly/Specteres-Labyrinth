@@ -10,6 +10,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public Collider2D RightCollider;
     public Collider2D LeftCollider;
     public ParticlePooling FlyingPartiles;
+    public ObjectPool FlyingParticlePool;
 
     public float gravityConstant    = -10f;
     public float LevitationForce    = 150f;
@@ -49,18 +50,20 @@ public class PlayerControllerTwo : MonoBehaviour
             float particleChance = Random.Range(0f,1f);
             if (particleChance > flyingParticleChance)
             {
-                GenericParticle FlyingParticle = FlyingPartiles.GetPooledParticle();
+                GameObject FlyingParticleObj = FlyingParticlePool.GetObjectFromThePool();
 
-                if (FlyingParticle != null)
+                if (FlyingParticleObj != null)
                 {
-                    FlyingParticle.gameObject.SetActive(true);
+                    FlyingParticleObj.SetActive(true);
+
+                    GenericParticle FlyingParticle = FlyingParticleObj.GetComponent<GenericParticle>();
 
                     // Setting the particle's spawn location
-                    FlyingParticle.Trans.SetParent(this.transform.transform);
+                    FlyingParticleObj.transform.SetParent(this.transform);
                     float HorizontalSpawnPos = Random.Range(-FlyingParticle.horizontalSpawnRange,
                                                             FlyingParticle.horizontalSpawnRange);
-                    FlyingParticle.Trans.localPosition = new Vector3(HorizontalSpawnPos, FlyingParticle.verticalSapwnPos);
-                    FlyingParticle.Trans.SetParent(null);
+                    FlyingParticleObj.transform.localPosition = new Vector3(HorizontalSpawnPos, FlyingParticle.verticalSapwnPos);
+                    FlyingParticleObj.transform.SetParent(null);
 
                     StartCoroutine(FlyingParticle.lifeTimeCounter());
                 }

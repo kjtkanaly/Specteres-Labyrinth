@@ -10,12 +10,6 @@ public class ParticlePooling : MonoBehaviour
     public int amountToPool;
 
 
-    private void Awake()
-    {
-        
-    }
-
-
     // Start is called before the first frame update
     public void Start()
     {

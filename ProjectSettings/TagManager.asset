@@ -21,6 +21,7 @@ TagManager:
   - Floor Map
   - Debug Map
   - Boundary
+  - Spell Pool
   layers:
   - Default
   - TransparentFX

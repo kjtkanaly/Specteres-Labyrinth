@@ -5,6 +5,7 @@ using UnityEngine;
 public class WandController : Wand
 {
     public WandOrientation WandDirection;
+    public ObjectPool SpellPool;
     public List<Spell> SpellList;
 
     private bool CanCastSpell = true;
@@ -23,17 +24,20 @@ public class WandController : Wand
             if (SpellList[SpellIndex].Type == Spell.SpellType.Projectile)
             {
                 Spell CurrentProjectile = SpellList[SpellIndex];
-                GenericProjectileSpell GenericSpell = SpellPooling.SharedInstance.GetPooledSpell();
+                GameObject GenericSpellObj = SpellPool.GetObjectFromThePool();
 
-                if (GenericSpell != null)
+                if (GenericSpellObj != null)
                 {
                     // Activate the spell
-                    GenericSpell.gameObject.SetActive(true);
+                    GenericSpellObj.SetActive(true);
 
                     // Setting the spell's spawn location
-                    GenericSpell.Trans.SetParent(this.transform.GetChild(0).transform);
-                    GenericSpell.Trans.localPosition = new Vector3(0f, 0.63f);
-                    GenericSpell.Trans.SetParent(null);
+                    GenericSpellObj.transform.SetParent(this.transform.GetChild(0).transform);
+                    GenericSpellObj.transform.localPosition = new Vector3(0f, 0.63f);
+                    GenericSpellObj.transform.SetParent(null);
+
+                    // Get the Spell's Generic Spell Class
+                    GenericProjectileSpell GenericSpell = GenericSpellObj.GetComponent<GenericProjectileSpell>();
 
                     // Setting the spell's velocity
                     GenericSpell.RB.velocity = WandDirection.MousePos.normalized * CurrentProjectile.Speed;
