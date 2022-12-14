@@ -55,17 +55,6 @@ public class PlayerControllerTwo : MonoBehaviour
                 if (FlyingParticleObj != null)
                 {
                     FlyingParticleObj.SetActive(true);
-
-                    GenericParticle FlyingParticle = FlyingParticleObj.GetComponent<GenericParticle>();
-
-                    // Setting the particle's spawn location
-                    FlyingParticleObj.transform.SetParent(this.transform);
-                    float HorizontalSpawnPos = Random.Range(-FlyingParticle.horizontalSpawnRange,
-                                                            FlyingParticle.horizontalSpawnRange);
-                    FlyingParticleObj.transform.localPosition = new Vector3(HorizontalSpawnPos, FlyingParticle.verticalSapwnPos);
-                    FlyingParticleObj.transform.SetParent(null);
-
-                    StartCoroutine(FlyingParticle.lifeTimeCounter());
                 }
             }
         }

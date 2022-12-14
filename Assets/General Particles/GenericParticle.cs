@@ -12,6 +12,7 @@ public class GenericParticle : MonoBehaviour
 
     public Rigidbody2D RB;
     public Transform Trans;
+    public Transform PlayerTrans;
     public SpriteRenderer SP;
 
     public Vector2 lifeTimeRange = new Vector2(0.1f, 0.4f);
@@ -32,6 +33,8 @@ public class GenericParticle : MonoBehaviour
         RB = this.GetComponent<Rigidbody2D>();
         Trans = this.GetComponent<Transform>();    
         SP = this.GetComponent<SpriteRenderer>();
+
+        PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -49,6 +52,16 @@ public class GenericParticle : MonoBehaviour
             Color temp = SP.color;
             temp.a = SprAlpha;
             SP.color = temp;
+
+            // Setting the particle's spawn location
+            this.transform.SetParent(PlayerTrans);
+            float HorizontalSpawnPos = Random.Range(-horizontalSpawnRange,
+                                                    horizontalSpawnRange);
+            this.transform.localPosition = new Vector3(HorizontalSpawnPos, 
+                                                       verticalSapwnPos);
+            this.transform.SetParent(null);
+
+            StartCoroutine(lifeTimeCounter());
         }
         else if (type == ParticleType.Trail)
         {

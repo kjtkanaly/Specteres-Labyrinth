@@ -30,37 +30,6 @@ public class WandController : Wand
                 {
                     // Activate the spell
                     GenericSpellObj.SetActive(true);
-
-                    // Setting the spell's spawn location
-                    GenericSpellObj.transform.SetParent(this.transform.GetChild(0).transform);
-                    GenericSpellObj.transform.localPosition = new Vector3(0f, 0.63f);
-                    GenericSpellObj.transform.SetParent(null);
-
-                    // Get the Spell's Generic Spell Class
-                    GenericProjectileSpell GenericSpell = GenericSpellObj.GetComponent<GenericProjectileSpell>();
-
-                    // Setting the spell's velocity
-                    GenericSpell.RB.velocity = WandDirection.MousePos.normalized * CurrentProjectile.Speed;
-
-                    // Setting the spell's parameters
-                    GenericSpell.Name       = CurrentProjectile.Name;
-                    GenericSpell.ManaDrain  = CurrentProjectile.ManaDrain;
-                    GenericSpell.Speed      = CurrentProjectile.Speed;
-                    GenericSpell.Damage     = CurrentProjectile.Damage;
-                    GenericSpell.CastDelay  = CurrentProjectile.CastDelay;
-                    GenericSpell.Lifetime   = CurrentProjectile.Lifetime;
-                    GenericSpell.Spread     = CurrentProjectile.Spread;
-                    GenericSpell.CanBounce  = CurrentProjectile.CanBounce;
-
-                    // Setting the spell's physic
-                    GenericSpell.RB.sharedMaterial.bounciness = CurrentProjectile.Bounce;
-                    GenericSpell.RB.sharedMaterial.friction = CurrentProjectile.Friction;
-
-                    // Setting the projectile's sprite
-                    GenericSpell.Spr.sprite = CurrentProjectile.SpriteImage;
-
-                    // Starting the lifetime timer
-                    StartCoroutine(GenericSpell.LifetimeTimer());
                 }
 
                 StartCoroutine(GeneralTimer(CastRate));

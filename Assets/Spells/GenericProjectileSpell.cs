@@ -8,6 +8,7 @@ public class GenericProjectileSpell : Spell
     // Trans: Object's Transform
     public Rigidbody2D      RB;
     public Transform        Trans;
+    public Transform        PlayerTrans;
     public SpriteRenderer   Spr;
     public CircleCollider2D Col;
     public BoxCollider2D[]  PlayerColliders;
@@ -18,6 +19,7 @@ public class GenericProjectileSpell : Spell
         Trans = this.GetComponent<Transform>();        
         Spr = this.GetComponentInChildren(typeof(SpriteRenderer), true) as SpriteRenderer;
         Col = this.GetComponent<CircleCollider2D>();
+        PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
         PlayerColliders = GameObject.FindGameObjectWithTag("Player").GetComponents<BoxCollider2D>();
     }
 
@@ -29,6 +31,38 @@ public class GenericProjectileSpell : Spell
         {
             Physics2D.IgnoreCollision(Col, playerCol);
         }
+        /*
+        // Setting the spell's spawn location
+        this.transform.SetParent(PlayerTrans.transform.GetChild(0).transform);
+        this.transform.localPosition = new Vector3(0f, 0.63f);
+        this.transform.SetParent(null);
+
+        // Get the Spell's Generic Spell Class
+        GenericProjectileSpell GenericSpell = GenericSpellObj.GetComponent<GenericProjectileSpell>();
+
+        // Setting the spell's velocity
+        GenericSpell.RB.velocity = WandDirection.MousePos.normalized * CurrentProjectile.Speed;
+
+        // Setting the spell's parameters
+        GenericSpell.Name       = CurrentProjectile.Name;
+        GenericSpell.ManaDrain  = CurrentProjectile.ManaDrain;
+        GenericSpell.Speed      = CurrentProjectile.Speed;
+        GenericSpell.Damage     = CurrentProjectile.Damage;
+        GenericSpell.CastDelay  = CurrentProjectile.CastDelay;
+        GenericSpell.Lifetime   = CurrentProjectile.Lifetime;
+        GenericSpell.Spread     = CurrentProjectile.Spread;
+        GenericSpell.CanBounce  = CurrentProjectile.CanBounce;
+
+        // Setting the spell's physic
+        GenericSpell.RB.sharedMaterial.bounciness = CurrentProjectile.Bounce;
+        GenericSpell.RB.sharedMaterial.friction = CurrentProjectile.Friction;
+
+        // Setting the projectile's sprite
+        GenericSpell.Spr.sprite = CurrentProjectile.SpriteImage;
+
+        // Starting the lifetime timer
+        StartCoroutine(GenericSpell.LifetimeTimer());
+        */
     }
 
     private void OnCollisionEnter2D(Collision2D col)
