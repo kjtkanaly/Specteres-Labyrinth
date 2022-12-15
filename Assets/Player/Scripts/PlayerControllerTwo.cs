@@ -60,7 +60,7 @@ public class PlayerControllerTwo : MonoBehaviour
             float particleChance = Random.Range(0f,1f);
             if (particleChance > flyingParticleChance)
             {
-                GenericParticle FlyingParticleObj = ObjectPooling.GetObjectFromThePool(FlyingParticlePool);
+                GenericParticle FlyingParticleObj = ObjectPooling.GetObjectFromThePool<GenericParticle>(FlyingParticlePool);
 
                 if (FlyingParticleObj != null)
                 {
