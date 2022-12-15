@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour 
 {
-    // Setup up pool
-    public void setupInstancePool<T>(int PoolSize, T objectToPool) where T : new()
+    public List<T> setupInstancePool<T>(T objectToPool, int PoolSize = 1) where T : MonoBehaviour
     {
         List<T> PooledObjects = new List<T>();
 
         for (int i = 0; i < PoolSize; i++)
         {
-            ObjectInstance = Instantiate(objectToPool);
+            T ObjectInstance = Instantiate(objectToPool);
             ObjectInstance.gameObject.SetActive(false);
             PooledObjects.Add(ObjectInstance);
         }
+
+        return PooledObjects;
     }
-
-
+    
     // Grab an object from the pool
-    public GameObject GetObjectFromThePool()
+    public T GetObjectFromThePool<T>(List<T> Pool) where T : MonoBehaviour
     {
-        for (int i = 0; i < PoolSize; i++)
+        for (int i = 0; i < Pool.Count; i++)
         {
-            if (!PooledObjects[i].activeInHierarchy)
+            if (!Pool[i].gameObject.activeInHierarchy)
             {
-                return PooledObjects[i];
+                return Pool[i];
             }
         }
 

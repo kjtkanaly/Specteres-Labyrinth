@@ -9,8 +9,10 @@ public class PlayerControllerTwo : MonoBehaviour
     public Collider2D HeadCollider;
     public Collider2D RightCollider;
     public Collider2D LeftCollider;
-    public ParticlePooling FlyingPartiles;
-    public ObjectPool FlyingParticlePool;
+    public GenericParticle FlyingParticle;
+    public ObjectPool ObjectPooling;
+
+    private List<GenericParticle> FlyingParticlePool = new List<GenericParticle>();
 
     public float gravityConstant    = -10f;
     public float LevitationForce    = 150f;
@@ -21,7 +23,8 @@ public class PlayerControllerTwo : MonoBehaviour
     public float maxHorizontalSpeed = 10f;
     public float flyingParticleChance = 0.1f; 
 
-    public int LevitationMana       = 100;
+    public int LevitationMana = 100;
+    public int FlyingParticleCount = 100;
 
     public Vector2 PlayerVelocity   = new Vector2(0f,0f);
 
@@ -29,6 +32,13 @@ public class PlayerControllerTwo : MonoBehaviour
     public bool isHittingHead           = false;
     public bool isRunningLeftIntoWall   = false;
     public bool isRunningRightIntoWall  = false;
+
+
+    private void Start()
+    {
+        FlyingParticlePool = ObjectPooling.setupInstancePool<GenericParticle>(FlyingParticle, 
+                                                                              FlyingParticleCount);
+    }
 
     // Update is called once per frame
     void Update()
@@ -50,11 +60,11 @@ public class PlayerControllerTwo : MonoBehaviour
             float particleChance = Random.Range(0f,1f);
             if (particleChance > flyingParticleChance)
             {
-                GameObject FlyingParticleObj = FlyingParticlePool.GetObjectFromThePool();
+                GenericParticle FlyingParticleObj = ObjectPooling.GetObjectFromThePool(FlyingParticlePool);
 
                 if (FlyingParticleObj != null)
                 {
-                    FlyingParticleObj.SetActive(true);
+                    FlyingParticleObj.gameObject.SetActive(true);
                 }
             }
         }
