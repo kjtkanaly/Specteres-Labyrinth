@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1017022950162111862}
   - component: {fileID: 2167475504514410830}
-  - component: {fileID: -1443324055129095122}
+  - component: {fileID: -4552321836188359524}
   m_Layer: 0
   m_Name: Projectile Spell Particle
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-1443324055129095122
+--- !u!114 &-4552321836188359524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,19 +94,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1428382850557064091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77ffb15bda680b242b4c5db2213a9c4b, type: 3}
+  m_Script: {fileID: 11500000, guid: eabb15d2600127f4e9d0b778fc749790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RB: {fileID: 0}
-  Trans: {fileID: 0}
-  SP: {fileID: 0}
-  lifeTimeRange: {x: 0.1, y: 0.4}
-  AlphaRange: {x: 0.4, y: 0.85}
-  downwardVelocity: -6
-  verticalSapwnPos: -0.5
-  horizontalVelocityRange: 0.5
-  horizontalSpawnRange: 0.15
-  airDrag: 0.2
-  alphaStep: 0.3
-  lifeTime: 0
-  type: 1

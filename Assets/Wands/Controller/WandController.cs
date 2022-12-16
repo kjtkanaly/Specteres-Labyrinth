@@ -32,34 +32,35 @@ public class WandController : Wand
             if (SpellList[SpellIndex].Type == Spell.SpellType.Projectile)
             {
                 Spell CurrentProjectile = SpellList[SpellIndex];
-                GenericProjectileSpell GenericSpellObj = 
+                GenericProjectileSpell GenericSpell = 
                 ObjectPool.GetObjectFromThePool<GenericProjectileSpell>(MainGameCtrl.GenericProjectilePool);
 
-                if (GenericSpellObj != null)
+                if (GenericSpell != null)
                 {
                     // Activate the spell
-                    GenericSpellObj.gameObject.SetActive(true);
+                    GenericSpell.gameObject.SetActive(true);
 
                     // Setting the spell's spawn location
-                    GenericSpellObj.transform.SetParent(this.transform.GetChild(0).transform);
-                    GenericSpellObj.transform.localPosition = new Vector3(0f, 0.63f);
-                    GenericSpellObj.transform.SetParent(null);
+                    GenericSpell.transform.SetParent(this.transform.GetChild(0).transform);
+                    GenericSpell.transform.localPosition = new Vector3(0f, 0.63f);
+                    GenericSpell.transform.SetParent(null);
 
                     // Get the Spell's Generic Spell Class
-                    GenericProjectileSpell GenericSpell = GenericSpellObj.GetComponent<GenericProjectileSpell>();
+                    // GenericProjectileSpell GenericSpell = GenericSpellObj.GetComponent<GenericProjectileSpell>();
 
                     // Setting the spell's velocity
                     GenericSpell.RB.velocity = WandDirection.MousePos.normalized * CurrentProjectile.Speed;
 
                     // Setting the spell's parameters
-                    GenericSpell.Name       = CurrentProjectile.Name;
-                    GenericSpell.ManaDrain  = CurrentProjectile.ManaDrain;
-                    GenericSpell.Speed      = CurrentProjectile.Speed;
-                    GenericSpell.Damage     = CurrentProjectile.Damage;
-                    GenericSpell.CastDelay  = CurrentProjectile.CastDelay;
-                    GenericSpell.Lifetime   = CurrentProjectile.Lifetime;
-                    GenericSpell.Spread     = CurrentProjectile.Spread;
-                    GenericSpell.CanBounce  = CurrentProjectile.CanBounce;
+                    GenericSpell.Name = CurrentProjectile.Name;
+                    GenericSpell.ManaDrain = CurrentProjectile.ManaDrain;
+                    GenericSpell.Speed = CurrentProjectile.Speed;
+                    GenericSpell.Damage = CurrentProjectile.Damage;
+                    GenericSpell.CastDelay = CurrentProjectile.CastDelay;
+                    GenericSpell.Lifetime = CurrentProjectile.Lifetime;
+                    GenericSpell.Spread = CurrentProjectile.Spread;
+                    GenericSpell.particleTimeDelay = CurrentProjectile.particleTimeDelay;
+                    GenericSpell.CanBounce = CurrentProjectile.CanBounce;
 
                     // Setting the spell's physic
                     GenericSpell.RB.sharedMaterial.bounciness = CurrentProjectile.Bounce;

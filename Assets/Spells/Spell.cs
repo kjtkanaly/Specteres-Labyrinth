@@ -34,14 +34,15 @@ public class Spell : MonoBehaviour
     // Friction: The amount of surface friction (0 - 1)
     public Sprite SpriteImage;
 
-    public float Speed      = 0f;
-    public float Damage     = 0f;
-    public float CastDelay  = 0f;
-    public float Lifetime   = 0f;
-    public float Spread     = 0f;
-    public float Bounce     = 0f;
-    public float Friction   = 0f;
-    public bool  CanBounce  = false;
+    public float Speed = 0f;
+    public float Damage = 0f;
+    public float CastDelay = 0f;
+    public float Lifetime = 0f;
+    public float Spread = 0f;
+    public float Bounce = 0f;
+    public float Friction = 0f;
+    public float particleTimeDelay = 0f;
+    public bool CanBounce  = false;
 
     //////////////////////////////////
     // Cast Modifer Spell Parameters:

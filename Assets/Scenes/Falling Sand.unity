@@ -350,8 +350,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Pool: {fileID: 777139663}
   ProjectileSpell: {fileID: 4993998568202392784, guid: de9e44cf8ec074e45961e705665fd3ba, type: 3}
+  TrailParticle: {fileID: -4552321836188359524, guid: 92c6f066f6b36d94bb594ed11a788009, type: 3}
   GenericProjectilePool: []
+  TrailParticlePool: []
   NumberOfGenericProjectile: 100
+  NumberOfParticlesPerSpell: 20
 --- !u!1 &798289391
 GameObject:
   m_ObjectHideFlags: 0

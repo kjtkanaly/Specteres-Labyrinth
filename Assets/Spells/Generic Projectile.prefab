@@ -142,6 +142,7 @@ MonoBehaviour:
   Spread: 0
   Bounce: 0.6
   Friction: 0.2
+  particleTimeDelay: 0
   CanBounce: 0
   MultiCast: 2
   SpreadMod: 0
@@ -149,10 +150,9 @@ MonoBehaviour:
   Trans: {fileID: 0}
   Spr: {fileID: 0}
   Col: {fileID: 0}
+  MainGameCtrl: {fileID: 0}
+  ObjectPool: {fileID: 0}
   PlayerColliders: []
-  PartPool: {fileID: 0}
-  particleShedDelay: 0.005
-  shedParticle: 1
 --- !u!50 &8618218929820810764
 Rigidbody2D:
   serializedVersion: 4
