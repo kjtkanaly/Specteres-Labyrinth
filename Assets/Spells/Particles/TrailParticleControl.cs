@@ -21,6 +21,7 @@ public class TrailParticleControl : MonoBehaviour
         if (Spr.color.a < colorAlphaStep)
         {
             this.gameObject.SetActive(false);
+
             color = Spr.color;
             color.a = 1f;
             Spr.color = color;
