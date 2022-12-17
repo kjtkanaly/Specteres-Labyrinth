@@ -5,24 +5,27 @@ using UnityEngine;
 public class TrailParticleControl : MonoBehaviour
 {
     public SpriteRenderer Spr;
+    public Rigidbody2D RB;
     public Color particleColor = new Color(1f, 1f, 1f, 1f);
     public Color color;
 
     public float fadeTimeDelay = 0.05f;
     public float colorAlphaStep = 0.05f;
-    public float gravityAcceleration = -10f;
+    public float gravityAcceleration = -1f;
 
     public bool HasGravity = true;
 
     private void Awake()
     {
         Spr = this.gameObject.GetComponent<SpriteRenderer>();
+        RB = this.gameObject.GetComponent<Rigidbody2D>();
     }
 
 
     private void OnEnable()
     {
         Spr.color = particleColor;
+        RB.gravityScale = gravityAcceleration;
     }
 
 

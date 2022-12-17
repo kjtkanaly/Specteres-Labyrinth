@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1017022950162111862}
   - component: {fileID: 2167475504514410830}
   - component: {fileID: -4552321836188359524}
+  - component: {fileID: 1350246090878763569}
   m_Layer: 0
   m_Name: Projectile Spell Particle
   m_TagString: Untagged
@@ -98,6 +99,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Spr: {fileID: 0}
+  RB: {fileID: 0}
+  particleColor: {r: 1, g: 1, b: 1, a: 1}
   color: {r: 0, g: 0, b: 0, a: 0}
   fadeTimeDelay: 0.1
   colorAlphaStep: 0.1
+  gravityAcceleration: 0.5
+  HasGravity: 1
+--- !u!50 &1350246090878763569
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428382850557064091}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
