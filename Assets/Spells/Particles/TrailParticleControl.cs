@@ -10,6 +10,9 @@ public class TrailParticleControl : MonoBehaviour
 
     public float fadeTimeDelay = 0.05f;
     public float colorAlphaStep = 0.05f;
+    public float gravityAcceleration = -10f;
+
+    public bool HasGravity = true;
 
     private void Awake()
     {

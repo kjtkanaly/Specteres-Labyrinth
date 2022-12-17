@@ -74,6 +74,8 @@ public class GenericProjectileSpell : Spell
 
             if (TrailParticle != null)
             {
+                TrailParticle.particleColor = particleColor;
+
                 // Activate the spell
                 TrailParticle.gameObject.SetActive(true);
 
@@ -81,8 +83,6 @@ public class GenericProjectileSpell : Spell
                 TrailParticle.transform.SetParent(this.transform);
                 TrailParticle.transform.localPosition = new Vector3(0f, 0f);
                 TrailParticle.transform.SetParent(null);
-
-                TrailParticle.particleColor = particleColor;
 
                 TrailParticle.StartCoroutine(TrailParticle.FadeTimer());
             }
