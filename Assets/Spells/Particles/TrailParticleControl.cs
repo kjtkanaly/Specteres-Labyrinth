@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrailParticleControl : MonoBehaviour
 {
     public SpriteRenderer Spr;
+    public Color particleColor = new Color(1f, 1f, 1f, 1f);
     public Color color;
 
     public float fadeTimeDelay = 0.05f;
@@ -13,6 +14,12 @@ public class TrailParticleControl : MonoBehaviour
     private void Awake()
     {
         Spr = this.gameObject.GetComponent<SpriteRenderer>();
+    }
+
+
+    private void OnEnable()
+    {
+        Spr.color = particleColor;
     }
 
 

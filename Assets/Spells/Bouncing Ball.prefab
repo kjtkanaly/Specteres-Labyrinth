@@ -56,6 +56,7 @@ MonoBehaviour:
   Bounce: 0.6
   Friction: 0.2
   particleTimeDelay: 0.01
+  particleColor: {r: 0.43529412, g: 0.81960785, b: 0.69803923, a: 1}
   CanBounce: 1
   MultiCast: 2
   SpreadMod: 0

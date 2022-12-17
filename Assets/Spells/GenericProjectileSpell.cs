@@ -82,6 +82,8 @@ public class GenericProjectileSpell : Spell
                 TrailParticle.transform.localPosition = new Vector3(0f, 0f);
                 TrailParticle.transform.SetParent(null);
 
+                TrailParticle.particleColor = particleColor;
+
                 TrailParticle.StartCoroutine(TrailParticle.FadeTimer());
             }
         }
