@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerControllerTwo : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public Collider2D LeftCollider;
     public GenericParticle FlyingParticle;
     public ObjectPool ObjectPooling;
+    public LevitateBarScript LevitationBarCtrl;
 
     private List<GenericParticle> FlyingParticlePool = new List<GenericParticle>();
 
@@ -23,7 +25,9 @@ public class PlayerControllerTwo : MonoBehaviour
     public float maxHorizontalSpeed = 10f;
     public float flyingParticleChance = 0.1f; 
 
-    public int LevitationMana = 100;
+    public int maxLevitationMana = 100;
+    public int leviationStepSize = 1;
+    public int currentLevitationMana;
     public int FlyingParticleCount = 100;
 
     public Vector2 PlayerVelocity   = new Vector2(0f,0f);
@@ -38,6 +42,8 @@ public class PlayerControllerTwo : MonoBehaviour
     {
         FlyingParticlePool = ObjectPooling.setupInstancePool<GenericParticle>(FlyingParticle, 
                                                                               FlyingParticleCount);
+        currentLevitationMana = maxLevitationMana;
+        LevitationBarCtrl.SetMaxLevitation(maxLevitationMana);
     }
 
     // Update is called once per frame
@@ -45,8 +51,9 @@ public class PlayerControllerTwo : MonoBehaviour
     {
 
         // Check if player jumped
-        if ((Input.GetKey(KeyCode.Space)) && (LevitationMana > 0))
+        if ((Input.GetKey(KeyCode.Space)) && (currentLevitationMana > 0))
         {
+            // Update Y-axis velocity
             if (isHittingHead == false)
             {
                 PlayerVelocity += new Vector2(0f, (LevitationForce / mass) * 
@@ -55,8 +62,13 @@ public class PlayerControllerTwo : MonoBehaviour
             else
             {
                 PlayerVelocity = new Vector2(PlayerVelocity.x, 0f);
-            }
+            }   
 
+            // Update leviation bar
+            currentLevitationMana -= leviationStepSize;
+            LevitationBarCtrl.SetLeviataion(currentLevitationMana);
+
+            // Explel Leviation Particle
             float particleChance = Random.Range(0f,1f);
             if (particleChance > flyingParticleChance)
             {
@@ -79,6 +91,13 @@ public class PlayerControllerTwo : MonoBehaviour
             else
             {
                 PlayerVelocity.y = 0;
+            }
+
+            // Recharge Levitation Mana
+            if (currentLevitationMana < maxLevitationMana)
+            {
+                currentLevitationMana += leviationStepSize;
+                LevitationBarCtrl.SetLeviataion(currentLevitationMana);
             }
         }
 
