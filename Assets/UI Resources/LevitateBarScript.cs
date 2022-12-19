@@ -17,5 +17,19 @@ public class LevitateBarScript : MonoBehaviour
     {
         slider.value = mana;
     }
+
+    public IEnumerator fadeAway(int timeToFade, bool fadeDirection)
+    {   
+        // Fade in
+        if ()
+        {
+
+        }
+        // Fade out
+        else
+        {
+
+        }
+    }
 }
 
