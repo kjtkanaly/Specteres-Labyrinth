@@ -65,6 +65,15 @@ public class PlayerControllerTwo : MonoBehaviour
             }   
 
             // Update leviation bar
+            if ((currentLevitationMana <= maxLevitationMana) && 
+                (LevitationBarCtrl.FillImage.color.a != 1f))
+            {
+                LevitationBarCtrl.FillColor = LevitationBarCtrl.FillImage.color;
+                LevitationBarCtrl.FillColor.a = 1f;
+                LevitationBarCtrl.FillImage.color = LevitationBarCtrl.FillColor;
+                // LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fade(false));
+            }
+
             currentLevitationMana -= leviationStepSize;
             LevitationBarCtrl.SetLeviataion(currentLevitationMana);
 
@@ -98,6 +107,14 @@ public class PlayerControllerTwo : MonoBehaviour
             {
                 currentLevitationMana += leviationStepSize;
                 LevitationBarCtrl.SetLeviataion(currentLevitationMana);
+
+                if (currentLevitationMana == maxLevitationMana)
+                {
+                    LevitationBarCtrl.FillColor = LevitationBarCtrl.FillImage.color;
+                    LevitationBarCtrl.FillColor.a = 0f;
+                    LevitationBarCtrl.FillImage.color = LevitationBarCtrl.FillColor;
+                    // LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fade(false));
+                }
             }
         }
 
