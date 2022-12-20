@@ -60,6 +60,7 @@ public class WandController : Wand
                     GenericSpell.Lifetime = CurrentProjectile.Lifetime;
                     GenericSpell.Spread = CurrentProjectile.Spread;
                     GenericSpell.particleTimeDelay = CurrentProjectile.particleTimeDelay;
+                    GenericSpell.particleSpeedPerecent = CurrentProjectile.particleSpeedPerecent;
                     GenericSpell.particleColor = CurrentProjectile.particleColor;
                     GenericSpell.CanBounce = CurrentProjectile.CanBounce;
 

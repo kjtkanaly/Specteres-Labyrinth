@@ -84,6 +84,11 @@ public class GenericProjectileSpell : Spell
                 TrailParticle.transform.localPosition = new Vector3(0f, 0f);
                 TrailParticle.transform.SetParent(null);
 
+                // Set the particle to be a percentage of the projecitle's velocity
+                TrailParticle.RB.velocity = new Vector2((RB.velocity.x * 
+                                                        particleSpeedPerecent), 
+                                                        0f);
+
                 TrailParticle.StartCoroutine(TrailParticle.FadeTimer());
             }
         }

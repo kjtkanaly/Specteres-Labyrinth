@@ -405,8 +405,9 @@ MonoBehaviour:
   slider: {fileID: 278515367}
   FillImage: {fileID: 245101868}
   FillColor: {r: 0, g: 0, b: 0, a: 0}
-  alphaStep: 0.1
   timeToFade: 0.01
+  alphaStepCount: 1
+  alphaStepSize: 0
 --- !u!114 &278515367
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -42,6 +42,7 @@ public class Spell : MonoBehaviour
     public float Bounce = 0f;
     public float Friction = 0f;
     public float particleTimeDelay = 0f;
+    public float particleSpeedPerecent = 0f;
     public Color particleColor = new Color(1f, 1f, 1f, 1f);
     public bool CanBounce  = false;
 
