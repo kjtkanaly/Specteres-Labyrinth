@@ -23,46 +23,33 @@ public class LevitateBarScript : MonoBehaviour
         
     }
 
+
     public void SetMaxLevitation(int mana)
     {
         slider.maxValue = mana;
         slider.value = mana;
     }
 
+
     public void SetLeviataion(int mana)
     {
         slider.value = mana;
     }
 
-    public IEnumerator fade(bool fadeDirection)
-    {  
-        // Fade in
-        if (fadeDirection)
-        {
-            while (FillImage.color.a >= alphaStepSize)
-            {
-                yield return new WaitForSeconds(timeToFade);
 
-                FillColor = FillImage.color;
-                FillColor.a += alphaStepSize;
-                FillImage.color = FillColor;
-            }            
-        }
-        // Fade out
-        else
-        {
-            while (FillImage.color.a <= (1 - alphaStepSize))
-            {
-                yield return new WaitForSeconds(timeToFade);
+    public void SetFillBarTrancparent()
+    {
+        FillColor = FillImage.color;
+        FillColor.a = 0f;
+        FillImage.color = FillColor;
+    }
 
-                FillColor = FillImage.color;
-                FillColor.a -= alphaStepSize;
-                FillImage.color = FillColor;
-            }
-        }
 
-        // StopCoroutine(fadeCoroutine);
-
+    public void SetFillBarLucent()
+    {
+        FillColor = FillImage.color;
+        FillColor.a = 1f;
+        FillImage.color = FillColor;
     }
 }
 

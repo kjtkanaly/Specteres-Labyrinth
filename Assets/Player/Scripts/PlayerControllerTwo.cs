@@ -15,27 +15,26 @@ public class PlayerControllerTwo : MonoBehaviour
     public LevitateBarScript LevitationBarCtrl;
 
     private List<GenericParticle> FlyingParticlePool = new List<GenericParticle>();
+    public Vector2 PlayerVelocity = new Vector2(0f,0f);
 
-    public float gravityConstant    = -10f;
-    public float LevitationForce    = 150f;
-    public float walkingSpeed       = 10f;
-    public float FrictionRate       = 1f;
-    public float mass               = 10f;
-    public float terminalVelocity   = -15f;
+    public float mass = 10f;
+    public float FrictionRate = 1f;
+    public float walkingSpeed = 10f;
+    public float gravityConstant = -10f;
+    public float LevitationForce = 150f;
+    public float terminalVelocity = -15f;
     public float maxHorizontalSpeed = 10f;
     public float flyingParticleChance = 0.1f; 
 
     public int maxLevitationMana = 100;
     public int leviationStepSize = 1;
-    public int currentLevitationMana;
     public int FlyingParticleCount = 100;
+    public int currentLevitationMana;
 
-    public Vector2 PlayerVelocity   = new Vector2(0f,0f);
-
-    public bool AddGravity              = true;
-    public bool isHittingHead           = false;
-    public bool isRunningLeftIntoWall   = false;
-    public bool isRunningRightIntoWall  = false;
+    public bool AddGravity = true;
+    public bool isHittingHead = false;
+    public bool isRunningLeftIntoWall = false;
+    public bool isRunningRightIntoWall = false;
 
 
     private void Start()
@@ -44,6 +43,7 @@ public class PlayerControllerTwo : MonoBehaviour
                                                                               FlyingParticleCount);
         currentLevitationMana = maxLevitationMana;
         LevitationBarCtrl.SetMaxLevitation(maxLevitationMana);
+        LevitationBarCtrl.SetFillBarTrancparent();
     }
 
     // Update is called once per frame
@@ -68,10 +68,7 @@ public class PlayerControllerTwo : MonoBehaviour
             if ((currentLevitationMana <= maxLevitationMana) && 
                 (LevitationBarCtrl.FillImage.color.a != 1f))
             {
-                LevitationBarCtrl.FillColor = LevitationBarCtrl.FillImage.color;
-                LevitationBarCtrl.FillColor.a = 1f;
-                LevitationBarCtrl.FillImage.color = LevitationBarCtrl.FillColor;
-                // LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fade(false));
+                LevitationBarCtrl.SetFillBarLucent();
             }
 
             currentLevitationMana -= leviationStepSize;
@@ -110,10 +107,7 @@ public class PlayerControllerTwo : MonoBehaviour
 
                 if (currentLevitationMana == maxLevitationMana)
                 {
-                    LevitationBarCtrl.FillColor = LevitationBarCtrl.FillImage.color;
-                    LevitationBarCtrl.FillColor.a = 0f;
-                    LevitationBarCtrl.FillImage.color = LevitationBarCtrl.FillColor;
-                    // LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fade(false));
+                    LevitationBarCtrl.SetFillBarTrancparent();
                 }
             }
         }
