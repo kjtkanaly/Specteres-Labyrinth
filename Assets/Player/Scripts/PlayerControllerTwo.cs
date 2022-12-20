@@ -14,7 +14,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public ObjectPool ObjectPooling;
     public LevitateBarScript LevitationBarCtrl;
 
-    private List<GenericParticle> FlyingParticlePool = new List<GenericParticle>();
+    private List<GenericParticle> FlyingParticlePool;
     public Vector2 PlayerVelocity = new Vector2(0f,0f);
 
     public float mass = 10f;
@@ -39,8 +39,10 @@ public class PlayerControllerTwo : MonoBehaviour
 
     private void Start()
     {
-        FlyingParticlePool = ObjectPooling.setupInstancePool<GenericParticle>(FlyingParticle, 
-                                                                              FlyingParticleCount);
+        FlyingParticlePool = new List<GenericParticle>();
+        FlyingParticlePool = ObjectPooling.setupInstancePool<GenericParticle>(
+                             FlyingParticle, 
+                             FlyingParticleCount);
         currentLevitationMana = maxLevitationMana;
         LevitationBarCtrl.SetMaxLevitation(maxLevitationMana);
         LevitationBarCtrl.SetFillBarTrancparent();
@@ -56,8 +58,9 @@ public class PlayerControllerTwo : MonoBehaviour
             // Update Y-axis velocity
             if (isHittingHead == false)
             {
-                PlayerVelocity += new Vector2(0f, (LevitationForce / mass) * 
-                                                   Time.deltaTime);
+                PlayerVelocity += new Vector2(
+                                  0f, 
+                                  (LevitationForce / mass) * Time.deltaTime);
             }
             else
             {
@@ -75,10 +78,12 @@ public class PlayerControllerTwo : MonoBehaviour
             LevitationBarCtrl.SetLeviataion(currentLevitationMana);
 
             // Explel Leviation Particle
-            float particleChance = Random.Range(0f,1f);
+            float particleChance = Random.Range(0f, 1f);
             if (particleChance > flyingParticleChance)
             {
-                GenericParticle FlyingParticleObj = ObjectPooling.GetObjectFromThePool<GenericParticle>(FlyingParticlePool);
+                GenericParticle FlyingParticleObj = 
+                ObjectPooling.GetObjectFromThePool<GenericParticle>(
+                FlyingParticlePool);
 
                 if (FlyingParticleObj != null)
                 {
@@ -90,9 +95,10 @@ public class PlayerControllerTwo : MonoBehaviour
         {
             if (AddGravity)
             {
-                PlayerVelocity.y = Mathf.MoveTowards(PlayerVelocity.y, 
-                                                     terminalVelocity, 
-                                                     gravityConstant * Time.deltaTime);
+                PlayerVelocity.y = Mathf.MoveTowards(
+                                   PlayerVelocity.y, 
+                                   terminalVelocity, 
+                                   gravityConstant * Time.deltaTime);
             }
             else
             {
@@ -113,7 +119,8 @@ public class PlayerControllerTwo : MonoBehaviour
         }
 
         // Check for left/right movement
-        if ((Input.GetKey(KeyCode.D)) && !(Input.GetKey(KeyCode.A))) // Right
+        // Right
+        if ((Input.GetKey(KeyCode.D)) && !(Input.GetKey(KeyCode.A))) 
         {
             if (isRunningRightIntoWall == false)
             {
@@ -124,7 +131,8 @@ public class PlayerControllerTwo : MonoBehaviour
                 PlayerVelocity = new Vector2(0, PlayerVelocity.y);
             }
         }
-        else if (!(Input.GetKey(KeyCode.D)) && (Input.GetKey(KeyCode.A))) // Left
+        // Left
+        else if (!(Input.GetKey(KeyCode.D)) && (Input.GetKey(KeyCode.A))) 
         {
             if (isRunningLeftIntoWall == false)
             {
@@ -135,13 +143,18 @@ public class PlayerControllerTwo : MonoBehaviour
                 PlayerVelocity = new Vector2(0, PlayerVelocity.y);
             }
         }
+        // Left and Right
         else if ((Input.GetKey(KeyCode.D)) && (Input.GetKey(KeyCode.A)))
         {
             PlayerVelocity = new Vector2(0, PlayerVelocity.y);
         }
+        // No input
         else
         {
-            PlayerVelocity.x = Mathf.MoveTowards(PlayerVelocity.x, 0, FrictionRate * Time.deltaTime);
+            PlayerVelocity.x = Mathf.MoveTowards(
+                               PlayerVelocity.x, 
+                               0, 
+                               FrictionRate * Time.deltaTime);
         }
         
         // Clamp Player Velocity
@@ -158,28 +171,32 @@ public class PlayerControllerTwo : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if ((FeetCollider == col.otherCollider) || (FeetCollider == col.collider))
+        if ((FeetCollider == col.otherCollider) || 
+            (FeetCollider == col.collider))
         {
             Debug.Log("Touchdown!");
             AddGravity = false;
             PlayerVelocity = new Vector2(PlayerVelocity.x, 0f);
         }
 
-        if ((HeadCollider == col.otherCollider) || (HeadCollider == col.collider))
+        if ((HeadCollider == col.otherCollider) || 
+            (HeadCollider == col.collider))
         {
             Debug.Log("Ouch Me Head");
             isHittingHead = true;
             PlayerVelocity = new Vector2(PlayerVelocity.x, 0f);
         }
 
-        if ((RightCollider == col.otherCollider) || (LeftCollider == col.collider))
+        if ((RightCollider == col.otherCollider) || 
+            (LeftCollider == col.collider))
         {
             Debug.Log("Right Oof!");
             isRunningRightIntoWall = true;
             PlayerVelocity = new Vector2(0f, PlayerVelocity.y);
         }
 
-        if ((LeftCollider == col.otherCollider) || (LeftCollider == col.collider))
+        if ((LeftCollider == col.otherCollider) || 
+            (LeftCollider == col.collider))
         {
             Debug.Log("Left Oof!");
             isRunningLeftIntoWall = true;
@@ -189,25 +206,29 @@ public class PlayerControllerTwo : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D col)
     {
-        if ((FeetCollider == col.otherCollider) || (FeetCollider == col.collider))
+        if ((FeetCollider == col.otherCollider) || 
+            (FeetCollider == col.collider))
         {
             Debug.Log("Liftoff");
             AddGravity = true;
         }
 
-        if ((HeadCollider == col.otherCollider) || (HeadCollider == col.collider))
+        if ((HeadCollider == col.otherCollider) || 
+            (HeadCollider == col.collider))
         {
             Debug.Log("Phew");
             isHittingHead = false;
         }
 
-        if ((RightCollider == col.otherCollider) || (LeftCollider == col.collider))
+        if ((RightCollider == col.otherCollider) || 
+            (LeftCollider == col.collider))
         {
             Debug.Log("Right Wee!");
             isRunningRightIntoWall = false;
         }
 
-        if ((LeftCollider == col.otherCollider) || (LeftCollider == col.collider))
+        if ((LeftCollider == col.otherCollider) || 
+            (LeftCollider == col.collider))
         {
             Debug.Log("Left Wee!");
             isRunningLeftIntoWall = false;
