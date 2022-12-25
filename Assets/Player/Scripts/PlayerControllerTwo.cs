@@ -71,7 +71,7 @@ public class PlayerControllerTwo : MonoBehaviour
             if ((currentLevitationMana <= maxLevitationMana) && 
                 (LevitationBarCtrl.FillImage.color.a != 1f))
             {
-                LevitationBarCtrl.StartCoroutine(fadeInCoroutine);
+                LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fadeInCoroutine);
             }
 
             currentLevitationMana -= leviationStepSize;
@@ -113,7 +113,7 @@ public class PlayerControllerTwo : MonoBehaviour
 
                 if (currentLevitationMana == maxLevitationMana)
                 {
-                    LevitationBarCtrl.StartCoroutine(fadeOutCoroutine);
+                    LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fadeOutCoroutine);
                 }
             }
         }
