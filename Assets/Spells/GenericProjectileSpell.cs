@@ -26,7 +26,6 @@ public class GenericProjectileSpell : Spell
 
     private void OnEnable()
     {
-        Debug.Log(PlayerColliders.Length);
         foreach (BoxCollider2D playerCol in PlayerColliders)
         {
             Physics2D.IgnoreCollision(Col, playerCol);
@@ -68,7 +67,6 @@ public class GenericProjectileSpell : Spell
         while(this.gameObject.activeInHierarchy)
         {
             yield return new WaitForSeconds(particleTimeDelay);
-            Debug.Log("Shed Particle");
             TrailParticleControl TrailParticle = 
             ObjectPool.GetObjectFromThePool<TrailParticleControl>(MainGameCtrl.TrailParticlePool);
 

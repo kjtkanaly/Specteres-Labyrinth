@@ -45,7 +45,6 @@ public class PlayerControllerTwo : MonoBehaviour
                              FlyingParticleCount);
         currentLevitationMana = maxLevitationMana;
         LevitationBarCtrl.SetMaxLevitation(maxLevitationMana);
-        LevitationBarCtrl.SetFillBarTrancparent();
     }
 
     // Update is called once per frame
@@ -68,11 +67,11 @@ public class PlayerControllerTwo : MonoBehaviour
             }   
 
             // Update leviation bar
-            if ((currentLevitationMana <= maxLevitationMana) && 
+            /* if ((currentLevitationMana <= maxLevitationMana) && 
                 (LevitationBarCtrl.FillImage.color.a != 1f))
             {
                 LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fadeInCoroutine);
-            }
+            } */
 
             currentLevitationMana -= leviationStepSize;
             LevitationBarCtrl.SetLeviataion(currentLevitationMana);
@@ -111,10 +110,10 @@ public class PlayerControllerTwo : MonoBehaviour
                 currentLevitationMana += leviationStepSize;
                 LevitationBarCtrl.SetLeviataion(currentLevitationMana);
 
-                if (currentLevitationMana == maxLevitationMana)
+                /* if (currentLevitationMana == maxLevitationMana)
                 {
                     LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fadeOutCoroutine);
-                }
+                } */
             }
         }
 
