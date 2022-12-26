@@ -3662,7 +3662,7 @@ MonoBehaviour:
   terminalVelocity: 20
   maxHorizontalSpeed: 15
   flyingParticleChance: 0.8
-  maxMagicMana: 100
+  maxMagicMana: 20
   maxLevitationMana: 500
   leviationStepSize: 1
   FlyingParticleCount: 100

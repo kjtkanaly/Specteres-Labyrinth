@@ -26,8 +26,10 @@ public class PlayerControllerTwo : MonoBehaviour
     public float terminalVelocity = -15f;
     public float maxHorizontalSpeed = 10f;
     public float flyingParticleChance = 0.1f; 
+    public float magicManaRechargeDelay = 0.1f;
 
     public int maxMagicMana = 100;
+    public int magicManaStepSize = 2;
     public int maxLevitationMana = 100;
     public int leviationStepSize = 1;
     public int FlyingParticleCount = 100;
@@ -38,6 +40,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public bool isHittingHead = false;
     public bool isRunningLeftIntoWall = false;
     public bool isRunningRightIntoWall = false;
+    public bool canRechargeMagicMana = true;
 
 
     private void Start()
@@ -52,7 +55,31 @@ public class PlayerControllerTwo : MonoBehaviour
 
         currentMagicMana = maxMagicMana;
         ManaBarCtrl.SetMaxMana(maxMagicMana);
+
+        StartCoroutine(RechargeMagicManaTimer());
     }
+
+
+    public IEnumerator RechargeMagicManaTimer()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(magicManaRechargeDelay);
+            if (!(Input.GetMouseButton(0)) && 
+                (currentMagicMana < maxMagicMana))
+            {
+                currentMagicMana += magicManaStepSize;
+            }
+
+            if (currentMagicMana > maxMagicMana)
+            {
+                currentMagicMana = maxMagicMana;
+            }
+
+            ManaBarCtrl.SetMana(currentMagicMana);
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
