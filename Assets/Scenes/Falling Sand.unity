@@ -888,7 +888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 850599232}
   - component: {fileID: 850599234}
-  - component: {fileID: 850599233}
+  - component: {fileID: 850599235}
   m_Layer: 5
   m_Name: Mana Bar
   m_TagString: Untagged
@@ -917,26 +917,6 @@ RectTransform:
   m_AnchoredPosition: {x: 525, y: 260}
   m_SizeDelta: {x: 110, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &850599233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 850599231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c64da0f2306f8b45a1fb83984f512ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 850599234}
-  FillImage: {fileID: 617245631}
-  FillColor: {r: 0, g: 0, b: 0, a: 0}
-  alphaFadeTime: 0.1
-  alphaStepSize: 0
-  updateAlphaTime: 0
-  fadeInRunning: 0
-  fadeOutRunning: 0
 --- !u!114 &850599234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,6 +968,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &850599235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850599231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464dfd4e0c93fc8469e1440e310fb5cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 850599234}
 --- !u!1 &1187896364
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1187896365}
   - component: {fileID: 1187896367}
-  - component: {fileID: 1187896366}
+  - component: {fileID: 1187896368}
   m_Layer: 5
   m_Name: Health Bar
   m_TagString: Untagged
@@ -1027,26 +1020,6 @@ RectTransform:
   m_AnchoredPosition: {x: 525, y: 300}
   m_SizeDelta: {x: 110, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1187896366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187896364}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c64da0f2306f8b45a1fb83984f512ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 1187896367}
-  FillImage: {fileID: 770754105}
-  FillColor: {r: 0, g: 0, b: 0, a: 0}
-  alphaFadeTime: 0.1
-  alphaStepSize: 0
-  updateAlphaTime: 0
-  fadeInRunning: 0
-  fadeOutRunning: 0
 --- !u!114 &1187896367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1098,6 +1071,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1187896368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187896364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed82a2cc59254a40b6da638f17a464d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1187896367}
 --- !u!1 &1342541561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,6 +1158,7 @@ MonoBehaviour:
   ObjectPool: {fileID: 0}
   MainGameCtrl: {fileID: 0}
   PlayerTrans: {fileID: 0}
+  PlayerCtrl: {fileID: 0}
   SpellList:
   - {fileID: 6210649262799263233, guid: 49009cc1ada28354b9cf6f8a12ea986d, type: 3}
   projecitleAngle: 0
@@ -3665,6 +3652,7 @@ MonoBehaviour:
   FlyingParticle: {fileID: 6360240295165560925, guid: 1c7216e87e886ff4eb6240f48963859e, type: 3}
   ObjectPooling: {fileID: 777139663}
   LevitationBarCtrl: {fileID: 278515366}
+  ManaBarCtrl: {fileID: 850599235}
   PlayerVelocity: {x: 0, y: 0}
   mass: 10
   FrictionRate: 100
@@ -3674,10 +3662,12 @@ MonoBehaviour:
   terminalVelocity: 20
   maxHorizontalSpeed: 15
   flyingParticleChance: 0.8
+  maxMagicMana: 100
   maxLevitationMana: 500
   leviationStepSize: 1
   FlyingParticleCount: 100
   currentLevitationMana: 0
+  currentMagicMana: 0
   AddGravity: 1
   isHittingHead: 0
   isRunningLeftIntoWall: 0

@@ -13,6 +13,7 @@ public class PlayerControllerTwo : MonoBehaviour
     public GenericParticle FlyingParticle;
     public ObjectPool ObjectPooling;
     public LevitateBarScript LevitationBarCtrl;
+    public ManaBarScript ManaBarCtrl;
 
     private List<GenericParticle> FlyingParticlePool;
     public Vector2 PlayerVelocity = new Vector2(0f,0f);
@@ -26,10 +27,12 @@ public class PlayerControllerTwo : MonoBehaviour
     public float maxHorizontalSpeed = 10f;
     public float flyingParticleChance = 0.1f; 
 
+    public int maxMagicMana = 100;
     public int maxLevitationMana = 100;
     public int leviationStepSize = 1;
     public int FlyingParticleCount = 100;
     public int currentLevitationMana;
+    public int currentMagicMana;
 
     public bool AddGravity = true;
     public bool isHittingHead = false;
@@ -43,8 +46,12 @@ public class PlayerControllerTwo : MonoBehaviour
         FlyingParticlePool = ObjectPooling.setupInstancePool<GenericParticle>(
                              FlyingParticle, 
                              FlyingParticleCount);
+
         currentLevitationMana = maxLevitationMana;
         LevitationBarCtrl.SetMaxLevitation(maxLevitationMana);
+
+        currentMagicMana = maxMagicMana;
+        ManaBarCtrl.SetMaxMana(maxMagicMana);
     }
 
     // Update is called once per frame

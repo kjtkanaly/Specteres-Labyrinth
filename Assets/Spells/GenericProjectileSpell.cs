@@ -52,7 +52,7 @@ public class GenericProjectileSpell : Spell
     private void OnDisable()
     {
         this.Name = "";
-        this.ManaDrain = 0f;
+        this.ManaDrain = 0;
 
         this.Speed      = 0f;
         this.Damage     = 0f;

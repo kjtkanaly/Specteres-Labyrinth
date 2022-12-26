@@ -20,7 +20,7 @@ public class Spell : MonoBehaviour
     // ManaDrain: Amount of mana that the spell will drain on each cast
     public SpellType Type;
     public string    Name;
-    public float     ManaDrain;
+    public int     ManaDrain;
 
     ////////////////////////////////
     // Projectile Spell Parameters:

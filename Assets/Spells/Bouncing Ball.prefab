@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Name: 
-  ManaDrain: 0
+  ManaDrain: 1
   SpriteImage: {fileID: 21300000, guid: 4aa2598001489454d96e5e281e4e1b8e, type: 3}
   Speed: 30
   Damage: 10

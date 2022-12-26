@@ -8,6 +8,7 @@ public class WandController : Wand
     public ObjectPool ObjectPool;
     public MainGameControl MainGameCtrl;
     public Transform PlayerTrans;
+    public PlayerControllerTwo PlayerCtrl;
     public List<Spell> SpellList;
 
     public float projecitleAngle;
@@ -21,6 +22,8 @@ public class WandController : Wand
         SpellIndex = 0;
 
         PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
+        PlayerCtrl = GameObject.FindGameObjectWithTag("Player").
+                     GetComponent<PlayerControllerTwo>();
 
         GameObject MainGameObj = GameObject.FindGameObjectWithTag("Main Game");
         ObjectPool = MainGameObj.GetComponent<ObjectPool>();
@@ -39,8 +42,12 @@ public class WandController : Wand
 
     private void Update()
     {
-        if (Input.GetMouseButton(0) && CanCastSpell && SpellList.Count != 0)
+        if ((Input.GetMouseButton(0)) && 
+            (CanCastSpell) && 
+            (SpellList.Count != 0) &&
+            (PlayerCtrl.currentMagicMana > 0))
         {
+            // Projectile Spells
             if (SpellList[SpellIndex].Type == Spell.SpellType.Projectile)
             {
                 Spell CurrentProjectile = SpellList[SpellIndex];
@@ -101,6 +108,9 @@ public class WandController : Wand
                     // Starting the lifetime timer
                     StartCoroutine(GenericSpell.LifetimeTimer());
                 }
+                // Update Player current mana currently
+                PlayerCtrl.currentMagicMana -= SpellList[SpellIndex].ManaDrain;
+                PlayerCtrl.ManaBarCtrl.SetMana(PlayerCtrl.currentMagicMana);
 
                 CanCastSpell = false;
                 StartCoroutine(GeneralTimer(CurrentProjectile.CastDelay));
