@@ -15,8 +15,8 @@ public class PlayerControllerTwo : MonoBehaviour
     public LevitateBarScript LevitationBarCtrl;
     public ManaBarScript ManaBarCtrl;
 
-    private List<GenericParticle> FlyingParticlePool;
     public Vector2 PlayerVelocity = new Vector2(0f,0f);
+    private List<GenericParticle> FlyingParticlePool;
 
     public float mass = 10f;
     public float FrictionRate = 1f;
@@ -100,13 +100,6 @@ public class PlayerControllerTwo : MonoBehaviour
                 PlayerVelocity = new Vector2(PlayerVelocity.x, 0f);
             }   
 
-            // Update leviation bar
-            /* if ((currentLevitationMana <= maxLevitationMana) && 
-                (LevitationBarCtrl.FillImage.color.a != 1f))
-            {
-                LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fadeInCoroutine);
-            } */
-
             currentLevitationMana -= leviationStepSize;
             LevitationBarCtrl.SetLeviataion(currentLevitationMana);
 
@@ -143,11 +136,6 @@ public class PlayerControllerTwo : MonoBehaviour
             {
                 currentLevitationMana += leviationStepSize;
                 LevitationBarCtrl.SetLeviataion(currentLevitationMana);
-
-                /* if (currentLevitationMana == maxLevitationMana)
-                {
-                    LevitationBarCtrl.StartCoroutine(LevitationBarCtrl.fadeOutCoroutine);
-                } */
             }
         }
 
