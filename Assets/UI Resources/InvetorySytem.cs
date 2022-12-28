@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+ using UnityEngine.UI;
 
 public class InvetorySytem : MonoBehaviour
 {
+    public List<Wand> WandInventory = new List<Wand>();
+    public List<Image> WandInventoryIconHighlights = new List<Image>();
     private List<Spell> SpellInvetory = new List<Spell>();
 
     public int currentActiveItem = 0;
@@ -11,6 +14,13 @@ public class InvetorySytem : MonoBehaviour
 
     public float wheelDelta = 0;
     private float scrollMultiplier = 2f;
+
+
+    public void Start()
+    {
+        WandInventory = new List<Wand>(numberofWands);
+    }
+
 
     private void OnGUI()
     {
@@ -41,6 +51,24 @@ public class InvetorySytem : MonoBehaviour
                 currentActiveItem = numberofWands - 1;
             }
         }
+
+        highlightActiveWand();
+    }
+
+    public void highlightActiveWand()
+    {
+        Color c;
+
+        for (int i = 0; i < numberofWands; i++)
+        {
+            c = WandInventoryIconHighlights[i].color;
+            c.a = 0;
+            WandInventoryIconHighlights[i].color = c;
+        }
+
+        c = WandInventoryIconHighlights[currentActiveItem].color;
+        c.a = 1f;
+        WandInventoryIconHighlights[currentActiveItem].color = c;
     }
 
 }

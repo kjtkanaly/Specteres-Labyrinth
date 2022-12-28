@@ -1313,6 +1313,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40b51c78f79f614198c6dc38b0f29e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WandInventory: []
+  WandInventoryIconHighlights:
+  - {fileID: 797951381}
+  - {fileID: 1653645467}
+  - {fileID: 222900367}
+  - {fileID: 1073416732}
   currentActiveItem: 0
   numberofWands: 4
   wheelDelta: 0
