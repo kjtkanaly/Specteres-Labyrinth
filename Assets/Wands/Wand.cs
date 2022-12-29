@@ -29,7 +29,7 @@ public class Wand : MonoBehaviour
     public Vector2 CastDelayRange = new Vector2(0, 1f);
     public Vector2 ProjectileSpreadRange = new Vector2(0, 1f);
     
-    private void Start()
+    private void Awake()
     {
         if (Randomize)
         {
