@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class InvetorySytem : MonoBehaviour
 {
-    public List<Wand> WandInventory = new List<Wand>();
+    public List<GameObject> WandInventory = new List<GameObject>();
     public List<Image> WandInventoryIconHighlights = new List<Image>();
     private List<Spell> SpellInvetory = new List<Spell>();
-
-    public Wand PlayerWandObject;
 
     public int currentActiveItem = 0;
     public int numberofWands = 4;
@@ -20,11 +18,7 @@ public class InvetorySytem : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < numberofWands; i++)
-        {
-            Wand newWand = new Wand();
-            WandInventory[i] = Instantiate();
-        }
+
     }
 
 
@@ -68,38 +62,17 @@ public class InvetorySytem : MonoBehaviour
 
     public void UpdatePlayerWand()
     {
-        Debug.Log(WandInventory[currentActiveItem]);
+        for (int i = 0; i < numberofWands; i++)
+        {
+            if (WandInventory[i] != null)
+            {
+                WandInventory.SetActive(false);
+            }
+        }
+
         if (WandInventory[currentActiveItem] != null)
         {
-            Debug.Log(WandInventory[currentActiveItem].CastRate);
-
-            PlayerWandObject.Shuffle = 
-                WandInventory[currentActiveItem].Shuffle;
-            PlayerWandObject.CastRate = 
-                WandInventory[currentActiveItem].CastRate;
-            PlayerWandObject.ManaMax = 
-                WandInventory[currentActiveItem].ManaMax;
-            PlayerWandObject.ManaCharge = 
-                WandInventory[currentActiveItem].ManaCharge;
-            PlayerWandObject.Capacity = 
-                WandInventory[currentActiveItem].Capacity;
-            PlayerWandObject.CastDelay = 
-                WandInventory[currentActiveItem].CastDelay;
-            PlayerWandObject.RechargeTime = 
-                WandInventory[currentActiveItem].RechargeTime;
-            PlayerWandObject.Spread = 
-                WandInventory[currentActiveItem].Spread; 
-        }
-        else
-        {
-            PlayerWandObject.Shuffle = false;
-            PlayerWandObject.CastRate = 0;
-            PlayerWandObject.ManaMax = 0;
-            PlayerWandObject.ManaCharge = 0;
-            PlayerWandObject.Capacity = 0;
-            PlayerWandObject.CastDelay = 0;
-            PlayerWandObject.RechargeTime = 0;
-            PlayerWandObject.Spread = 0; 
+            WandInventory[currentActiveItem].SetActive(true);
         }
     }
 
