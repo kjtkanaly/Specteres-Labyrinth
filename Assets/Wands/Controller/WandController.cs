@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WandController : Wand
+public class WandController : MonoBehaviour
 {
+    public Wand WandProperties;
     public WandOrientation WandDirection;
     public ObjectPool ObjectPool;
     public MainGameControl MainGameCtrl;
@@ -72,7 +73,8 @@ public class WandController : Wand
                     projecitleAngle = Vector2.SignedAngle(
                                       new Vector2(1f, 0),
                                       WandDirection.MousePos.normalized);
-                    projecitleAngle += Random.Range(-Spread, Spread);
+                    projecitleAngle += Random.Range(-WandProperties.Spread, 
+                                                     WandProperties.Spread);
 
                     // Setting the spell's velocity
                     GenericSpell.RB.velocity = 

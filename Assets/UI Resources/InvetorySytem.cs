@@ -9,6 +9,8 @@ public class InvetorySytem : MonoBehaviour
     public List<Image> WandInventoryIconHighlights = new List<Image>();
     private List<Spell> SpellInvetory = new List<Spell>();
 
+    public Wand PlayerWandObject;
+
     public int currentActiveItem = 0;
     public int numberofWands = 4;
 
@@ -16,9 +18,13 @@ public class InvetorySytem : MonoBehaviour
     private float scrollMultiplier = 2f;
 
 
-    public void Start()
+    private void Start()
     {
-        WandInventory = new List<Wand>(numberofWands);
+        for (int i = 0; i < numberofWands; i++)
+        {
+            Wand newWand = new Wand();
+            WandInventory[i] = Instantiate();
+        }
     }
 
 
@@ -39,6 +45,9 @@ public class InvetorySytem : MonoBehaviour
             {
                 currentActiveItem = 0;
             }
+
+            HighlightActiveWand();
+            UpdatePlayerWand();
         }
 
         else if (wheelDelta >= 1)
@@ -50,12 +59,52 @@ public class InvetorySytem : MonoBehaviour
             {
                 currentActiveItem = numberofWands - 1;
             }
-        }
 
-        highlightActiveWand();
+            HighlightActiveWand();
+            UpdatePlayerWand();
+        }
     }
 
-    public void highlightActiveWand()
+
+    public void UpdatePlayerWand()
+    {
+        Debug.Log(WandInventory[currentActiveItem]);
+        if (WandInventory[currentActiveItem] != null)
+        {
+            Debug.Log(WandInventory[currentActiveItem].CastRate);
+
+            PlayerWandObject.Shuffle = 
+                WandInventory[currentActiveItem].Shuffle;
+            PlayerWandObject.CastRate = 
+                WandInventory[currentActiveItem].CastRate;
+            PlayerWandObject.ManaMax = 
+                WandInventory[currentActiveItem].ManaMax;
+            PlayerWandObject.ManaCharge = 
+                WandInventory[currentActiveItem].ManaCharge;
+            PlayerWandObject.Capacity = 
+                WandInventory[currentActiveItem].Capacity;
+            PlayerWandObject.CastDelay = 
+                WandInventory[currentActiveItem].CastDelay;
+            PlayerWandObject.RechargeTime = 
+                WandInventory[currentActiveItem].RechargeTime;
+            PlayerWandObject.Spread = 
+                WandInventory[currentActiveItem].Spread; 
+        }
+        else
+        {
+            PlayerWandObject.Shuffle = false;
+            PlayerWandObject.CastRate = 0;
+            PlayerWandObject.ManaMax = 0;
+            PlayerWandObject.ManaCharge = 0;
+            PlayerWandObject.Capacity = 0;
+            PlayerWandObject.CastDelay = 0;
+            PlayerWandObject.RechargeTime = 0;
+            PlayerWandObject.Spread = 0; 
+        }
+    }
+
+
+    public void HighlightActiveWand()
     {
         Color c;
 

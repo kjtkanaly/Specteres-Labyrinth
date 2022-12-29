@@ -13,12 +13,12 @@ public class Wand : MonoBehaviour
     // RechargeTime: The amount of time the wand will wait after the final spell
     // Spread: The potential range your projectiles
     public bool  Shuffle        = false;
-    public int   CastRate       = 1;
-    public int   ManaMax        = 100;
-    public int   ManaCharge     = 10;
-    public int   Capacity       = 10;
-    public float CastDelay      = 1f;
-    public float RechargeTime   = 1f;
-    public float Spread         = 1f;  
+    public int   CastRate       = 0;
+    public int   ManaMax        = 0;
+    public int   ManaCharge     = 0;
+    public int   Capacity       = 0;
+    public float CastDelay      = 0;
+    public float RechargeTime   = 0;
+    public float Spread         = 0;  
     
 }
