@@ -5,22 +5,31 @@ using UnityEngine;
 public class WandController : MonoBehaviour
 {
     public Wand WandProperties;
-    public WandOrientation WandDirection;
-    public ObjectPool ObjectPool;
-    public MainGameControl MainGameCtrl;
     public Transform PlayerTrans;
+    public ObjectPool ObjectPool;
+    public ManaBarScript ManaBarCtrl;
+    public WandOrientation WandDirection;
+    public MainGameControl MainGameCtrl;
     public PlayerControllerTwo PlayerCtrl;
+
     public List<Spell> SpellList;
 
     public float projecitleAngle;
 
-    private bool CanCastSpell = true;
     private int  SpellIndex = 0;
+    public int currentMagicMana;
 
+    private bool CanCastSpell = true;
+    
+    // ------------------------------------------------------------------------
     private void Awake()
     {
-        //SpellList = new List<Spell>();
         SpellIndex = 0;
+
+        currentMagicMana = WandProperties.MaxMana;
+
+        ManaBarCtrl.SetMaxMana(WandProperties.MaxMana);
+        StartCoroutine(RechargeManaTimer());
 
         PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
         PlayerCtrl = GameObject.FindGameObjectWithTag("Player").
@@ -31,22 +40,46 @@ public class WandController : MonoBehaviour
         MainGameCtrl = MainGameObj.GetComponent<MainGameControl>();
     }
 
+    // ------------------------------------------------------------------------
     public static Vector2 RadianToVector2(float radian)
     {
         return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
     }
 
+    // ------------------------------------------------------------------------
     public static Vector2 DegreeToVector2(float degree)
     {
         return RadianToVector2(degree * Mathf.Deg2Rad);
     }
 
+    // ------------------------------------------------------------------------
+    public IEnumerator RechargeManaTimer()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            if (!(Input.GetMouseButton(0)) && 
+                (currentMagicMana < WandProperties.MaxMana))
+            {
+                currentMagicMana += WandProperties.ManaRechargeSpeed;
+            }
+
+            if (currentMagicMana > WandProperties.MaxMana)
+            {
+                currentMagicMana = WandProperties.MaxMana;
+            }
+
+            ManaBarCtrl.SetMana(currentMagicMana);
+        }
+    }
+
+    // ------------------------------------------------------------------------
     private void Update()
     {
         if ((Input.GetMouseButton(0)) && 
             (CanCastSpell) && 
             (SpellList.Count != 0) &&
-            (PlayerCtrl.currentMagicMana > 0))
+            (currentMagicMana > 0))
         {
             // Projectile Spells
             if (SpellList[SpellIndex].Type == Spell.SpellType.Projectile)
@@ -109,11 +142,11 @@ public class WandController : MonoBehaviour
                     GenericSpell.Spr.sprite = CurrentProjectile.SpriteImage;
                     
                     // Starting the lifetime timer
-                    StartCoroutine(GenericSpell.LifetimeTimer());
+                    GenericSpell.StartCoroutine(GenericSpell.LifetimeTimer());
                 }
                 // Update Player current mana currently
-                PlayerCtrl.currentMagicMana -= SpellList[SpellIndex].ManaDrain;
-                PlayerCtrl.ManaBarCtrl.SetMana(PlayerCtrl.currentMagicMana);
+                currentMagicMana -= SpellList[SpellIndex].ManaDrain;
+                ManaBarCtrl.SetMana(currentMagicMana);
 
                 CanCastSpell = false;
                 StartCoroutine(GeneralTimer(CurrentProjectile.CastDelay));

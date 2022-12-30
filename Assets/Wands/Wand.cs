@@ -17,14 +17,14 @@ public class Wand : MonoBehaviour
 
     public int CastRate = 0;
     public int MaxMana = 0;
-    public int ManaRechargeStepSize = 0;
+    public int ManaRechargeSpeed = 0;
     public int SpellCapacity = 0;
 
     public float CastDelay = 0;
     public float ProjectileSpread = 0; 
 
     public Vector2Int MaxManaRange = new Vector2Int(0, 1);
-    public Vector2Int ManaRechargeStepSizeRange = new Vector2Int(0, 1);
+    public Vector2Int ManaRechargeSpeedRange = new Vector2Int(0, 1);
     public Vector2Int SpellCapacityRange = new Vector2Int(0, 1);
     public Vector2 CastDelayRange = new Vector2(0, 1f);
     public Vector2 ProjectileSpreadRange = new Vector2(0, 1f);
@@ -34,9 +34,9 @@ public class Wand : MonoBehaviour
         if (Randomize)
         {
             MaxMana = Random.Range(MaxManaRange.x, MaxManaRange.y);
-            ManaRechargeStepSize = Random.Range(
-                                   ManaRechargeStepSizeRange.x, 
-                                   ManaRechargeStepSizeRange.y);
+            ManaRechargeSpeed = Random.Range(
+                                   ManaRechargeSpeedRange.x, 
+                                   ManaRechargeSpeedRange.y);
             SpellCapacity = Random.Range(
                             SpellCapacityRange.x, 
                             SpellCapacityRange.y);

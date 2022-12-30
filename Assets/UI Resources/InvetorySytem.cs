@@ -18,7 +18,13 @@ public class InvetorySytem : MonoBehaviour
 
     private void Start()
     {
-
+        for (int i = 1; i < numberofWands; i++)
+        {
+            if (WandInventory[i] != null)
+            {
+                WandInventory[i].SetActive(false);
+            }
+        }
     }
 
 

@@ -2104,14 +2104,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WandProperties: {fileID: 1342541565}
-  WandDirection: {fileID: 1342541563}
-  ObjectPool: {fileID: 0}
-  MainGameCtrl: {fileID: 0}
   PlayerTrans: {fileID: 0}
+  ObjectPool: {fileID: 0}
+  ManaBarCtrl: {fileID: 850599235}
+  WandDirection: {fileID: 1342541563}
+  MainGameCtrl: {fileID: 0}
   PlayerCtrl: {fileID: 0}
   SpellList:
   - {fileID: 6210649262799263233, guid: 49009cc1ada28354b9cf6f8a12ea986d, type: 3}
+  manaRechargeDelay: 0
   projecitleAngle: 0
+  currentMagicMana: 0
 --- !u!114 &1342541565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2127,13 +2130,13 @@ MonoBehaviour:
   Shuffle: 0
   Randomize: 0
   CastRate: 1
-  MaxMana: 100
-  ManaRechargeStepSize: 10
+  MaxMana: 20
+  ManaRechargeSpeed: 1
   SpellCapacity: 10
   CastDelay: 1
   ProjectileSpread: 5
   MaxManaRange: {x: 0, y: 1}
-  ManaRechargeStepSizeRange: {x: 0, y: 1}
+  ManaRechargeSpeedRange: {x: 0, y: 1}
   SpellCapacityRange: {x: 0, y: 1}
   CastDelayRange: {x: 0, y: 1}
   ProjectileSpreadRange: {x: 0, y: 1}
@@ -4884,7 +4887,6 @@ MonoBehaviour:
   FlyingParticle: {fileID: 6360240295165560925, guid: 1c7216e87e886ff4eb6240f48963859e, type: 3}
   ObjectPooling: {fileID: 777139663}
   LevitationBarCtrl: {fileID: 278515366}
-  ManaBarCtrl: {fileID: 850599235}
   PlayerVelocity: {x: 0, y: 0}
   mass: 10
   FrictionRate: 100
@@ -4894,19 +4896,14 @@ MonoBehaviour:
   terminalVelocity: 20
   maxHorizontalSpeed: 15
   flyingParticleChance: 0.8
-  magicManaRechargeDelay: 0.1
-  maxMagicMana: 20
-  magicManaStepSize: 2
   maxLevitationMana: 500
   leviationStepSize: 1
   FlyingParticleCount: 100
   currentLevitationMana: 0
-  currentMagicMana: 0
   AddGravity: 1
   isHittingHead: 0
   isRunningLeftIntoWall: 0
   isRunningRightIntoWall: 0
-  canRechargeMagicMana: 1
 --- !u!61 &1940998002
 BoxCollider2D:
   m_ObjectHideFlags: 0
