@@ -2112,7 +2112,6 @@ MonoBehaviour:
   PlayerCtrl: {fileID: 0}
   SpellList:
   - {fileID: 6210649262799263233, guid: 49009cc1ada28354b9cf6f8a12ea986d, type: 3}
-  manaRechargeDelay: 0
   projecitleAngle: 0
   currentMagicMana: 0
 --- !u!114 &1342541565
@@ -2131,7 +2130,7 @@ MonoBehaviour:
   Randomize: 0
   CastRate: 1
   MaxMana: 20
-  ManaRechargeSpeed: 1
+  ManaRechargeSpeed: 2
   SpellCapacity: 10
   CastDelay: 1
   ProjectileSpread: 5

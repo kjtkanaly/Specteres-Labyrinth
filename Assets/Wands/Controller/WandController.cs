@@ -20,16 +20,13 @@ public class WandController : MonoBehaviour
     public int currentMagicMana;
 
     private bool CanCastSpell = true;
-    
+
     // ------------------------------------------------------------------------
     private void Awake()
     {
-        SpellIndex = 0;
-
         currentMagicMana = WandProperties.MaxMana;
 
         ManaBarCtrl.SetMaxMana(WandProperties.MaxMana);
-        StartCoroutine(RechargeManaTimer());
 
         PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
         PlayerCtrl = GameObject.FindGameObjectWithTag("Player").
@@ -38,6 +35,15 @@ public class WandController : MonoBehaviour
         GameObject MainGameObj = GameObject.FindGameObjectWithTag("Main Game");
         ObjectPool = MainGameObj.GetComponent<ObjectPool>();
         MainGameCtrl = MainGameObj.GetComponent<MainGameControl>();
+    }
+    
+    // ------------------------------------------------------------------------
+    private void OnEnable()
+    {
+        SpellIndex = 0;
+
+        StartCoroutine(RechargeManaTimer());
+
     }
 
     // ------------------------------------------------------------------------
