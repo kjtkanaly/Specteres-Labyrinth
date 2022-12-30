@@ -57,7 +57,7 @@ public class WandController : MonoBehaviour
                     MainGameCtrl.GenericProjectilePool);
 
                 if (GenericSpell != null)
-                {
+                { 
                     // Activate the spell
                     GenericSpell.gameObject.SetActive(true);
 
@@ -73,8 +73,9 @@ public class WandController : MonoBehaviour
                     projecitleAngle = Vector2.SignedAngle(
                                       new Vector2(1f, 0),
                                       WandDirection.MousePos.normalized);
-                    projecitleAngle += Random.Range(-WandProperties.Spread, 
-                                                     WandProperties.Spread);
+                    projecitleAngle += Random.Range(
+                                      -WandProperties.ProjectileSpread, 
+                                       WandProperties.ProjectileSpread);
 
                     // Setting the spell's velocity
                     GenericSpell.RB.velocity = 

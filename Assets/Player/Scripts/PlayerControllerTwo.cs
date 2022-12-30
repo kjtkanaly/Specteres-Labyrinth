@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerControllerTwo : MonoBehaviour
 {
     public Rigidbody2D RB;
+    public SpriteRenderer Spr;
     public Collider2D FeetCollider;
     public Collider2D HeadCollider;
     public Collider2D RightCollider;
@@ -188,6 +189,20 @@ public class PlayerControllerTwo : MonoBehaviour
 
         // Update RB
         RB.velocity = PlayerVelocity;
+
+        // Orientate player sprite towards the mouse
+        Vector2 MousePos = 
+            Camera.main.ScreenToWorldPoint(Input.mousePosition) - 
+            this.transform.position;
+
+        if (Mathf.Sign(MousePos.x) == 1)
+        {
+            Spr.flipX = false;
+        }
+        else
+        {
+            Spr.flipX = true;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)

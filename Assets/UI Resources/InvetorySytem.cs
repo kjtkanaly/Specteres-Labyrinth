@@ -66,7 +66,7 @@ public class InvetorySytem : MonoBehaviour
         {
             if (WandInventory[i] != null)
             {
-                WandInventory.SetActive(false);
+                WandInventory[i].SetActive(false);
             }
         }
 

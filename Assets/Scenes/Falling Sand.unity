@@ -1245,13 +1245,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40b51c78f79f614198c6dc38b0f29e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WandInventory: []
+  WandInventory:
+  - {fileID: 1342541561}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   WandInventoryIconHighlights:
   - {fileID: 797951381}
   - {fileID: 1653645467}
   - {fileID: 222900367}
   - {fileID: 1073416732}
-  PlayerWandObject: {fileID: 0}
   currentActiveItem: 0
   numberofWands: 4
   wheelDelta: 0
@@ -2087,7 +2090,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WandTrans: {fileID: 0}
   PlayerTrans: {fileID: 0}
-  PlayerSpr: {fileID: 0}
   MousePos: {x: 0, y: 0}
 --- !u!114 &1342541564
 MonoBehaviour:
@@ -2101,7 +2103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc4114aa12347a40ad68928c2ce3bfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WandProperties: {fileID: 0}
+  WandProperties: {fileID: 1342541565}
   WandDirection: {fileID: 1342541563}
   ObjectPool: {fileID: 0}
   MainGameCtrl: {fileID: 0}
@@ -2123,13 +2125,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Shuffle: 0
+  Randomize: 0
   CastRate: 1
-  ManaMax: 100
-  ManaCharge: 10
-  Capacity: 10
+  MaxMana: 100
+  ManaRechargeStepSize: 10
+  SpellCapacity: 10
   CastDelay: 1
-  RechargeTime: 1
-  Spread: 5
+  ProjectileSpread: 5
+  MaxManaRange: {x: 0, y: 1}
+  ManaRechargeStepSizeRange: {x: 0, y: 1}
+  SpellCapacityRange: {x: 0, y: 1}
+  CastDelayRange: {x: 0, y: 1}
+  ProjectileSpreadRange: {x: 0, y: 1}
 --- !u!1 &1444123048
 GameObject:
   m_ObjectHideFlags: 0
@@ -4869,6 +4876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RB: {fileID: 1940998000}
+  Spr: {fileID: 1940997998}
   FeetCollider: {fileID: 1940997999}
   HeadCollider: {fileID: 1940998002}
   RightCollider: {fileID: 1940998004}
