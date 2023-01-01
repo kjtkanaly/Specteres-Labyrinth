@@ -5,84 +5,99 @@ using UnityEngine;
 
 public class InvetorySytem : MonoBehaviour
 {
-    public List<GameObject> WandInventory = new List<GameObject>();
+    public List<WandController> WandInventory = new List<WandController>();
     public List<Image> WandInventoryIconHighlights = new List<Image>();
     private List<Spell> SpellInvetory = new List<Spell>();
 
-    public int currentActiveItem = 0;
+    public int activeWandIndex = 0;
     public int numberofWands = 4;
 
     public float wheelDelta = 0;
-    private float scrollMultiplier = 2f;
+    private float scrollMultiplier = 1f;
 
-
+    // ------------------------------------------------------------------------
     private void Start()
     {
-        for (int i = 1; i < numberofWands; i++)
-        {
-            if (WandInventory[i] != null)
-            {
-                WandInventory[i].SetActive(false);
-            }
-        }
+        UnEquipWand();
+        EquipActiveWand();
     }
 
-
+    // ------------------------------------------------------------------------
     private void OnGUI()
     {
         wheelDelta += Input.mouseScrollDelta.y / (2 * scrollMultiplier);
     }
 
-
+    // ------------------------------------------------------------------------
     private void Update()
     {
         if (wheelDelta <= -1)
         {
-            currentActiveItem++;
+            activeWandIndex++;
             wheelDelta = 0;
 
-            if (currentActiveItem >= numberofWands)
+            if (activeWandIndex >= numberofWands)
             {
-                currentActiveItem = 0;
+                activeWandIndex = 0;
             }
 
             HighlightActiveWand();
-            UpdatePlayerWand();
+            UnEquipWand();
+            EquipActiveWand();
         }
 
         else if (wheelDelta >= 1)
         {
-            currentActiveItem--;
+            activeWandIndex--;
             wheelDelta = 0;
 
-            if (currentActiveItem == -1)
+            if (activeWandIndex == -1)
             {
-                currentActiveItem = numberofWands - 1;
+                activeWandIndex = numberofWands - 1;
             }
 
             HighlightActiveWand();
-            UpdatePlayerWand();
+            UnEquipWand();
+            EquipActiveWand();
         }
     }
 
+    // ------------------------------------------------------------------------
+    public void EquipActiveWand()
+    {
+        if (WandInventory[activeWandIndex] != null)
+        {
+            WandInventory[activeWandIndex].WandProperties.wandState = 
+                    Wand.WandState.Equipped;
 
-    public void UpdatePlayerWand()
+            // Setting the wand visible again
+            Color c = WandInventory[activeWandIndex].WandSprite.color;
+            c.a = 1;
+            WandInventory[activeWandIndex].WandSprite.color = c;
+
+            // Setting the mana bar equal to the new wand's current mana
+            WandInventory[activeWandIndex].ManaBarCtrl.SetMana(
+                WandInventory[activeWandIndex].currentMagicMana);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    public void UnEquipWand()
     {
         for (int i = 0; i < numberofWands; i++)
         {
             if (WandInventory[i] != null)
             {
-                WandInventory[i].SetActive(false);
+                WandInventory[i].WandProperties.wandState = 
+                    Wand.WandState.InInventory;
+                Color c = WandInventory[i].WandSprite.color;
+                c.a = 0;
+                WandInventory[i].WandSprite.color = c;
             }
-        }
-
-        if (WandInventory[currentActiveItem] != null)
-        {
-            WandInventory[currentActiveItem].SetActive(true);
         }
     }
 
-
+    // ------------------------------------------------------------------------
     public void HighlightActiveWand()
     {
         Color c;
@@ -94,9 +109,9 @@ public class InvetorySytem : MonoBehaviour
             WandInventoryIconHighlights[i].color = c;
         }
 
-        c = WandInventoryIconHighlights[currentActiveItem].color;
+        c = WandInventoryIconHighlights[activeWandIndex].color;
         c.a = 1f;
-        WandInventoryIconHighlights[currentActiveItem].color = c;
+        WandInventoryIconHighlights[activeWandIndex].color = c;
     }
 
 }

@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Wand : MonoBehaviour
 {
+    public enum WandState
+    {
+        OnTheGround = 0,
+        InInventory = 1,
+        Equipped = 2
+    }
+
     // Shuffle: Will the wand randomly select spells to cast
     // CastRate: How many spells are cast at a time
     // ManaMax: The wands mana capacity
@@ -12,6 +19,8 @@ public class Wand : MonoBehaviour
     // CastDelay: The amount of time the wand will wait between spells
     // RechargeTime: The amount of time the wand will wait after the final spell
     // Spread: The potential range your projectiles
+    public WandState wandState = WandState.OnTheGround;
+
     public bool Shuffle = false;
     public bool Randomize = false;
 
