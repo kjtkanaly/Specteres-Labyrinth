@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class InvetorySytem : MonoBehaviour
 {
+    public BoxCollider2D PlayerItemTrigger;
+    public ContactFilter2D WandFilter = new ContactFilter2D();
+    public LayerMask WandLayer;
+
+
     public List<WandController> WandInventory = new List<WandController>();
     public List<Image> WandInventoryIconHighlights = new List<Image>();
+    public List<Image> WandInventoryIcons = new List<Image>();
     private List<Spell> SpellInvetory = new List<Spell>();
 
     public int activeWandIndex = 0;
@@ -18,6 +24,8 @@ public class InvetorySytem : MonoBehaviour
     // ------------------------------------------------------------------------
     private void Start()
     {
+        WandFilter.SetLayerMask(WandLayer);
+
         UnEquipWand();
         EquipActiveWand();
     }
@@ -60,6 +68,26 @@ public class InvetorySytem : MonoBehaviour
             UnEquipWand();
             EquipActiveWand();
         }
+
+        // Check if the player can pick up an item
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            List<Collider2D> results = new List<Collider2D>();
+            PlayerItemTrigger.OverlapCollider(WandFilter, results);
+
+            Debug.Log(results.Count);
+
+            if (true) 
+            {
+                Debug.Log("Pick up!");
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddWandToInventory()
+    {
+
     }
 
     // ------------------------------------------------------------------------
