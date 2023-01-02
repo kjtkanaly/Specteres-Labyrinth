@@ -24,6 +24,7 @@ public class WandController : MonoBehaviour
     private int  SpellIndex = 0;
     public int currentMagicMana;
 
+    public bool CanBePickedUp = false;
     private bool CanCastSpell = true;
 
     // ------------------------------------------------------------------------
@@ -187,8 +188,42 @@ public class WandController : MonoBehaviour
         else if (WandProperties.wandState == Wand.WandState.OnTheGround)
         {
             WandIdleOnGround();
+
+            // Check if the player it trying to pick up the wand
+            if ((Input.GetKeyDown(KeyCode.E)) && (CanBePickedUp))
+            {
+                PickUpWand();
+            }
         }
-       
+    }
+
+    // ------------------------------------------------------------------------
+    public void PickUpWand()
+    {
+        Debug.Log("Picked Up!");
+        WandProperties.wandState = Wand.WandState.InInventory;
+        AnimationCtrl.SetBool("Idle", false);
+    }
+
+    // ------------------------------------------------------------------------
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if ((WandProperties.wandState == Wand.WandState.OnTheGround) &&
+            (other.tag == "Item Range"))
+        {
+            Debug.Log("Can be picked up!");
+            CanBePickedUp = true;
+        }   
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if ((WandProperties.wandState == Wand.WandState.OnTheGround) &&
+            (other.tag == "Item Range"))
+        {
+            Debug.Log("Can't be picked up...");
+            CanBePickedUp = false;
+        }   
     }
 
     // ------------------------------------------------------------------------

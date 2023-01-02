@@ -4,8 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - MC_Bullet
-  - NonCollide_Furniture
   - Interactable Objects
   - 'Room Parent Obj '
   - Top Collider
@@ -22,6 +20,7 @@ TagManager:
   - Debug Map
   - Boundary
   - Spell Pool
+  - Item Range
   layers:
   - Default
   - TransparentFX
