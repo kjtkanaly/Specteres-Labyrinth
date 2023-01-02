@@ -169,12 +169,6 @@ public class WandController : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------
-    private void WandIdleOnGround()
-    {
-        AnimationCtrl.SetBool("Idle", true);
-    }
-
-    // ------------------------------------------------------------------------
     private void Update()
     {
         if (WandProperties.wandState == Wand.WandState.Equipped)
@@ -198,11 +192,17 @@ public class WandController : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------
+    private void WandIdleOnGround()
+    {
+        AnimationCtrl.SetBool("Idle", true);
+    }
+
+    // ------------------------------------------------------------------------
     public void PickUpWand()
     {
         Debug.Log("Picked Up!");
-        WandProperties.wandState = Wand.WandState.InInventory;
         AnimationCtrl.SetBool("Idle", false);
+        InvetoryCtrl.AddWandToInventory(this);
     }
 
     // ------------------------------------------------------------------------

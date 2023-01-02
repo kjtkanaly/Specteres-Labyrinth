@@ -6,7 +6,7 @@ using UnityEngine;
 public class InvetorySytem : MonoBehaviour
 {
     public BoxCollider2D PlayerItemTrigger;
-
+    public Transform PlayerTrans;
 
     public List<WandController> WandInventory = new List<WandController>();
     public List<Image> WandInventoryIconHighlights = new List<Image>();
@@ -68,9 +68,51 @@ public class InvetorySytem : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------
-    public void AddWandToInventory()
+    public void AddWandToInventoryUI(int index, WandController NewWand)
     {
+        WandInventory[index] = NewWand;
+        WandInventoryIcons[index].sprite = NewWand.WandSprite.sprite;
 
+        Color c = WandInventoryIcons[index].color;
+        c.a = 1f;
+        WandInventoryIcons[index].color = c;
+    }
+
+    // ------------------------------------------------------------------------
+    public void AddWandToInventory(WandController NewWand)
+    {   
+        Debug.Log("Adding to Inveotory UI");
+        bool AddedToInventory = false;
+        // Check for open inveotry slot
+        for (int i = 0; i < numberofWands; i++)
+        {
+            Debug.Log(i);
+            if (WandInventory[i] == null)
+            {
+                AddWandToInventoryUI(i, NewWand);
+                AddedToInventory = true;
+                break;
+            }
+        }
+
+        // Replacing current wand with the new wand if now slot is open
+        if (!AddedToInventory)
+        {
+            AddWandToInventoryUI(activeWandIndex, NewWand);
+        }
+
+        Debug.Log("UI Updated");
+
+        // Set the new wand invisible
+        Color c = NewWand.WandSprite.color;
+        c.a = 0;
+        NewWand.WandSprite.color = c;
+
+        NewWand.transform.SetParent(PlayerTrans);
+        NewWand.transform.localPosition = new Vector3(0f, 0f, 0f);
+
+        // Update the wand status
+        NewWand.WandProperties.wandState = Wand.WandState.InInventory;
     }
 
     // ------------------------------------------------------------------------
