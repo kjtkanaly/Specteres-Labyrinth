@@ -108,8 +108,9 @@ public class InvetorySytem : MonoBehaviour
         c.a = 0;
         NewWand.WandSprite.color = c;
 
-        NewWand.transform.SetParent(PlayerTrans);
-        NewWand.transform.localPosition = new Vector3(0f, 0f, 0f);
+        NewWand.gameObject.transform.SetParent(PlayerTrans);
+        NewWand.transform.rotation = new Vector3(0f, 0f, 0f);
+        NewWand.transform.position = new Vector3(0f, 0f, 0f);
 
         // Update the wand status
         NewWand.WandProperties.wandState = Wand.WandState.InInventory;
