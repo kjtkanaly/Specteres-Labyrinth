@@ -109,7 +109,7 @@ public class InvetorySytem : MonoBehaviour
         NewWand.WandSprite.color = c;
 
         NewWand.gameObject.transform.SetParent(PlayerTrans);
-        NewWand.transform.rotation = new Vector3(0f, 0f, 0f);
+        NewWand.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         NewWand.transform.position = new Vector3(0f, 0f, 0f);
 
         // Update the wand status
